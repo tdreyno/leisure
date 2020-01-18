@@ -1,0 +1,9 @@
+{
+  "mode": "file",
+  "out": "docs",
+  "exclude": ["**/__tests__/*.ts", "**/__mocks/*.ts"],
+  "excludeExternals": true,
+  "excludeNotExported": true,
+  "excludePrivate": true,
+  "excludeProtected": true
+}

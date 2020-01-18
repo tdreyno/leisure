@@ -1,0 +1,70 @@
+{
+  "name": "@tdreyno/leisure",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "repository": "git://github.com/tdreyno/leisure.git",
+  "scripts": {
+    "lint": "tslint --project .",
+    "build": "pika build && yarn compress",
+    "compress": "terser pkg/dist-web/index.js -o pkg/dist-web/index.min.js --source-map",
+    "test": "jest --runInBand",
+    "docs": "typedoc --out docs src",
+    "version": "yarn run build",
+    "coverage": "jest --runInBand --coverage --coverageDirectory '../coverage'"
+  },
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-ts-standard-pkg",
+        {
+          "exclude": [
+            "__tests__/**/*"
+          ]
+        }
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-build-web"
+      ]
+    ]
+  },
+  "lint-staged": {
+    "*.{ts,tsx,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "volta": {
+    "node": "12.13.1",
+    "yarn": "1.21.1"
+  },
+  "devDependencies": {
+    "@pika/pack": "^0.5.0",
+    "@pika/plugin-build-node": "^0.8.1",
+    "@pika/plugin-build-web": "^0.8.1",
+    "@pika/plugin-ts-standard-pkg": "^0.8.1",
+    "@types/jest": "^24.9.0",
+    "husky": "^3.1.0",
+    "jest": "^24.5.0",
+    "lint-staged": "^9.5.0",
+    "prettier": "^1.19.1",
+    "terser": "^4.6.3",
+    "ts-jest": "^24.3.0",
+    "ts-toolbelt": "^6.1.6",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-immutable": "^6.0.1",
+    "tslint-microsoft-contrib": "^6.1.0",
+    "typedoc": "^0.16.7",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {}
+}
