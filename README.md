@@ -4,7 +4,7 @@
 
 The difference between `leisure` and those non-lazy libraries is the guarantee that no computations will happen unless the result is actually used. Here's an example:
 
-{% code title="es6.ts" %}
+{% code %}
 
 ```typescript
 type User = { name: string; address: string };
@@ -30,7 +30,7 @@ At the end of the computation we discover that we only need the first matching r
 
 Here is that same example using `leisure`:
 
-{% code title="leisure.ts" %}
+{% code %}
 
 ```typescript
 import Seq from "@tdreyno/leisure";
@@ -51,7 +51,7 @@ As you can see, the API is nearly identical, with the exception of the `first` h
 
 One of the very interesting side-effects of being lazy is the ability to interact with infinite sequences and perform the smallest number of possible computations to search over all the possibilities. For a very contrived example, find me the first number in the Fibonacci sequence that contains my birthday \(let's say I was born at the beginning of the millennium: `2000_01_01`\).
 
-{% code title="fib.ts" %}
+{% code %}
 
 ```typescript
 import Seq from "@tdreyno/leisure";
@@ -79,7 +79,7 @@ Most methods in the library ask for one value from the previous computation at a
 
 Here's an example which discards the first 10 numbers of an infinite sequence, then grabs the next five and uses them.
 
-{% code title="countToTen.ts" %}
+{% code %}
 
 ```typescript
 import Seq from "@tdreyno/leisure";
@@ -103,7 +103,7 @@ To avoid infinite loops, `leisure` caps the maximum number of infinite values to
 
 `leisure` implements the Iterator protocol which means you can use it to lazily pull values using a normal `for` loop.
 
-{% code title="for-loop.ts" %}
+{% code %}
 
 ```typescript
 import Seq from "@tdreyno/leisure";
