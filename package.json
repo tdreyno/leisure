@@ -9,7 +9,6 @@
     "build": "pika build && yarn compress",
     "compress": "terser pkg/dist-web/index.js -o pkg/dist-web/index.min.js --source-map",
     "test": "jest --runInBand",
-    "docs": "typedoc --out docs src",
     "version": "yarn run build",
     "coverage": "jest --runInBand --coverage --coverageDirectory '../coverage'"
   },
@@ -63,7 +62,6 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-immutable": "^6.0.1",
     "tslint-microsoft-contrib": "^6.1.0",
-    "typedoc": "^0.16.7",
     "typescript": "^3.7.5"
   },
   "dependencies": {}

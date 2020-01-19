@@ -368,30 +368,6 @@ export class Seq<K, T> {
     return this.distinctBy(identity);
   }
 
-  public groupBy<U>(fn: (item: T) => U): Map<U, T[]> {
-    return this.reduce((sum, item) => {
-      const group = fn(item);
-
-      if (sum.has(group)) {
-        const currentArray = sum.get(group)!;
-        currentArray?.push(item);
-        return sum.set(group, currentArray);
-      }
-
-      return sum.set(group, [item]);
-    }, new Map<U, T[]>());
-  }
-
-  public frequencies(): Map<T, number> {
-    return this.reduce((sum, value) => {
-      if (sum.has(value)) {
-        return sum.set(value, sum.get(value)! + 1);
-      }
-
-      return sum.set(value, 0 + 1);
-    }, new Map<T, number>());
-  }
-
   public partition(fn: (value: T, key: K) => unknown): [Seq<K, T>, Seq<K, T>] {
     const self = this;
 
@@ -667,6 +643,30 @@ export class Seq<K, T> {
 
   public average(this: Seq<any, number>): number {
     return this.averageBy(identity);
+  }
+
+  public frequencies(): Map<T, number> {
+    return this.reduce((sum, value) => {
+      if (sum.has(value)) {
+        return sum.set(value, sum.get(value)! + 1);
+      }
+
+      return sum.set(value, 0 + 1);
+    }, new Map<T, number>());
+  }
+
+  public groupBy<U>(fn: (item: T) => U): Map<U, T[]> {
+    return this.reduce((sum, item) => {
+      const group = fn(item);
+
+      if (sum.has(group)) {
+        const currentArray = sum.get(group)!;
+        currentArray?.push(item);
+        return sum.set(group, currentArray);
+      }
+
+      return sum.set(group, [item]);
+    }, new Map<U, T[]>());
   }
 
   // Needs to be public due to generator scoping issues.
