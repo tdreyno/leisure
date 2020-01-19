@@ -124,9 +124,7 @@ for (let i of Seq.infinite()) {
 
 However, if you dig into `leisure`'s helper methods, you'll be able to write more expressive data computations. With the ES6 API, developers often drop into `reduce` for more complex data transformations. These reducer bodies can be difficult to read and understand how they are actually transforming the data. `leisure` provides methods which do these common transformations and names them so your code is more readable. Dropping all the way down into a reducer is quite rare in `leisure` code.
 
-[Take a look at the full `leisure` API.](api/instance.md)
-
->
+[Take a look at the full `leisure` API.](docs/api/instance.md)
 
 ## Prior Art
 
