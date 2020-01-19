@@ -1,12 +1,11 @@
 # Table of contents
 
-* [Installation](README.md)
-* [Introduction](introduction.md)
-* [F.A.Q.](f.a.q..md)
-* [Changelog](changelog.md)
+- [Introduction](README.md)
+- [Installation](installation.md)
+- [F.A.Q.](f.a.q..md)
+- [Changelog](changelog.md)
 
 ## API
 
-* [Static Methods](api/static.md)
-* [Instance Methods](api/instance.md)
-
+- [Static Methods](api/static.md)
+- [Instance Methods](api/instance.md)
