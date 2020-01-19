@@ -1,31 +1,17 @@
-# Leisure
+# Installation
 
-Leisure is a TypeScript library provides lazy Sequences.
+`leisure` can be installed using Yarn \(or npm if you really need to\).
 
-Documentation of this project is a work in progress. For now, take a look at the example below and lean heavily on TypeScript's information around the public API.
-
-## Installation
-
-### Yarn
-
-```sh
-yarn add @tdreyno/leisure
+```
+$ yarn add @tdreyno/leisure
 ```
 
-### NPM
-
-```sh
-npm install --save @tdreyno/leisure
+{% code title="hello.sh" %}
+```bash
+# Ain't no code for that yet, sorry
+echo 'You got to trust me on this, I saved the world'
 ```
+{% endcode %}
 
-## Examples
 
-```typescript
-Seq.infinite()
-  .take(4)
-  .sum();
-```
 
-## License
-
-Leisure is licensed under the the Hippocratic License. It is an [Ethical Source license](https://ethicalsource.dev) derived from the MIT License, amended to limit the impact of the unethical use of open source software.
