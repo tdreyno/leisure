@@ -2,10 +2,13 @@
 
 ## map
 
+It's `map`, the most important method in programming! Exactly the same as ES6 `map`, but lazy.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const sequence: Seq<number, string> = Seq.infinite().map(num => num.toString());
 ```
 
 {% endtab %}
@@ -21,10 +24,21 @@ type map = <U>(fn: (value: T, key: K) => U) => Seq<K, U>;
 
 ## window
 
+`window` takes a sequence and groups it into "windows" of a certain length. This works well with infinite sequences where you want to process some number of values at a time.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Grab numbers in groups of 10.
+const sequence: Seq<number, number[]> = Seq.infinite().window(10);
+```
+
+By default, only triggers chained responses when the window fills, guaranteeing the window is the exact size expect. Set `allowPartialWindow` to `false` to allow the trailing edge of a sequence to not be divisible by the window size.
+
+```typescript
+// Gives: [0, 1, 2] -> [3, 4, 5] -> [6, 7, 8] -> [9, 10]
+const sequence: Seq<number, number> = Seq.range(0, 10).window(3);
 ```
 
 {% endtab %}
@@ -40,10 +54,13 @@ type window = (size: number, allowPartialWindow = true) => Seq<number, T[]>;
 
 ## pairwise
 
+Works like `window`, makes the window size 2. Groups a sequence as alternating pairs. Useful for processing data which alternates Map keys and values.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const sequence: Seq<number, [string, number]> = Seq.fromArray(["a", 1, "b", 2]);
 ```
 
 {% endtab %}
@@ -59,10 +76,13 @@ type pairwise = () => Seq<number, [T, T]>;
 
 ## isEmpty
 
+Ask whether a sequence is empty.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const anythingInThere: boolean = Seq.empty().isEmpty();
 ```
 
 {% endtab %}
@@ -78,10 +98,15 @@ type isEmpty = () => boolean;
 
 ## tap
 
+`tap` lets you run side-effect generating functions on a sequence. Allows you to "tap in to" a data flow. Very useful for logging and debugging what values are flowing through the chain at a given location.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const sequence: Seq<number, number> = Seq.infinite().tap(num =>
+  console.log(num)
+);
 ```
 
 {% endtab %}
@@ -97,10 +122,13 @@ type tap = (fn: (value: T, key: K) => void) => Seq<K, T>;
 
 ## log
 
+`log` provides the most common use-case for `tap. Add this to a sequence chain to log each value that passes through it.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const sequence: Seq<number, number> = Seq.infinite().log();
 ```
 
 {% endtab %}

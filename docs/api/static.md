@@ -6,15 +6,19 @@ Takes a normal JavaScript array and turns it into a Sequence of the same type.
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const sequence: Seq<number, number> = Seq.fromArray([1, 2, 3]);
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type fromArray<T> = (data: T[]) => Seq<number, T>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -24,17 +28,21 @@ Takes an ES6 `Set` and turns it into a sequence of the same value type.
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const oneTwoThree = new Set([1, 2, 3, 2, 1]);
 const sequence: Seq<number, number> = Seq.fromSet(oneTwoThree);
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 // Like the ES6 Set type itself, uses the value as the index type.
 type fromSet<T> = (data: Set<T>) => Seq<T, T>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -44,16 +52,22 @@ Takes an [Iterator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guid
 
 {% tabs %}
 {% tab title="Usage" %}
-```text
+
+```typescript
 const oneTwoThree = new Set([1, 2, 3, 2, 1]);
-const sequence: Seq<number, number> = Seq.fromIterator(oneTwoThree[Symbol.iterator]);
+const sequence: Seq<number, number> = Seq.fromIterator(
+  oneTwoThree[Symbol.iterator]
+);
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type fromIterator<K, T> = (data: () => IterableIterator<[K, T]>) => Seq<K, T>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -65,28 +79,31 @@ Using this function, you can make an arbitrary sequence however you want! You mu
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const sequence: Seq<number, number> = Seq.fromGenerator(function*() {
   let i = 0;
-  
+
   // Yields an infinite sequence of the string version of a number counting up.
   while (true) {
     // Yield the key and the value.
     yield [i, i.toString()];
-    
+
     i++;
   }
 });
-
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type fromGenerator = <K, T>(
   data: (this: Seq<K, T>) => Generator<[K, T]>
 ) => Seq<K, T>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -96,16 +113,20 @@ The `iterate` method simplifies the construction of infinite sequences which are
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 // Builds an infinite sequence that counts up from 0.
-const sequence: Seq<number, number> = Seq.iterate((a) => a + 1, 0);
+const sequence: Seq<number, number> = Seq.iterate(a => a + 1, 0);
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
-type iterate = <T>(fn: (current: T) => T, start: T): Seq<number, T> 
+type iterate = <T>(fn: (current: T) => T, start: T): Seq<number, T>
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -115,6 +136,7 @@ Creates a sequence that counts between a start and end value. Takes an optional 
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 // Step by 1 from 0 through 10.
 const sequence: Seq<number, number> = Seq.range(0, 10);
@@ -139,9 +161,11 @@ const sequence: Seq<number, number> = Seq.range(10, -10);
 // Step by 2 from 0 through 10.
 const sequence: Seq<number, number> = Seq.range(0, 10, 2);
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type range(
   start: number,
@@ -149,6 +173,7 @@ type range(
   step = 1
 ) => Seq<number, number>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -158,15 +183,19 @@ A sequence that counts from `0` to `Infinity`.
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const sequence: Seq<number, number> = Seq.infinite();
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type infinite = () => Seq<number, number>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -176,15 +205,19 @@ A sequence with only a single value inside. Also known as "singleton."
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const sequence: Seq<number, number> = Seq.of(2);
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type of = <T>(value: T) => Seq<number, T>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -194,15 +227,19 @@ Create a sequence that is the infinite repetition of a series of values.
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const sequence: Seq<number, string> = Seq.cycle(["a", "b", "c"]);
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type cycle = <T>(items: T[]) => Seq<number, T>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -212,6 +249,7 @@ Create a sequence which repeats the same value X number of times. The length of 
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 // Creates a sequence of 5 true values.
 const sequence: Seq<number, boolean> = Seq.repeat(true, 5);
@@ -221,12 +259,15 @@ const sequence: Seq<number, boolean> = Seq.repeat(true, 5);
 // Creates a sequence of 0 which repeats infinitely.
 const sequence: Seq<number, number> = Seq.repeat(0);
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type repeat = <T>(value: T, times = Infinity) => Seq<number, T>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -236,18 +277,19 @@ Creates a sequence which pulls from an impure callback to generate the sequence.
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const sequence: Seq<number, Date> = Seq.repeatedly(() => new Date());
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
-type repeatedly = <T>(
-  value: () => T,
-  times = Infinity
-) => Seq<number, T>;
+type repeatedly = <T>(value: () => T, times = Infinity) => Seq<number, T>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -257,15 +299,19 @@ A sequence with nothing in it. Useful as a "no op" for certain code-paths when j
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const sequence: Seq<number, never> = Seq.empty();
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type empty = () => Seq<number, never>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -275,6 +321,7 @@ Takes two sequences and lazily combines them to produce a tuple with the current
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const seq1 = Seq.fromArray(["zero", "one", "two", "three"]);
 const seq2 = Seq.range(0, 3);
@@ -282,15 +329,18 @@ const seq2 = Seq.range(0, 3);
 // Gives: ["zero", 0] -> ["one", 1] -> ["two", 2] -> ["three", 3]
 const sequence: Seq<number, [string, number]> = Seq.zip(seq1, seq2);
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type zip = <K1, T1, K2, T2>(
   seq1: Seq<K1, T1>,
   seq2: Seq<K2, T2>
 ) => Seq<number, [T1 | undefined, T2 | undefined]>;
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -300,6 +350,7 @@ Takes two sequences and lazily combines them to produce an arbitrary value by ma
 
 {% tabs %}
 {% tab title="Usage" %}
+
 ```typescript
 const seq1 = Seq.range(0, 3);
 const seq2 = Seq.repeat(2);
@@ -311,9 +362,11 @@ const sequence: Seq<number, number> = Seq.zipWith(
   seq2
 );
 ```
+
 {% endtab %}
 
 {% tab title="Type Definition" %}
+
 ```typescript
 type zipWith = <K1, T1, K2, T2, K3, T3>(
   fn: (
@@ -324,6 +377,6 @@ type zipWith = <K1, T1, K2, T2, K3, T3>(
   seq2: Seq<K2, T2>
 ) => Seq<K3, T3>;
 ```
+
 {% endtab %}
 {% endtabs %}
-
