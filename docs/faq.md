@@ -1,8 +1,5 @@
 # F.A.Q.
 
-## Can I become who I want to be?
+## Why is this page so empty?
 
-That's a tough question but thankfully, our team is on it. Please bear with us while we're investigating.
-
-
-
+This is a brand new project, we don't know what questions are being frequently asked.

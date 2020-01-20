@@ -1,6 +1,6 @@
 # Table of contents
 
-- [Introduction](README.md)
+- [Introduction](docs/introduction.md)
 - [Installation](docs/installation.md)
 - [F.A.Q.](docs/faq.md)
 - [Changelog](CHANGELOG.md)

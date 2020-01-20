@@ -45,10 +45,12 @@ export class Seq<K, T> {
     });
   }
 
-  public static of<T>(value: T): Seq<number, T> {
+  public static of<T>(...values: T[]): Seq<number, T> {
     return Seq.fromGenerator(function*() {
-      yield [0, value];
-      this.didYield();
+      for (let i = 0; i < values.length; i++) {
+        yield [i, values[i]];
+        this.didYield();
+      }
     });
   }
 
@@ -167,6 +169,12 @@ export class Seq<K, T> {
     );
   }
 
+  public static concat<K, T>(...items: Array<Seq<K, T>>): Seq<K, T> {
+    /* istanbul ignore next */
+    const [head, ...tail] = items;
+    return head.concat(...tail);
+  }
+
   private yields = 0;
 
   constructor(
@@ -240,6 +248,10 @@ export class Seq<K, T> {
   }
 
   public flatMap<U>(fn: (value: T, key: K) => U[]): Seq<number, U> {
+    return this.map(fn).flat();
+  }
+
+  public flat<U>(this: Seq<K, U[]>): Seq<number, U> {
     const self = this;
 
     return new Seq(function*() {
@@ -247,14 +259,12 @@ export class Seq<K, T> {
 
       let counter = 0;
 
-      for (const item of iterator) {
-        const result = fn(item[1], item[0]);
-
+      for (const [, items] of iterator) {
         // Something about the yield/generator requires
         // this not be a for-of loop
         // tslint:disable-next-line: prefer-for-of
-        for (let i = 0; i < result.length; i++) {
-          yield [counter++, result[i]];
+        for (let i = 0; i < items.length; i++) {
+          yield [counter++, items[i]];
           this.didYield();
         }
       }

@@ -142,12 +142,51 @@ type log = () => Seq<K, T>;
 {% endtab %}
 {% endtabs %}
 
-## flatMap
+## flat
+
+Given a sequence where each item in an array of items, flatten all those arrays into a single flat sequence of values.
+
+Works just like `Array.prototype.flat`. [See more here.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat)
 
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+type Person = { name: string; friends: Person[] };
+
+const sequence: Seq<number, Friend> = Seq.fromArray([person1, person2])
+  .map(person => person.friends)
+  .flat();
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type flat = <U>(this: Seq<K, U[]>) => Seq<number, U>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## flatMap
+
+`flatMap` is used when mapping a list to each items related items. For example, if you wanted to map from a list of people to each persons list of friends. Despite each mapping function returning an array, the final output is a flatten array of all the results concattenated.
+
+Works just like `Array.prototype.flatMap`. [See more here.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)
+
+Similar to `[].map().flat()`, but in `leisure` the item mappings won't execute until enough of the resulting values have been realized to trigger each map.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+type Person = { name: string; friends: Person[] };
+
+const sequence: Seq<number, Friend> = Seq.fromArray([person1, person2]).flatMap(
+  person => person.friends
+);
 ```
 
 {% endtab %}
@@ -163,10 +202,18 @@ type flatMap = <U>(fn: (value: T, key: K) => U[]) => Seq<number, U>;
 
 ## filter
 
+Runs a predicate function on each item in a sequence to produce a new sequence where only the values which responded with `true` remain.
+
+Exactly the same as `Array.prototype.filter`, but lazy. [See more here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter).
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Create a sequence of only even numbers.
+const sequence: Seq<number, number> = Seq.infinite().filter(
+  num => num % 2 === 0
+);
 ```
 
 {% endtab %}
@@ -182,10 +229,18 @@ type filter = (fn: (value: T, key: K) => unknown) => Seq<K, T>;
 
 ## concat
 
+Combines the current sequence with 1 or more additional sequences.
+
+Exactly the same as `Array.prototype.concat`, but lazy. [See more here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat).
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const sequence: Seq<number, number> = Seq.fromArray([0, 1]).concat(
+  Seq.fromArray([2, 3]),
+  Seq.fromArray([4, 5])
+);
 ```
 
 {% endtab %}

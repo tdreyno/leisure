@@ -203,6 +203,8 @@ type infinite = () => Seq<number, number>;
 
 A sequence with only a single value inside. Also known as "singleton."
 
+[Similar to Array.of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of).
+
 {% tabs %}
 {% tab title="Usage" %}
 
@@ -215,7 +217,7 @@ const sequence: Seq<number, number> = Seq.of(2);
 {% tab title="Type Definition" %}
 
 ```typescript
-type of = <T>(value: T) => Seq<number, T>;
+type of = <T>(...values: T[]): Seq<number, T>;
 ```
 
 {% endtab %}
@@ -376,6 +378,32 @@ type zipWith = <K1, T1, K2, T2, K3, T3>(
   seq1: Seq<K1, T1>,
   seq2: Seq<K2, T2>
 ) => Seq<K3, T3>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## concat
+
+Combines 2 or more sequences into a single sequence.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const sequence: Seq<number, number> = Seq.concat(
+  Seq.fromArray([0, 1]),
+  Seq.fromArray([2, 3]),
+  Seq.fromArray([4, 5])
+);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type concat = <K, T>(...items: Array<Seq<K, T>>) => Seq<K, T>;
 ```
 
 {% endtab %}
