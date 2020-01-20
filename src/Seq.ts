@@ -1,3 +1,4 @@
+import { makeNoise2D, makeNoise3D, makeNoise4D } from "open-simplex-noise";
 import { constant, identity } from "./util";
 
 // tslint:disable: max-classes-per-file
@@ -43,6 +44,40 @@ export class Seq<K, T> {
         this.didYield();
       }
     });
+  }
+
+  public static simplex2D(
+    fn: () => [number, number],
+    seed: number = Date.now()
+  ): Seq<number, number> {
+    const noise2D = makeNoise2D(seed);
+    const step = () => noise2D(...fn());
+
+    return Seq.iterate(step, step());
+  }
+
+  public static simplex3D(
+    fn: () => [number, number, number],
+    seed: number = Date.now()
+  ): Seq<number, number> {
+    const noise3D = makeNoise3D(seed);
+    const step = () => noise3D(...fn());
+
+    return Seq.iterate(step, step());
+  }
+
+  public static simplex4D(
+    fn: () => [number, number, number, number],
+    seed: number = Date.now()
+  ): Seq<number, number> {
+    const noise4D = makeNoise4D(seed);
+    const step = () => noise4D(...fn());
+
+    return Seq.iterate(step, step());
+  }
+
+  public static random(): Seq<number, number> {
+    return Seq.iterate(() => Math.random(), Math.random());
   }
 
   public static of<T>(...values: T[]): Seq<number, T> {
@@ -173,6 +208,12 @@ export class Seq<K, T> {
     /* istanbul ignore next */
     const [head, ...tail] = items;
     return head.concat(...tail);
+  }
+
+  public static interleave<K, T>(...items: Array<Seq<K, T>>): Seq<K, T> {
+    /* istanbul ignore next */
+    const [head, ...tail] = items;
+    return head.interleave(...tail);
   }
 
   private yields = 0;
@@ -378,7 +419,9 @@ export class Seq<K, T> {
     return this.distinctBy(identity);
   }
 
-  public partition(fn: (value: T, key: K) => unknown): [Seq<K, T>, Seq<K, T>] {
+  public partitionBy(
+    fn: (value: T, key: K) => unknown
+  ): [Seq<K, T>, Seq<K, T>] {
     const self = this;
 
     const trueBackpressure: Array<[K, T]> = [];

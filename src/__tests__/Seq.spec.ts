@@ -562,7 +562,7 @@ describe("Seq", () => {
 
       const [even, odd] = Seq.infinite()
         .tap(cb)
-        .partition(val => val % 2 === 0);
+        .partitionBy(val => val % 2 === 0);
 
       const evenResult = even.take(4).toArray();
       expect(evenResult).toEqual([0, 2, 4, 6]);
@@ -578,7 +578,7 @@ describe("Seq", () => {
 
       const [greater, lessOrEqual] = Seq.infinite()
         .tap(cb)
-        .partition(val => val > 5);
+        .partitionBy(val => val > 5);
 
       const greaterResult = greater.take(2).toArray();
       expect(greaterResult).toEqual([6, 7]);
@@ -594,7 +594,7 @@ describe("Seq", () => {
 
       const [lessOrEqual, greater] = Seq.infinite()
         .tap(cb)
-        .partition(val => val <= 5);
+        .partitionBy(val => val <= 5);
 
       const lessOrEqualResult = lessOrEqual.take(2);
       expect(lessOrEqualResult.toArray()).toEqual([0, 1]);

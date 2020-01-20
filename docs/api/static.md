@@ -130,6 +130,113 @@ type iterate = <T>(fn: (current: T) => T, start: T): Seq<number, T>
 {% endtab %}
 {% endtabs %}
 
+## random
+
+Generates a random sequence using `Math.random`.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+// Builds sequence of random numbers between 0 and 1.
+const sequence: Seq<number, number> = Seq.random();
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type random = () => Seq<number, number>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## simplex2D
+
+Generates a 2d simplex noise.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const SEED = 5;
+const sequence: Seq<number, number> = Seq.simplex2D((x, y) => x + y, SEED);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type simplex2D = (
+  fn: () => [number, number],
+  seed: number = Date.now()
+) => Seq<number, number>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## simplex3D
+
+Generates a 3d simplex noise.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const SEED = 5;
+const sequence: Seq<number, number> = Seq.simplex3D(
+  (x, y, z) => x + y + z,
+  SEED
+);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type simplex2D = (
+  fn: () => [number, number, number],
+  seed: number = Date.now()
+) => Seq<number, number>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## simplex4D
+
+Generates a 4d simplex noise.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const SEED = 5;
+const sequence: Seq<number, number> = Seq.simplex4D(
+  (x, y, z, w) => x + y + z + w,
+  SEED
+);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type simplex2D = (
+  fn: () => [number, number, number, number],
+  seed: number = Date.now()
+) => Seq<number, number>;
+```
+
+{% endtab %}
+{% endtabs %}
+
 ## range
 
 Creates a sequence that counts between a start and end value. Takes an optional step parameter.
@@ -404,6 +511,32 @@ const sequence: Seq<number, number> = Seq.concat(
 
 ```typescript
 type concat = <K, T>(...items: Array<Seq<K, T>>) => Seq<K, T>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## interleave
+
+Takes 2 or more sequences and creates a new sequence built by pulling the next value from each of the sequences in order.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+// Builds: a -> 1 -> b -> 2 -> c -> 3
+const sequence: Seq<number, string | number> = Seq.interleave(
+  Seq.fromArray(["a", "b", "c"]),
+  Seq.range(1, 3)
+);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type interleave = <K, T>(...items: Array<Seq<K, T>>) => Seq<K, T>;
 ```
 
 {% endtab %}

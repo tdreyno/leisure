@@ -256,10 +256,18 @@ type concat = (...tail: Array<Seq<K, T>>) => Seq<K, T>;
 
 ## interleave
 
+Takes 1 or more sequences and creates a new sequence built by pulling the next value from each of the sequences in order.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Builds: a -> 1 -> b -> 2 -> c -> 3
+const sequence: Seq<number, string | number> = Seq.fromArray([
+  "a",
+  "b",
+  "c"
+]).interleave(Seq.range(1, 3));
 ```
 
 {% endtab %}
@@ -275,10 +283,20 @@ type interleave = (...tail: Array<Seq<K, T>>) => Seq<K, T>;
 
 ## interpose
 
+Given a sequence, place a value between each value of the original sequence. Useful for adding punctuation between strings.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Builds: Apples -> , -> Oranges -> , -> Bananas
+const sequence: Seq<number, string> = Seq.fromArray([
+  "Apples",
+  "Oranges",
+  "Bananas"
+]).interpose(", ");
+
+console.log(sequence.toArray().join(""));
 ```
 
 {% endtab %}
@@ -292,31 +310,23 @@ type interpose = (separator: T) => Seq<number, T>;
 {% endtab %}
 {% endtabs %}
 
-## distinctBy
-
-{% tabs %}
-{% tab title="Usage" %}
-
-```typescript
-```
-
-{% endtab %}
-
-{% tab title="Type Definition" %}
-
-```typescript
-type distinctBy = <U>(fn: (value: T) => U) => Seq<K, T>;
-```
-
-{% endtab %}
-{% endtabs %}
-
 ## distinct
 
+Given a sequence, only forwards the values which have no already been seen. Very similar to lodash's `uniq` method.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Builds: 1 -> 2 -> 3 -> 4
+const sequence: Seq<number, number> = Seq.fromArray([
+  1,
+  2,
+  3,
+  2,
+  1,
+  4
+]).distinct();
 ```
 
 {% endtab %}
@@ -330,12 +340,46 @@ type distinct = () => Seq<K, T>;
 {% endtab %}
 {% endtabs %}
 
-## partition
+## distinctBy
+
+Same as `distinct`, but allows a function to describe on what value the sequence should be unique.
 
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Builds: { firstName: "A", lastName: "Z" } ->
+//         { firstName: "B", lastName: "Y" } ->
+//         { firstName: "C", lastName: "W" }
+type Person = { firstName: string; lastName: string };
+const sequence: Seq<number, Person> = Seq.fromArray([
+  { firstName: "A", lastName: "Z" },
+  { firstName: "B", lastName: "Y" },
+  { firstName: "A", lastName: "X" },
+  { firstName: "C", lastName: "W" }
+]).distinctBy(person => person.firstName);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type distinctBy = <U>(fn: (value: T) => U) => Seq<K, T>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## partitionBy
+
+Given a sequence, splits the values into two separate sequences. One represents the values where the partition function is `true` and the other for `false`.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const [isEven, isOdd] = Seq.infinite().partitionBy(num => num % 2 === 0);
 ```
 
 {% endtab %}
@@ -351,10 +395,15 @@ type partition = (fn: (value: T, key: K) => unknown) => [Seq<K, T>, Seq<K, T>];
 
 ## includes
 
+Lazily checks if the sequence includes a value.
+
+Exactly the same as `Array.prototype.includes`, but lazy. [See more here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes).
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const doesItInclude = Seq.infinite().includes(10);
 ```
 
 {% endtab %}
@@ -370,10 +419,16 @@ type includes = (value: T) => boolean;
 
 ## find
 
+Lazily searches for a value that matches the predicate.
+
+Exactly the same as `Array.prototype.find`, but lazy. [See more here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find).
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Returns 11
+const gtTen = Seq.infinite().find(num => num > 10);
 ```
 
 {% endtab %}
@@ -389,10 +444,16 @@ type find = (fn: (value: T, key: K) => unknown) => T | undefined;
 
 ## reduce
 
+Exactly the same as `Array.prototype.reduce`. [See more here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce). This causes a full realization of the data. Not lazy.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Returns 0 + 1 + 2 + 3 + 4 = 10
+const sum = Seq.infinite()
+  .take(5)
+  .reduce((sum, num) => sum + num);
 ```
 
 {% endtab %}
@@ -408,10 +469,14 @@ type reduce = <A>(fn: (sum: A, value: T, key: K) => A, initial: A) => A;
 
 ## chain
 
+This method is helpful for chaining. Shocking, I know. Let's you "map" the entire sequence in a chain, rather than per-each-item. Allows adding arbitrary sequence helpers and methods to chain, even if they are written in user-land and not on the `Seq` prototype.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Same as `Seq.interpose(Seq.infinite(), Seq.infinite())`
+const sequence = Seq.infinite().chain(seq => seq.interpose(Seq.infinite()));
 ```
 
 {% endtab %}
@@ -427,10 +492,16 @@ type chain = <U>(fn: (value: Seq<K, T>) => U) => U;
 
 ## some
 
+Exactly the same as `Array.prototype.some`, but lazy. [See more here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some).
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Find the first even random number.
+const areAnyEven = Seq.random()
+  .map(num => Math.round(num * 1000))
+  .some(num => num % 2 === 0);
 ```
 
 {% endtab %}
@@ -446,10 +517,16 @@ type some = (fn: (value: T, key: K) => unknown) => boolean;
 
 ## every
 
+Exactly the same as `Array.prototype.every`, but lazy. [See more here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every).
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Fails fast if there are negative numbers
+const areAllPositive = Seq.random()
+  .map(num => Math.round(num * 1000) - 500)
+  .every(num => num > 0);
 ```
 
 {% endtab %}

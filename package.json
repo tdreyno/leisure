@@ -1,6 +1,6 @@
 {
   "name": "@tdreyno/leisure",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
   "repository": "git://github.com/tdreyno/leisure.git",
@@ -64,5 +64,7 @@
     "tslint-microsoft-contrib": "^6.1.0",
     "typescript": "^3.7.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "open-simplex-noise": "^2.2.0"
+  }
 }
