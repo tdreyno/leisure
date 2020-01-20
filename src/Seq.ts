@@ -629,12 +629,12 @@ export class Seq<K, T> {
     });
   }
 
-  public index(i: number): T | undefined {
+  public nth(i: number): T | undefined {
     return this.take(i + 1).toArray()[i];
   }
 
   public first(): T | undefined {
-    return this.index(0);
+    return this.nth(0);
   }
 
   public zipWith<K2, T2, K3, T3>(

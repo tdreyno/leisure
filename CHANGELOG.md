@@ -14,6 +14,7 @@
 
 - `Seq.of` is now variadic to match `Array.of`.
 - Rename `Seq.prototype.partition` to `Seq.prototype.partitionBy`
+- Rename `Seq.prototype.index` to `Seq.prototype.nth`
 
 ## 1.0.0 - 2020-01-18
 

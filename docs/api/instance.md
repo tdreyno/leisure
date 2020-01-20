@@ -540,25 +540,6 @@ type every = (fn: (value: T, key: K) => unknown) => boolean;
 {% endtab %}
 {% endtabs %}
 
-## takeWhile
-
-{% tabs %}
-{% tab title="Usage" %}
-
-```typescript
-```
-
-{% endtab %}
-
-{% tab title="Type Definition" %}
-
-```typescript
-type takeWhile = (fn: (value: T, key: K) => unknown) => Seq<K, T>;
-```
-
-{% endtab %}
-{% endtabs %}
-
 ## take
 
 {% tabs %}
@@ -578,7 +559,7 @@ type take = (num: number) => Seq<K, T>;
 {% endtab %}
 {% endtabs %}
 
-## skipWhile
+## takeWhile
 
 {% tabs %}
 {% tab title="Usage" %}
@@ -591,7 +572,7 @@ type take = (num: number) => Seq<K, T>;
 {% tab title="Type Definition" %}
 
 ```typescript
-type skipWhile = (fn: (value: T, key: K) => unknown) => Seq<K, T>;
+type takeWhile = (fn: (value: T, key: K) => unknown) => Seq<K, T>;
 ```
 
 {% endtab %}
@@ -616,7 +597,26 @@ type skip = (num: number) => Seq<K, T>;
 {% endtab %}
 {% endtabs %}
 
-## index
+## skipWhile
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type skipWhile = (fn: (value: T, key: K) => unknown) => Seq<K, T>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## nth
 
 {% tabs %}
 {% tab title="Usage" %}
@@ -795,31 +795,18 @@ type forEach = (fn: (value: T, key: K) => void) => void;
 {% endtab %}
 {% endtabs %}
 
-## sumBy
-
-{% tabs %}
-{% tab title="Usage" %}
-
-```typescript
-```
-
-{% endtab %}
-
-{% tab title="Type Definition" %}
-
-```typescript
-type sumBy = (fn: (value: T) => number) => number;
-```
-
-{% endtab %}
-{% endtabs %}
-
 ## sum
 
+Given a sequence of numbers, adds them all together. This realizes the entire sequence.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Returns 0 + 1 + 2 + 3 + 4 = 10
+const sum = Seq.infinite()
+  .take(5)
+  .sum();
 ```
 
 {% endtab %}
@@ -833,31 +820,49 @@ type sum = (this: Seq<any, number>) => number;
 {% endtab %}
 {% endtabs %}
 
-## averageBy
+## sumBy
+
+Given a sequence of arbitrary data, adds together the result of the mapping function. This realizes the entire sequence.
 
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Returns 0 + 1 + 2 + 3 + 4 = 10
+const sum = Seq.fromArray([
+  { balance: 0 },
+  { balance: 1 },
+  { balance: 2 },
+  { balance: 3 },
+  { balance: 4 }
+]).sumBy(user => user.balance);
 ```
+
+````
 
 {% endtab %}
 
 {% tab title="Type Definition" %}
 
 ```typescript
-type averageBy = (fn: (value: T) => number) => number;
-```
+type sumBy = (fn: (value: T) => number) => number;
+````
 
 {% endtab %}
 {% endtabs %}
 
 ## average
 
+Given a sequence of numbers, averages them all together. Tise realizes the entire sequence.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Returns (0 + 1 + 2 + 3 + 4) / 5 = 2
+const sum = Seq.infinite()
+  .take(5)
+  .average();
 ```
 
 {% endtab %}
@@ -871,12 +876,48 @@ type average = (this: Seq<any, number>) => number;
 {% endtab %}
 {% endtabs %}
 
-## frequencies
+## averageBy
+
+Given a sequence of arbitrary data, averages together the result of the mapping function. This realizes the entire sequence.
 
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Returns (0 + 1 + 2 + 3 + 4) / 5 = 2
+const sum = Seq.fromArray([
+  { balance: 0 },
+  { balance: 1 },
+  { balance: 2 },
+  { balance: 3 },
+  { balance: 4 }
+]).averageBy(user => user.balance);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type averageBy = (fn: (value: T) => number) => number;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## frequencies
+
+Given a non-infinite sequence, return a `Map` which counts the occurances of each unique value. This realizes the entire sequence.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+// Returns a Map of numbers from 0->100 and how many times they randomly occured in this set of 500.
+const freq = Seq.random()
+  .map(num => Math.round(num * 100))
+  .take(500)
+  .frequencies();
 ```
 
 {% endtab %}
@@ -892,10 +933,18 @@ type frequencies = () => Map<T, number>;
 
 ## groupBy
 
+Group a sequence by the return of a mapping function. This realizes the entire sequence.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Random generates 1000 years between 0-2000 and
+// groups them by decade.
+const groupedByDecade = Seq.random()
+  .map(num => Math.round(num * 2000))
+  .take(100)
+  .groupBy(year => Math.round(year / 10));
 ```
 
 {% endtab %}
