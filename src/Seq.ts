@@ -48,6 +48,7 @@ export class Seq<K, T> {
 
   public static simplex2D(
     fn: () => [number, number],
+    /* istanbul ignore next */
     seed: number = Date.now()
   ): Seq<number, number> {
     const noise2D = makeNoise2D(seed);
@@ -58,6 +59,7 @@ export class Seq<K, T> {
 
   public static simplex3D(
     fn: () => [number, number, number],
+    /* istanbul ignore next */
     seed: number = Date.now()
   ): Seq<number, number> {
     const noise3D = makeNoise3D(seed);
@@ -68,6 +70,7 @@ export class Seq<K, T> {
 
   public static simplex4D(
     fn: () => [number, number, number, number],
+    /* istanbul ignore next */
     seed: number = Date.now()
   ): Seq<number, number> {
     const noise4D = makeNoise4D(seed);
@@ -77,6 +80,7 @@ export class Seq<K, T> {
   }
 
   public static random(): Seq<number, number> {
+    /* istanbul ignore next */
     return Seq.iterate(() => Math.random(), Math.random());
   }
 
@@ -124,12 +128,14 @@ export class Seq<K, T> {
     });
   }
 
+  /* istanbul ignore next */
   public static repeat<T>(value: T, times = Infinity): Seq<number, T> {
     return Seq.repeatedly(constant(value), times);
   }
 
   public static repeatedly<T>(
     value: () => T,
+    /* istanbul ignore next */
     times = Infinity
   ): Seq<number, T> {
     return Seq.fromGenerator(function*() {
@@ -177,6 +183,7 @@ export class Seq<K, T> {
           return;
         }
 
+        /* istanbul ignore next */
         if (result1.done && !result2.done) {
           yield fn([undefined, result2.value[1]], counter);
           this.didYield();
@@ -236,6 +243,7 @@ export class Seq<K, T> {
           return;
         }
 
+        /* istanbul ignore next */
         if (!result1.done && result2.done && result3.done) {
           yield fn([result1.value[1], undefined, undefined], counter);
           this.didYield();
@@ -252,7 +260,13 @@ export class Seq<K, T> {
           yield fn([undefined, result2.value[1], result3.value[1]], counter);
           this.didYield();
         } else if (result1.done && result2.done && !result3.done) {
-          yield fn([undefined, result2.value[1], result3.value[1]], counter);
+          yield fn([undefined, undefined, result3.value[1]], counter);
+          this.didYield();
+        } else if (!result1.done && !result2.done && !result3.done) {
+          yield fn(
+            [result1.value[1], result2.value[1], result3.value[1]],
+            counter
+          );
           this.didYield();
         }
 
@@ -266,6 +280,7 @@ export class Seq<K, T> {
     seq2: Seq<K2, T2>,
     seq3: Seq<K3, T3>
   ): Seq<number, [T1 | undefined, T2 | undefined, T3 | undefined]> {
+    /* istanbul ignore next */
     return this.zip3With(
       ([result1, result2, result3], index) => [
         index,
@@ -280,12 +295,16 @@ export class Seq<K, T> {
   public static concat<K, T>(...items: Array<Seq<K, T>>): Seq<K, T> {
     /* istanbul ignore next */
     const [head, ...tail] = items;
+
+    /* istanbul ignore next */
     return head.concat(...tail);
   }
 
   public static interleave<K, T>(...items: Array<Seq<K, T>>): Seq<K, T> {
     /* istanbul ignore next */
     const [head, ...tail] = items;
+
+    /* istanbul ignore next */
     return head.interleave(...tail);
   }
 
@@ -816,6 +835,7 @@ export class Seq<K, T> {
     return this.reduce((sum, item) => {
       const group = fn(item);
 
+      /* istanbul ignore next */
       if (sum.has(group)) {
         const currentArray = sum.get(group)!;
         currentArray?.push(item);

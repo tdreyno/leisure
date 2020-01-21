@@ -51,11 +51,41 @@ describe("Seq", () => {
     });
   });
 
+  describe("simplex2D", () => {
+    test("should generate 2d simplex noise", () => {
+      const result = Seq.simplex2D(() => [1, 2], 1).first();
+
+      expect(result).toEqual(0.5387352272965704);
+    });
+  });
+
+  describe("simplex3D", () => {
+    test("should generate 3d simplex noise", () => {
+      const result = Seq.simplex3D(() => [1, 2, 3], 1).first();
+
+      expect(result).toEqual(-1.4535286549334576e-65);
+    });
+  });
+
+  describe("simplex4D", () => {
+    test("should generate 4d simplex noise", () => {
+      const result = Seq.simplex4D(() => [1, 2, 3, 4], 1).first();
+
+      expect(result).toEqual(0.041806993617899316);
+    });
+  });
+
   describe("of", () => {
     test("should use singleton sequence", () => {
       const result = Seq.of(5).first();
 
       expect(result).toEqual(5);
+    });
+
+    test("should use multiple items", () => {
+      const result = Seq.of(5, 6).toArray();
+
+      expect(result).toEqual([5, 6]);
     });
   });
 
@@ -314,6 +344,30 @@ describe("Seq", () => {
     });
   });
 
+  describe("first", () => {
+    test("should get the first value", () => {
+      const result = Seq.infinite().first();
+
+      expect(result).toEqual(0);
+    });
+  });
+
+  describe("nth", () => {
+    test("should get the nth value", () => {
+      const result = Seq.infinite().nth(1);
+
+      expect(result).toEqual(0);
+    });
+  });
+
+  describe("index", () => {
+    test("should get the index value", () => {
+      const result = Seq.infinite().index(0);
+
+      expect(result).toEqual(0);
+    });
+  });
+
   describe("includes", () => {
     test("should detect if a sequence includes a value", () => {
       const cb = jest.fn();
@@ -478,6 +532,56 @@ describe("Seq", () => {
         .toArray();
 
       expect(result).toEqual([11, 22, -1000]);
+    });
+  });
+
+  describe("zip3With", () => {
+    test("should combine three sequences with a combinator function (longer first seq)", () => {
+      const result = Seq.zip3With(
+        ([result1, result2, result3], index) => [
+          index,
+          result1 && result2 && result3 ? result1 + result2 + result3 : -1000
+        ],
+        Seq.fromArray([1, 2, 3]),
+        Seq.fromArray([10, 20]),
+        Seq.fromArray([5, 10])
+      )
+        .take(4)
+        .toArray();
+
+      expect(result).toEqual([16, 32, -1000]);
+    });
+
+    test("should combine three sequences with a combinator function (longer second seq)", () => {
+      const result = Seq.zip3With(
+        ([result1, result2, result3], index) => [
+          index,
+          result1 && result2 && result3 ? result1 + result2 + result3 : -1000
+        ],
+        Seq.fromArray([1, 2]),
+        Seq.fromArray([10, 20, 30]),
+        Seq.fromArray([5, 10])
+      )
+        .take(4)
+        .toArray();
+
+      expect(result).toEqual([16, 32, -1000]);
+    });
+
+    test("should combine three sequences with a combinator function (longer last seq)", () => {
+      const result = Seq.zip3With(
+        ([result1, result2, result3], index) => [
+          index,
+          result1 && result2 && result3 ? result1 + result2 + result3 : -1000
+        ],
+        Seq.fromArray([1, 2]),
+        Seq.fromArray([10, 20]),
+        Seq.fromArray([5, 10, 15])
+      )
+        .take(4)
+        .toArray();
+
+      expect(result).toEqual([16, 32, -1000]);
     });
   });
 
