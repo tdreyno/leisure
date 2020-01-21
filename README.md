@@ -4,6 +4,8 @@
 
 The difference between `leisure` and those non-lazy libraries is the guarantee that no computations will happen unless the result is actually used. Here's an example:
 
+{% code %}
+
 ```typescript
 type User = { name: string; address: string };
 type Address = { city: string; streetNumber: number; owner: User };
@@ -19,6 +21,8 @@ const neighbor = users
   .filter(address => address.city === "My Hometown")
   .map(address => address.owner)[0];
 ```
+
+{% endcode %}
 
 The above example will run `map` across the entire list of users. The code will parse 100 addresses. In this trivial example, that computation is likely very fast, but imagine if it were more intensive \(say, using computer vision in the browser to detect a landmark\). The `filter` will then also run 100 times to find the subset of addresses we are looking for. Then the second `map` will run 100 more times \(admittedly convoluted\). The total time of the computation is `O(3N)`.
 
