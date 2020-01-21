@@ -204,6 +204,79 @@ export class Seq<K, T> {
     );
   }
 
+  public static zip3With<K1, T1, K2, T2, K3, T3, K4, T4>(
+    fn: (
+      [result1, result2, resul3]:
+        | [T1, T2, T3]
+        | [T1, undefined, undefined]
+        | [T1, T2, undefined]
+        | [T1, undefined, T3]
+        | [undefined, T2, undefined]
+        | [undefined, T2, T3]
+        | [undefined, undefined, T3],
+      index: number
+    ) => [K4, T4],
+    seq1: Seq<K1, T1>,
+    seq2: Seq<K2, T2>,
+    seq3: Seq<K3, T3>
+  ): Seq<K4, T4> {
+    return new Seq(function*() {
+      const iterator1 = seq1[Symbol.iterator]();
+      const iterator2 = seq2[Symbol.iterator]();
+      const iterator3 = seq3[Symbol.iterator]();
+
+      let counter = 0;
+
+      while (true) {
+        const result1 = iterator1.next();
+        const result2 = iterator2.next();
+        const result3 = iterator3.next();
+
+        if (result1.done && result2.done && result3.done) {
+          return;
+        }
+
+        if (!result1.done && result2.done && result3.done) {
+          yield fn([result1.value[1], undefined, undefined], counter);
+          this.didYield();
+        } else if (!result1.done && !result2.done && result3.done) {
+          yield fn([result1.value[1], result2.value[1], undefined], counter);
+          this.didYield();
+        } else if (!result1.done && result2.done && !result3.done) {
+          yield fn([result1.value[1], undefined, result3.value[1]], counter);
+          this.didYield();
+        } else if (result1.done && !result2.done && result3.done) {
+          yield fn([undefined, result2.value[1], undefined], counter);
+          this.didYield();
+        } else if (result1.done && !result2.done && !result3.done) {
+          yield fn([undefined, result2.value[1], result3.value[1]], counter);
+          this.didYield();
+        } else if (result1.done && result2.done && !result3.done) {
+          yield fn([undefined, result2.value[1], result3.value[1]], counter);
+          this.didYield();
+        }
+
+        counter++;
+      }
+    });
+  }
+
+  public static zip3<K1, T1, K2, T2, K3, T3>(
+    seq1: Seq<K1, T1>,
+    seq2: Seq<K2, T2>,
+    seq3: Seq<K3, T3>
+  ): Seq<number, [T1 | undefined, T2 | undefined, T3 | undefined]> {
+    return this.zip3With(
+      ([result1, result2, result3], index) => [
+        index,
+        [result1, result2, result3]
+      ],
+      seq1,
+      seq2,
+      seq3
+    );
+  }
+
   public static concat<K, T>(...items: Array<Seq<K, T>>): Seq<K, T> {
     /* istanbul ignore next */
     const [head, ...tail] = items;
@@ -630,11 +703,15 @@ export class Seq<K, T> {
   }
 
   public nth(i: number): T | undefined {
+    return this.take(i).toArray()[i - 1];
+  }
+
+  public index(i: number): T | undefined {
     return this.take(i + 1).toArray()[i];
   }
 
   public first(): T | undefined {
-    return this.nth(0);
+    return this.nth(1);
   }
 
   public zipWith<K2, T2, K3, T3>(
@@ -653,6 +730,33 @@ export class Seq<K, T> {
   ): Seq<number, [T | undefined, T2 | undefined]> {
     /* istanbul ignore next */
     return Seq.zip(this, seq2);
+  }
+
+  public zip2With<K2, T2, K3, T3, K4, T4>(
+    fn: (
+      [result1, result2, result3]:
+        | [T, T2, T3]
+        | [T, undefined, undefined]
+        | [T, T2, undefined]
+        | [T, undefined, T3]
+        | [undefined, T2, undefined]
+        | [undefined, T2, T3]
+        | [undefined, undefined, T3],
+      index: number
+    ) => [K4, T4],
+    seq2: Seq<K2, T2>,
+    seq3: Seq<K3, T3>
+  ): Seq<K4, T4> {
+    /* istanbul ignore next */
+    return Seq.zip3With(fn, this, seq2, seq3);
+  }
+
+  public zip2<K2, T2, K3, T3>(
+    seq2: Seq<K2, T2>,
+    seq3: Seq<K3, T3>
+  ): Seq<number, [T | undefined, T2 | undefined, T3 | undefined]> {
+    /* istanbul ignore next */
+    return Seq.zip3(this, seq2, seq3);
   }
 
   public [Symbol.iterator]() {

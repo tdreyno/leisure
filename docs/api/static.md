@@ -490,6 +490,84 @@ type zipWith = <K1, T1, K2, T2, K3, T3>(
 {% endtab %}
 {% endtabs %}
 
+## zip3
+
+Takes three sequences and lazily combines them to produce a 3-tuple with the current step in each of the three positions.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const seq1 = Seq.fromArray(["zero", "one", "two", "three"]);
+const seq2 = Seq.range(0, 3);
+const seq3 = Seq.range(3, 0);
+
+// Gives: ["zero", 0, 3] -> ["one", 1, 2] -> ["two", 2, 1] -> ["three", 3, 0]
+const sequence: Seq<number, [string, number]> = Seq.zip3(seq1, seq2, seq3);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type zip3 = <K1, T1, K2, T2, K3, T3>(
+  seq1: Seq<K1, T1>,
+  seq2: Seq<K2, T2>,
+  seq3: Seq<K3, T3>
+) => Seq<number, [T1 | undefined, T2 | undefined, T3 | undefined]>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## zip3With
+
+Takes three sequences and lazily combines them to produce an arbitrary value by mapping the current value of the three positions through a user-supplied function.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const seq1 = Seq.range(0, 3);
+const seq2 = Seq.repeat(2);
+const seq3 = Seq.repeat(1);
+
+// Gives: 0 -> 2 -> 4 -> 6
+const sequence: Seq<number, number> = Seq.zip3With(
+  ([num, multiplier, divisor]) => (num * multiplier) / divisor,
+  seq1,
+  seq2,
+  seq3
+);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type zip3With = <K1, T1, K2, T2, K3, T3, K4, T4>(
+  fn: (
+    [result1, result2, resul3]:
+      | [T1, T2, T3]
+      | [T1, undefined, undefined]
+      | [T1, T2, undefined]
+      | [T1, undefined, T3]
+      | [undefined, T2, undefined]
+      | [undefined, T2, T3]
+      | [undefined, undefined, T3],
+    index: number
+  ) => [K4, T4],
+  seq1: Seq<K1, T1>,
+  seq2: Seq<K2, T2>,
+  seq3: Seq<K3, T3>
+) => Seq<K4, T4>;
+```
+
+{% endtab %}
+{% endtabs %}
+
 ## concat
 
 Combines 2 or more sequences into a single sequence.

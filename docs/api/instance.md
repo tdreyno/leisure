@@ -542,10 +542,14 @@ type every = (fn: (value: T, key: K) => unknown) => boolean;
 
 ## take
 
+Given a sequence of unknown length, create a sub sequence of just the first X number of items.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Grabs 0 -> 1 -> 2 -> 3 -> 4
+const firstFive = Seq.infinite().take(5);
 ```
 
 {% endtab %}
@@ -561,10 +565,14 @@ type take = (num: number) => Seq<K, T>;
 
 ## takeWhile
 
+Given a sequence of unknown length, create a sub sequence of as many items in a row that satisfy the predicate.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Gives 0 -> 1 -> 2 -> 3 -> 4
+const lessThanFive = Seq.infinite().takeWhile(num => num < 5);
 ```
 
 {% endtab %}
@@ -580,10 +588,16 @@ type takeWhile = (fn: (value: T, key: K) => unknown) => Seq<K, T>;
 
 ## skip
 
+Given a sequence of unknown length, skips the first X number of items.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Gives 5 -> 6 -> 7 -> 8 -> 9
+const secondFive = Seq.infinite()
+  .skip(5)
+  .take(5);
 ```
 
 {% endtab %}
@@ -599,10 +613,16 @@ type skip = (num: number) => Seq<K, T>;
 
 ## skipWhile
 
+Given a sequence of unknown length, skip as many items in a row that satisfy the predicate.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+// Gives 5 -> 6 -> 7 -> 8 -> 9
+const greaterThanFive = Seq.infinite()
+  .skipWhile(num => num < 5)
+  .take(5);
 ```
 
 {% endtab %}
@@ -618,10 +638,13 @@ type skipWhile = (fn: (value: T, key: K) => unknown) => Seq<K, T>;
 
 ## nth
 
+Returns the `nth` item. Items are 1-indexed.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const thirdItem = Seq.infinite().nth(3);
 ```
 
 {% endtab %}
@@ -629,7 +652,29 @@ type skipWhile = (fn: (value: T, key: K) => unknown) => Seq<K, T>;
 {% tab title="Type Definition" %}
 
 ```typescript
-type index = (i: number) => T | undefined;
+type nth = (i: number) => T | undefined;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## index
+
+Returns the `index` item. Items are 0-indexed.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const fourthItem = Seq.infinite().index(3);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type nth = (i: number) => T | undefined;
 ```
 
 {% endtab %}
@@ -637,10 +682,15 @@ type index = (i: number) => T | undefined;
 
 ## first
 
+Gets the first value in the sequence.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const fifth = Seq.infinite()
+  .skip(4)
+  .first();
 ```
 
 {% endtab %}
@@ -654,37 +704,23 @@ type first = () => T | undefined;
 {% endtab %}
 {% endtabs %}
 
-## zipWith
-
-{% tabs %}
-{% tab title="Usage" %}
-
-```typescript
-```
-
-{% endtab %}
-
-{% tab title="Type Definition" %}
-
-```typescript
-type zipWith = <K2, T2, K3, T3>(
-  fn: (
-    [result1, result2]: [T, T2] | [T, undefined] | [undefined, T2],
-    index: number
-  ) => [K3, T3],
-  seq2: Seq<K2, T2>
-) => Seq<K3, T3>;
-```
-
-{% endtab %}
-{% endtabs %}
-
 ## zip
 
+Lazily combines a second sequence with this current one to produce a tuple with the current step in each of the two positions. Useful for zipping a sequence of keys with a sequence of values, before converting to a Map of key to value.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const seq2 = Seq.range(0, 3);
+
+// Gives: ["zero", 0] -> ["one", 1] -> ["two", 2] -> ["three", 3]
+const sequence: Seq<number, [string, number]> = Seq.fromArray([
+  "zero",
+  "one",
+  "two",
+  "three"
+]).zip(seq2);
 ```
 
 {% endtab %}
@@ -692,7 +728,7 @@ type zipWith = <K2, T2, K3, T3>(
 {% tab title="Type Definition" %}
 
 ```typescript
-type zip = <K2, T2>(
+type zip<K2, T2> = (
   seq2: Seq<K2, T2>
 ) => Seq<number, [T | undefined, T2 | undefined]>;
 ```
@@ -700,12 +736,143 @@ type zip = <K2, T2>(
 {% endtab %}
 {% endtabs %}
 
-## toEntries
+## zipWith
+
+Takes a second sequence and lazily combines it to produce an arbitrary value by mapping the current value of the two positions through a user-supplied function. Useful for table \(row/col\) math.
 
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const seq2 = Seq.repeat(2);
+
+// Gives: 0 -> 2 -> 4 -> 6
+const sequence: Seq<number, number> = Seq.range(0, 3).zipWith(
+  ([num, multiplier]) => num * multiplier,
+  seq2
+);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type zip2With = <K2, T2, K3, T3, K4, T4>(
+  fn: (
+    [result1, result2, result3]:
+      | [T, T2, T3]
+      | [T, undefined, undefined]
+      | [T, T2, undefined]
+      | [T, undefined, T3]
+      | [undefined, T2, undefined]
+      | [undefined, T2, T3]
+      | [undefined, undefined, T3],
+    index: number
+  ) => [K4, T4],
+  seq2: Seq<K2, T2>,
+  seq3: Seq<K3, T3>
+) => Seq<K4, T4>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## zip2
+
+Takes two sequences and lazily combines them with this one to produce a 3-tuple with the current step in each of the three positions.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const seq2 = Seq.range(0, 3);
+const seq3 = Seq.range(3, 0);
+
+// Gives: ["zero", 0, 3] -> ["one", 1, 2] -> ["two", 2, 1] -> ["three", 3, 0]
+const sequence: Seq<number, [string, number]> = Seq.fromArray([
+  "zero",
+  "one",
+  "two",
+  "three"
+]).zip2(seq2, seq3);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type zip2 = <K2, T2, K3, T3>(
+  seq2: Seq<K2, T2>,
+  seq3: Seq<K3, T3>
+) => Seq<number, [T | undefined, T2 | undefined, T3 | undefined]>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## zip2With
+
+Takes two sequences and lazily combine them with this sequence to produce an arbitrary value by mapping the current value of the three positions through a user-supplied function.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const seq2 = Seq.repeat(2);
+const seq3 = Seq.repeat(1);
+
+// Gives: 0 -> 2 -> 4 -> 6
+const sequence: Seq<number, number> = Seq.range(0, 3).zip2With(
+  ([num, multiplier, divisor]) => (num * multiplier) / divisor,
+  seq2,
+  seq3
+);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type zip2With = <K2, T2, K3, T3, K4, T4>(
+  fn: (
+    [result1, result2, result3]:
+      | [T, T2, T3]
+      | [T, undefined, undefined]
+      | [T, T2, undefined]
+      | [T, undefined, T3]
+      | [undefined, T2, undefined]
+      | [undefined, T2, T3]
+      | [undefined, undefined, T3],
+    index: number
+  ) => [K4, T4],
+  seq2: Seq<K2, T2>,
+  seq3: Seq<K3, T3>
+) => Seq<K4, T4>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## toEntries
+
+Realizes the sequence into tuples of `[key, value]`.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const map = new Map();
+map.set("a", 1);
+map.set("b", 2);
+map.set("c", 3);
+
+// Gives an array of [ ['a', 1], ['b', 2] ]
+const sequence = Seq.fromMap(map)
+  .take(2)
+  .toEntries();
 ```
 
 {% endtab %}
@@ -721,10 +888,15 @@ type toEntries = () => Array<[K, T]>;
 
 ## toArray
 
+Converts the sequence to a real JavaScript array. Realizes the entire sequence.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const lessThanTen = Seq.infinite()
+  .take(10)
+  .toArray();
 ```
 
 {% endtab %}
@@ -740,10 +912,16 @@ type toArray = () => T[];
 
 ## toSet
 
+Converts the sequence to an ES6 `Set`. Realizes the entire sequence.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const setOfOneHundred = Seq.random()
+  .map(num => Math.floor(num * 1000))
+  .take(100)
+  .toSet();
 ```
 
 {% endtab %}
@@ -759,10 +937,21 @@ type toSet = () => Set<T>;
 
 ## toMap
 
+Converts the sequence to an ES6 `Map`. Realizes the entire sequence.
+
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
+const map = new Map();
+map.set("a", 1);
+map.set("b", 2);
+map.set("c", 3);
+
+// Gives Map of { a: 1, b: 2 }
+const sequence = Seq.fromMap(map)
+  .take(2)
+  .toMap();
 ```
 
 {% endtab %}
@@ -777,6 +966,8 @@ type toMap = () => Map<K, T>;
 {% endtabs %}
 
 ## forEach
+
+Works just like `Array.prototype.forEach`. [See more here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach). Realizes the full sequence.
 
 {% tabs %}
 {% tab title="Usage" %}

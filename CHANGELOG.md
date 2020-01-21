@@ -9,12 +9,13 @@
 - `Seq.interleave` as a top-level means of interleaving multiple sequences.
 - `Seq.random` for generating random data.
 - `Seq.simplex2D`, `Seq.simplex3D` and `Seq.simplex4D` for generating simplex noise.
+- `Seq.prototype.nth`, which is like `Seq.prototype.index`, but 1-indexed.
+- `Seq.prototype.zip2`, `Seq.prototype.zip2With`, `Seq.zip3` and `Seq.zip3With` for a 3-tuple result.
 
 ### Changed
 
 - `Seq.of` is now variadic to match `Array.of`.
 - Rename `Seq.prototype.partition` to `Seq.prototype.partitionBy`
-- Rename `Seq.prototype.index` to `Seq.prototype.nth`
 
 ## 1.0.0 - 2020-01-18
 
