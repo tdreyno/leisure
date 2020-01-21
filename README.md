@@ -114,7 +114,7 @@ However, if you dig into `leisure`'s helper methods, you'll be able to write mor
 
 ## Prior Art
 
-This library takes inspiration from Lazy Sequences in [Clojure](https://clojure.org/reference/sequences) and [F\#](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/sequences).
+This library takes inspiration from Lazy Sequences in [Clojure](https://clojure.org/reference/sequences), [Kotlin](https://kotlinlang.org/docs/reference/sequences.html) and [F\#](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/sequences).
 
 [Lazy.js](https://github.com/dtao/lazy.js) is a popular lazy sequence library for JavaScript, but it was not written in TypeScript and I prefer to use libraries that think about types and transformations from the beginning.
 
