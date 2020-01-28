@@ -83,7 +83,7 @@ const tenThroughFourteen: number[] = Seq.infinite()
   .toArray();
 ```
 
-There are a handful of methods which require the entire sequence, which means they will run infinitely if given an infinite sequence. They are: `toArray`, `toSet`, `toMap`, `forEach`, `sum`, `sumBy`, `average`, `averageBy`, `frequencies` and `groupBy`.
+There are a handful of methods which require the entire sequence, which means they will run infinitely if given an infinite sequence. They are: `toArray`, `forEach`, `sum`, `sumBy`, `average`, `averageBy`, `frequencies` and `groupBy`.
 
 If logging and debugging in a chain of lazy processing is not running when you expect it to, remember to realize the sequence with a `.toArray()` to flush the results.
 

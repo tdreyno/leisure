@@ -2,44 +2,26 @@
 import { makeNoise2D, makeNoise3D, makeNoise4D } from "open-simplex-noise";
 import { constant, identity } from "./util";
 
-export class Seq<K, T> {
+export class Seq<T> {
   public static MAX_YIELDS = 1_000_000;
 
-  public static fromArray<T>(data: T[]): Seq<number, T> {
-    return new Seq(() => data.entries());
+  public static fromArray<T>(data: T[]): Seq<T> {
+    return new Seq(function*() {
+      for (const [, item] of data.entries()) {
+        yield item;
+      }
+    });
   }
 
-  public static fromSet<T>(data: Set<T>): Seq<T, T> {
-    return new Seq(() => data.entries());
-  }
-
-  public static fromMap<K, T>(data: Map<K, T>): Seq<K, T> {
-    return new Seq(() => data.entries());
-  }
-
-  public static fromIterator<K, T>(
-    data: () => IterableIterator<[K, T]>
-  ): Seq<K, T> {
-    /* istanbul ignore next */
-    return new Seq(data);
-  }
-
-  public static fromGenerator<K, T>(
-    data: (this: Seq<K, T>) => Generator<[K, T]>
-  ): Seq<K, T> {
-    return new Seq(data);
-  }
-
-  public static iterate<T>(fn: (current: T) => T, start: T): Seq<number, T> {
-    return Seq.fromGenerator(function*() {
-      let index = 0;
+  public static iterate<T>(fn: (current: T) => T, start: T): Seq<T> {
+    return new Seq(function*() {
       let previous: T = start;
 
-      yield [index++, start];
+      yield start;
 
       while (true) {
         previous = fn(previous);
-        yield [index++, previous];
+        yield previous;
         this.didYield();
       }
     });
@@ -49,7 +31,7 @@ export class Seq<K, T> {
     fn: () => [number, number],
     /* istanbul ignore next */
     seed: number = Date.now()
-  ): Seq<number, number> {
+  ): Seq<number> {
     const noise2D = makeNoise2D(seed);
     const step = () => noise2D(...fn());
 
@@ -60,7 +42,7 @@ export class Seq<K, T> {
     fn: () => [number, number, number],
     /* istanbul ignore next */
     seed: number = Date.now()
-  ): Seq<number, number> {
+  ): Seq<number> {
     const noise3D = makeNoise3D(seed);
     const step = () => noise3D(...fn());
 
@@ -71,51 +53,45 @@ export class Seq<K, T> {
     fn: () => [number, number, number, number],
     /* istanbul ignore next */
     seed: number = Date.now()
-  ): Seq<number, number> {
+  ): Seq<number> {
     const noise4D = makeNoise4D(seed);
     const step = () => noise4D(...fn());
 
     return Seq.iterate(step, step());
   }
 
-  public static random(): Seq<number, number> {
+  public static random(): Seq<number> {
     /* istanbul ignore next */
     return Seq.iterate(() => Math.random(), Math.random());
   }
 
-  public static of<T>(...values: T[]): Seq<number, T> {
+  public static of<T>(...values: T[]): Seq<T> {
     return this.fromArray(values);
   }
 
-  public static range(
-    start: number,
-    end: number,
-    step = 1
-  ): Seq<number, number> {
-    return Seq.fromGenerator(function*() {
+  public static range(start: number, end: number, step = 1): Seq<number> {
+    return new Seq(function*() {
       const isForwards = start < end;
 
       if (isForwards) {
         for (let i = 0; start + i <= end; i += step) {
-          yield [i, start + i];
+          yield start + i;
           this.didYield();
         }
       } else {
         for (let i = 0; start - i >= end; i += step) {
-          yield [i, start - i];
+          yield start - i;
           this.didYield();
         }
       }
     });
   }
 
-  public static cycle<T>(items: T[]): Seq<number, T> {
-    return Seq.fromGenerator(function*() {
-      let index = 0;
-
+  public static cycle<T>(items: T[]): Seq<T> {
+    return new Seq(function*() {
       while (true) {
         for (const item of items) {
-          yield [index++, item];
+          yield item;
           this.didYield();
         }
       }
@@ -123,7 +99,7 @@ export class Seq<K, T> {
   }
 
   /* istanbul ignore next */
-  public static repeat<T>(value: T, times = Infinity): Seq<number, T> {
+  public static repeat<T>(value: T, times = Infinity): Seq<T> {
     return Seq.repeatedly(constant(value), times);
   }
 
@@ -131,38 +107,38 @@ export class Seq<K, T> {
     value: () => T,
     /* istanbul ignore next */
     times = Infinity
-  ): Seq<number, T> {
-    return Seq.fromGenerator(function*() {
+  ): Seq<T> {
+    return new Seq(function*() {
       let index = 0;
 
       while (true) {
-        if (index + 1 > times) {
+        if (index++ + 1 > times) {
           return;
         }
 
-        yield [index++, value()];
+        yield value();
         this.didYield();
       }
     });
   }
 
-  public static empty(): Seq<number, never> {
+  public static empty(): Seq<never> {
     /* istanbul ignore next */
     return Seq.fromArray([]);
   }
 
-  public static infinite(): Seq<number, number> {
+  public static infinite(): Seq<number> {
     return Seq.range(0, Infinity);
   }
 
-  public static zipWith<K1, T1, K2, T2, K3, T3>(
+  public static zipWith<T1, T2, T3>(
     fn: (
       [result1, result2]: [T1, T2] | [T1, undefined] | [undefined, T2],
       index: number
-    ) => [K3, T3],
-    seq1: Seq<K1, T1>,
-    seq2: Seq<K2, T2>
-  ): Seq<K3, T3> {
+    ) => T3,
+    seq1: Seq<T1>,
+    seq2: Seq<T2>
+  ): Seq<T3> {
     return new Seq(function*() {
       const iterator1 = seq1[Symbol.iterator]();
       const iterator2 = seq2[Symbol.iterator]();
@@ -179,13 +155,13 @@ export class Seq<K, T> {
 
         /* istanbul ignore next */
         if (result1.done && !result2.done) {
-          yield fn([undefined, result2.value[1]], counter);
+          yield fn([undefined, result2.value], counter);
           this.didYield();
         } else if (!result1.done && result2.done) {
-          yield fn([result1.value[1], undefined], counter);
+          yield fn([result1.value, undefined], counter);
           this.didYield();
         } else if (!result1.done && !result2.done) {
-          yield fn([result1.value[1], result2.value[1]], counter);
+          yield fn([result1.value, result2.value], counter);
           this.didYield();
         }
 
@@ -194,18 +170,14 @@ export class Seq<K, T> {
     });
   }
 
-  public static zip<K1, T1, K2, T2>(
-    seq1: Seq<K1, T1>,
-    seq2: Seq<K2, T2>
-  ): Seq<number, [T1 | undefined, T2 | undefined]> {
-    return this.zipWith(
-      ([result1, result2], index) => [index, [result1, result2]],
-      seq1,
-      seq2
-    );
+  public static zip<T1, T2>(
+    seq1: Seq<T1>,
+    seq2: Seq<T2>
+  ): Seq<[T1 | undefined, T2 | undefined]> {
+    return this.zipWith(([a, b]) => [a, b], seq1, seq2);
   }
 
-  public static zip3With<K1, T1, K2, T2, K3, T3, K4, T4>(
+  public static zip3With<T1, T2, T3, T4>(
     fn: (
       [result1, result2, resul3]:
         | [T1, T2, T3]
@@ -216,11 +188,11 @@ export class Seq<K, T> {
         | [undefined, T2, T3]
         | [undefined, undefined, T3],
       index: number
-    ) => [K4, T4],
-    seq1: Seq<K1, T1>,
-    seq2: Seq<K2, T2>,
-    seq3: Seq<K3, T3>
-  ): Seq<K4, T4> {
+    ) => T4,
+    seq1: Seq<T1>,
+    seq2: Seq<T2>,
+    seq3: Seq<T3>
+  ): Seq<T4> {
     return new Seq(function*() {
       const iterator1 = seq1[Symbol.iterator]();
       const iterator2 = seq2[Symbol.iterator]();
@@ -239,28 +211,25 @@ export class Seq<K, T> {
 
         /* istanbul ignore next */
         if (!result1.done && result2.done && result3.done) {
-          yield fn([result1.value[1], undefined, undefined], counter);
+          yield fn([result1.value, undefined, undefined], counter);
           this.didYield();
         } else if (!result1.done && !result2.done && result3.done) {
-          yield fn([result1.value[1], result2.value[1], undefined], counter);
+          yield fn([result1.value, result2.value, undefined], counter);
           this.didYield();
         } else if (!result1.done && result2.done && !result3.done) {
-          yield fn([result1.value[1], undefined, result3.value[1]], counter);
+          yield fn([result1.value, undefined, result3.value], counter);
           this.didYield();
         } else if (result1.done && !result2.done && result3.done) {
-          yield fn([undefined, result2.value[1], undefined], counter);
+          yield fn([undefined, result2.value, undefined], counter);
           this.didYield();
         } else if (result1.done && !result2.done && !result3.done) {
-          yield fn([undefined, result2.value[1], result3.value[1]], counter);
+          yield fn([undefined, result2.value, result3.value], counter);
           this.didYield();
         } else if (result1.done && result2.done && !result3.done) {
-          yield fn([undefined, undefined, result3.value[1]], counter);
+          yield fn([undefined, undefined, result3.value], counter);
           this.didYield();
         } else if (!result1.done && !result2.done && !result3.done) {
-          yield fn(
-            [result1.value[1], result2.value[1], result3.value[1]],
-            counter
-          );
+          yield fn([result1.value, result2.value, result3.value], counter);
           this.didYield();
         }
 
@@ -269,24 +238,21 @@ export class Seq<K, T> {
     });
   }
 
-  public static zip3<K1, T1, K2, T2, K3, T3>(
-    seq1: Seq<K1, T1>,
-    seq2: Seq<K2, T2>,
-    seq3: Seq<K3, T3>
-  ): Seq<number, [T1 | undefined, T2 | undefined, T3 | undefined]> {
+  public static zip3<T1, T2, T3>(
+    seq1: Seq<T1>,
+    seq2: Seq<T2>,
+    seq3: Seq<T3>
+  ): Seq<[T1 | undefined, T2 | undefined, T3 | undefined]> {
     /* istanbul ignore next */
     return this.zip3With(
-      ([result1, result2, result3], index) => [
-        index,
-        [result1, result2, result3]
-      ],
+      ([result1, result2, result3]) => [result1, result2, result3],
       seq1,
       seq2,
       seq3
     );
   }
 
-  public static concat<K, T>(...items: Array<Seq<K, T>>): Seq<K, T> {
+  public static concat<T>(...items: Array<Seq<T>>): Seq<T> {
     /* istanbul ignore next */
     const [head, ...tail] = items;
 
@@ -294,7 +260,7 @@ export class Seq<K, T> {
     return head.concat(...tail);
   }
 
-  public static interleave<K, T>(...items: Array<Seq<K, T>>): Seq<K, T> {
+  public static interleave<T>(...items: Array<Seq<T>>): Seq<T> {
     /* istanbul ignore next */
     const [head, ...tail] = items;
 
@@ -304,31 +270,26 @@ export class Seq<K, T> {
 
   private yields = 0;
 
-  constructor(
-    private source: (
-      this: Seq<K, T>
-    ) => Generator<[K, T]> | IterableIterator<[K, T]>
-  ) {}
+  constructor(private source: (this: Seq<T>) => Generator<T>) {}
 
-  public map<U>(fn: (value: T, key: K) => U): Seq<K, U> {
+  public map<U>(fn: (value: T, index: number) => U): Seq<U> {
     const self = this;
 
     return new Seq(function*() {
       const iterator = self.source();
 
+      let counter = 0;
       for (const item of iterator) {
-        yield [item[0], fn(item[1], item[0])];
+        yield fn(item, counter++);
         this.didYield();
       }
     });
   }
 
-  public window(size: number, allowPartialWindow = true): Seq<number, T[]> {
-    let self: Seq<K, T> = this;
+  public window(size: number, allowPartialWindow = true): Seq<T[]> {
+    let self: Seq<T> = this;
 
     return new Seq(function*() {
-      let index = 0;
-
       while (true) {
         const items = self.take(size).toArray();
         self = self.skip(size);
@@ -338,7 +299,7 @@ export class Seq<K, T> {
           return;
         }
 
-        yield [index++, items];
+        yield items;
 
         /* istanbul ignore next */
         if (items.length < size) {
@@ -348,8 +309,8 @@ export class Seq<K, T> {
     });
   }
 
-  public pairwise(): Seq<number, [T, T]> {
-    return (this.window(2, false) as unknown) as Seq<number, [T, T]>;
+  public pairwise(): Seq<[T, T]> {
+    return (this.window(2, false) as unknown) as Seq<[T, T]>;
   }
 
   public isEmpty(): boolean {
@@ -360,7 +321,7 @@ export class Seq<K, T> {
     return !!item.done;
   }
 
-  public tap(fn: (value: T, key: K) => void): Seq<K, T> {
+  public tap(fn: (value: T, index: number) => void): Seq<T> {
     return this.map((v, k) => {
       fn(v, k);
 
@@ -368,44 +329,43 @@ export class Seq<K, T> {
     });
   }
 
-  public log(): Seq<K, T> {
+  public log(): Seq<T> {
     /* istanbul ignore next */
     // tslint:disable-next-line: no-console
     return this.tap((v, k) => console.log([k, v]));
   }
 
-  public flatMap<U>(fn: (value: T, key: K) => U[]): Seq<number, U> {
+  public flatMap<U>(fn: (value: T, index: number) => U[]): Seq<U> {
     return this.map(fn).flat();
   }
 
-  public flat<U>(this: Seq<K, U[]>): Seq<number, U> {
+  public flat<U>(this: Seq<U[]>): Seq<U> {
     const self = this;
 
     return new Seq(function*() {
       const iterator = self.source();
 
-      let counter = 0;
-
-      for (const [, items] of iterator) {
+      for (const items of iterator) {
         // Something about the yield/generator requires
         // this not be a for-of loop
         // tslint:disable-next-line: prefer-for-of
         for (let i = 0; i < items.length; i++) {
-          yield [counter++, items[i]];
+          yield items[i];
           this.didYield();
         }
       }
     });
   }
 
-  public filter(fn: (value: T, key: K) => unknown): Seq<K, T> {
+  public filter(fn: (value: T, index: number) => unknown): Seq<T> {
     const self = this;
 
     return new Seq(function*() {
       const iterator = self.source();
 
+      let counter = 0;
       for (const item of iterator) {
-        if (fn(item[1], item[0])) {
+        if (fn(item, counter++)) {
           yield item;
           this.didYield();
         }
@@ -413,7 +373,7 @@ export class Seq<K, T> {
     });
   }
 
-  public concat(...tail: Array<Seq<K, T>>): Seq<K, T> {
+  public concat(...tail: Array<Seq<T>>): Seq<T> {
     const self = this;
 
     return new Seq(function*() {
@@ -428,7 +388,7 @@ export class Seq<K, T> {
     });
   }
 
-  public interleave(...tail: Array<Seq<K, T>>): Seq<K, T> {
+  public interleave(...tail: Array<Seq<T>>): Seq<T> {
     const self = this;
 
     return new Seq(function*() {
@@ -460,7 +420,7 @@ export class Seq<K, T> {
     });
   }
 
-  public interpose(separator: T): Seq<number, T> {
+  public interpose(separator: T): Seq<T> {
     const self = this;
 
     return new Seq(function*() {
@@ -476,16 +436,19 @@ export class Seq<K, T> {
         }
 
         if (index > 0) {
-          yield [index++, separator];
+          yield separator;
+          index++;
         }
 
-        yield [index++, item.value[1]];
+        yield item.value;
         this.didYield();
+
+        index++;
       }
     });
   }
 
-  public distinctBy<U>(fn: (value: T) => U): Seq<K, T> {
+  public distinctBy<U>(fn: (value: T) => U): Seq<T> {
     const seen = new Set<U>();
 
     return this.filter(value => {
@@ -501,17 +464,17 @@ export class Seq<K, T> {
     });
   }
 
-  public distinct(): Seq<K, T> {
+  public distinct(): Seq<T> {
     return this.distinctBy(identity);
   }
 
   public partitionBy(
-    fn: (value: T, key: K) => unknown
-  ): [Seq<K, T>, Seq<K, T>] {
+    fn: (value: T, index: number) => unknown
+  ): [Seq<T>, Seq<T>] {
     const self = this;
 
-    const trueBackpressure: Array<[K, T]> = [];
-    const falseBackpressure: Array<[K, T]> = [];
+    const trueBackpressure: T[] = [];
+    const falseBackpressure: T[] = [];
 
     let previousSource: ReturnType<typeof self.source> | undefined;
 
@@ -527,9 +490,10 @@ export class Seq<K, T> {
       new Seq(function*() {
         const iterator = getIterator();
 
+        let counter = 0;
         while (true) {
           if (trueBackpressure.length > 0) {
-            const item = trueBackpressure.shift();
+            const item = trueBackpressure.shift()!;
             yield item;
             this.didYield();
             continue;
@@ -542,7 +506,7 @@ export class Seq<K, T> {
             return;
           }
 
-          if (fn(value[1], value[0])) {
+          if (fn(value, counter++)) {
             yield value;
             this.didYield();
           } else {
@@ -554,6 +518,7 @@ export class Seq<K, T> {
       new Seq(function*() {
         const iterator = getIterator();
 
+        let counter = 0;
         while (true) {
           if (falseBackpressure.length > 0) {
             const item = falseBackpressure.shift();
@@ -569,7 +534,7 @@ export class Seq<K, T> {
             return;
           }
 
-          if (!fn(value[1], value[0])) {
+          if (!fn(value, counter++)) {
             yield value;
             this.didYield();
           } else {
@@ -584,24 +549,22 @@ export class Seq<K, T> {
     return !!this.filter(a => a === value).first();
   }
 
-  public find(fn: (value: T, key: K) => unknown): T | undefined {
+  public find(fn: (value: T, index: number) => unknown): T | undefined {
     return this.filter(fn).first();
   }
 
-  public reduce<A>(fn: (sum: A, value: T, key: K) => A, initial: A): A {
-    return this.toEntries().reduce(
-      (sum, [key, value]) => fn(sum, value, key),
-      initial
-    );
+  public reduce<A>(fn: (sum: A, value: T, index: number) => A, initial: A): A {
+    return this.toArray().reduce(fn, initial);
   }
 
-  public chain<U>(fn: (value: Seq<K, T>) => U): U {
+  public chain<U>(fn: (value: Seq<T>) => U): U {
     return fn(this);
   }
 
-  public some(fn: (value: T, key: K) => unknown): boolean {
-    for (const [k, v] of this) {
-      if (fn(v, k)) {
+  public some(fn: (value: T, index: number) => unknown): boolean {
+    let counter = 0;
+    for (const v of this) {
+      if (fn(v, counter++)) {
         return true;
       }
     }
@@ -609,9 +572,10 @@ export class Seq<K, T> {
     return false;
   }
 
-  public every(fn: (value: T, key: K) => unknown): boolean {
-    for (const [k, v] of this) {
-      if (!fn(v, k)) {
+  public every(fn: (value: T, index: number) => unknown): boolean {
+    let counter = 0;
+    for (const v of this) {
+      if (!fn(v, counter++)) {
         return false;
       }
     }
@@ -619,12 +583,13 @@ export class Seq<K, T> {
     return true;
   }
 
-  public takeWhile(fn: (value: T, key: K) => unknown): Seq<K, T> {
+  public takeWhile(fn: (value: T, index: number) => unknown): Seq<T> {
     const self = this;
 
     return new Seq(function*() {
       const iterator = self.source();
 
+      let counter = 0;
       while (true) {
         const result = iterator.next();
 
@@ -633,7 +598,7 @@ export class Seq<K, T> {
           return;
         }
 
-        if (!fn(result.value[1], result.value[0])) {
+        if (!fn(result.value, counter++)) {
           return;
         }
 
@@ -643,7 +608,7 @@ export class Seq<K, T> {
     });
   }
 
-  public take(num: number): Seq<K, T> {
+  public take(num: number): Seq<T> {
     const self = this;
 
     return new Seq(function*() {
@@ -662,12 +627,13 @@ export class Seq<K, T> {
     });
   }
 
-  public skipWhile(fn: (value: T, key: K) => unknown): Seq<K, T> {
+  public skipWhile(fn: (value: T, index: number) => unknown): Seq<T> {
     const self = this;
 
     return new Seq(function*() {
       const iterator = self.source();
 
+      let counter = 0;
       while (true) {
         const result = iterator.next();
 
@@ -676,7 +642,7 @@ export class Seq<K, T> {
           return;
         }
 
-        if (fn(result.value[1], result.value[0])) {
+        if (fn(result.value, counter++)) {
           continue;
         }
 
@@ -686,7 +652,7 @@ export class Seq<K, T> {
     });
   }
 
-  public skip(num: number): Seq<K, T> {
+  public skip(num: number): Seq<T> {
     const self = this;
 
     return new Seq(function*() {
@@ -727,25 +693,23 @@ export class Seq<K, T> {
     return this.nth(1);
   }
 
-  public zipWith<K2, T2, K3, T3>(
+  public zipWith<T2, T3>(
     fn: (
       [result1, result2]: [T, T2] | [T, undefined] | [undefined, T2],
       index: number
-    ) => [K3, T3],
-    seq2: Seq<K2, T2>
-  ): Seq<K3, T3> {
+    ) => T3,
+    seq2: Seq<T2>
+  ): Seq<T3> {
     /* istanbul ignore next */
     return Seq.zipWith(fn, this, seq2);
   }
 
-  public zip<K2, T2>(
-    seq2: Seq<K2, T2>
-  ): Seq<number, [T | undefined, T2 | undefined]> {
+  public zip<T2>(seq2: Seq<T2>): Seq<[T | undefined, T2 | undefined]> {
     /* istanbul ignore next */
     return Seq.zip(this, seq2);
   }
 
-  public zip2With<K2, T2, K3, T3, K4, T4>(
+  public zip2With<T2, T3, T4>(
     fn: (
       [result1, result2, result3]:
         | [T, T2, T3]
@@ -756,18 +720,18 @@ export class Seq<K, T> {
         | [undefined, T2, T3]
         | [undefined, undefined, T3],
       index: number
-    ) => [K4, T4],
-    seq2: Seq<K2, T2>,
-    seq3: Seq<K3, T3>
-  ): Seq<K4, T4> {
+    ) => T4,
+    seq2: Seq<T2>,
+    seq3: Seq<T3>
+  ): Seq<T4> {
     /* istanbul ignore next */
     return Seq.zip3With(fn, this, seq2, seq3);
   }
 
-  public zip2<K2, T2, K3, T3>(
-    seq2: Seq<K2, T2>,
-    seq3: Seq<K3, T3>
-  ): Seq<number, [T | undefined, T2 | undefined, T3 | undefined]> {
+  public zip2<T2, T3>(
+    seq2: Seq<T2>,
+    seq3: Seq<T3>
+  ): Seq<[T | undefined, T2 | undefined, T3 | undefined]> {
     /* istanbul ignore next */
     return Seq.zip3(this, seq2, seq3);
   }
@@ -776,25 +740,14 @@ export class Seq<K, T> {
     return this.source();
   }
 
-  public toEntries(): Array<[K, T]> {
+  public toArray(): T[] {
     return [...this];
   }
 
-  public toArray(): T[] {
-    return this.toEntries().map(([_, value]) => value);
-  }
-
-  public toSet(): Set<T> {
-    return new Set(this.toArray());
-  }
-
-  public toMap(): Map<K, T> {
-    return new Map(this.toEntries());
-  }
-
-  public forEach(fn: (value: T, key: K) => void): void {
+  public forEach(fn: (value: T, index: number) => void): void {
+    let counter = 0;
     for (const result of this) {
-      fn(result[1], result[0]);
+      fn(result, counter++);
     }
   }
 
@@ -802,7 +755,7 @@ export class Seq<K, T> {
     return this.map(fn).reduce((sum, num) => sum + num, 0);
   }
 
-  public sum(this: Seq<any, number>): number {
+  public sum(this: Seq<number>): number {
     return this.sumBy(identity);
   }
 
@@ -811,7 +764,7 @@ export class Seq<K, T> {
     return all.map(fn).reduce((sum, num) => sum + num, 0) / all.length;
   }
 
-  public average(this: Seq<any, number>): number {
+  public average(this: Seq<number>): number {
     return this.averageBy(identity);
   }
 

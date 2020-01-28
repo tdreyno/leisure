@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.2.0 - 2020-01-28
+
+Removed internal concept of keys. Everything in a sequence is not 0-indexed like an array.
+
+### Changed
+
+- All zipper fns (use with `zipWith`) now return only the mapped data, instead of a tuple with the index.
+
+### Removed
+
+- `Seq.fromSet`
+- `Seq.prototype.toSet`
+- `Seq.fromMap`
+- `Seq.prototype.toMap`
+- `Seq.fromIterator`
+- `Seq.fromGenerator`
+
 ## 1.1.0 - 2020-01-20
 
 ### Added

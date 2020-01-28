@@ -234,7 +234,7 @@ describe("Seq", () => {
           Seq.infinite()
             .skip(4)
             .take(2),
-          Seq.fromSet(new Set([6, 7, 8]))
+          Seq.fromArray([6, 7, 8])
         )
         .take(8)
         .toArray();
@@ -506,10 +506,8 @@ describe("Seq", () => {
   describe("zipWith", () => {
     test("should combine two sequences with a combinator function (longer first seq)", () => {
       const result = Seq.zipWith(
-        ([result1, result2], index) => [
-          index,
-          result1 && result2 ? result1 + result2 : -1000
-        ],
+        ([result1, result2]) =>
+          result1 && result2 ? result1 + result2 : -1000,
         Seq.fromArray([1, 2, 3]),
         Seq.fromArray([10, 20])
       )
@@ -521,10 +519,8 @@ describe("Seq", () => {
 
     test("should combine two sequences with a combinator function (longer last seq)", () => {
       const result = Seq.zipWith(
-        ([result1, result2], index) => [
-          index,
-          result1 && result2 ? result1 + result2 : -1000
-        ],
+        ([result1, result2]) =>
+          result1 && result2 ? result1 + result2 : -1000,
         Seq.fromArray([1, 2]),
         Seq.fromArray([10, 20, 30])
       )
@@ -538,10 +534,8 @@ describe("Seq", () => {
   describe("zip3With", () => {
     test("should combine three sequences with a combinator function (longer first seq)", () => {
       const result = Seq.zip3With(
-        ([result1, result2, result3], index) => [
-          index,
-          result1 && result2 && result3 ? result1 + result2 + result3 : -1000
-        ],
+        ([result1, result2, result3]) =>
+          result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
         Seq.fromArray([1, 2, 3]),
         Seq.fromArray([10, 20]),
         Seq.fromArray([5, 10])
@@ -554,10 +548,8 @@ describe("Seq", () => {
 
     test("should combine three sequences with a combinator function (longer second seq)", () => {
       const result = Seq.zip3With(
-        ([result1, result2, result3], index) => [
-          index,
-          result1 && result2 && result3 ? result1 + result2 + result3 : -1000
-        ],
+        ([result1, result2, result3]) =>
+          result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
         Seq.fromArray([1, 2]),
         Seq.fromArray([10, 20, 30]),
         Seq.fromArray([5, 10])
@@ -570,10 +562,8 @@ describe("Seq", () => {
 
     test("should combine three sequences with a combinator function (longer last seq)", () => {
       const result = Seq.zip3With(
-        ([result1, result2, result3], index) => [
-          index,
-          result1 && result2 && result3 ? result1 + result2 + result3 : -1000
-        ],
+        ([result1, result2, result3]) =>
+          result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
         Seq.fromArray([1, 2]),
         Seq.fromArray([10, 20]),
         Seq.fromArray([5, 10, 15])
@@ -600,63 +590,6 @@ describe("Seq", () => {
       const result = Seq.fromArray([1, 2, 3, 4]).chain(seq => seq.toArray());
 
       expect(result).toEqual([1, 2, 3, 4]);
-    });
-  });
-
-  describe("toSet", () => {
-    test("should convert the sequence into a Set", () => {
-      const result = Seq.fromArray([1, 2, 3, 4]).toSet();
-
-      expect(result).toEqual(new Set([1, 2, 3, 4]));
-    });
-  });
-
-  describe("fromMap", () => {
-    test("should query a Map in correct order", () => {
-      const map = new Map();
-      map.set("a", 1);
-      map.set("b", 2);
-      map.set("c", 3);
-      map.set("d", 4);
-
-      const result = Seq.fromMap(map)
-        .skip(1)
-        .take(2)
-        .toArray();
-
-      expect(result).toEqual([2, 3]);
-    });
-  });
-
-  describe("fromSet", () => {
-    test("should query a Set in correct order", () => {
-      const set = new Set();
-      set.add("a");
-      set.add("b");
-      set.add("c");
-      set.add("d");
-
-      const result = Seq.fromSet(set)
-        .skip(1)
-        .take(2)
-        .toArray();
-
-      expect(result).toEqual(["b", "c"]);
-    });
-  });
-
-  describe("toMap", () => {
-    test("should convert the sequence into a Map", () => {
-      const result = Seq.fromArray([1, 2, 3, 4]).toMap();
-
-      expect(result).toEqual(
-        new Map([
-          [0, 1],
-          [1, 2],
-          [2, 3],
-          [3, 4]
-        ])
-      );
     });
   });
 
