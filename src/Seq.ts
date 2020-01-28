@@ -1,7 +1,6 @@
+// tslint:disable: max-classes-per-file
 import { makeNoise2D, makeNoise3D, makeNoise4D } from "open-simplex-noise";
 import { constant, identity } from "./util";
-
-// tslint:disable: max-classes-per-file
 
 export class Seq<K, T> {
   public static MAX_YIELDS = 1_000_000;
@@ -85,12 +84,7 @@ export class Seq<K, T> {
   }
 
   public static of<T>(...values: T[]): Seq<number, T> {
-    return Seq.fromGenerator(function*() {
-      for (let i = 0; i < values.length; i++) {
-        yield [i, values[i]];
-        this.didYield();
-      }
-    });
+    return this.fromArray(values);
   }
 
   public static range(

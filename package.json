@@ -10,7 +10,8 @@
     "compress": "terser pkg/dist-web/index.js -o pkg/dist-web/index.min.js --source-map",
     "test": "jest --runInBand",
     "version": "yarn run build",
-    "coverage": "jest --runInBand --coverage --coverageDirectory '../coverage'"
+    "coverage": "jest --runInBand --coverage --coverageDirectory '../coverage'",
+    "perf": "ts-node -O '{ \"module\": \"commonjs\" }' ./benchmarks/benchmark.ts"
   },
   "@pika/pack": {
     "pipeline": [
@@ -50,13 +51,20 @@
     "@pika/plugin-build-node": "^0.8.1",
     "@pika/plugin-build-web": "^0.8.1",
     "@pika/plugin-ts-standard-pkg": "^0.8.1",
+    "@types/benchmark": "^1.0.31",
     "@types/jest": "^24.9.0",
+    "@types/lodash": "^4.14.149",
+    "beautify-benchmark": "^0.2.4",
+    "benchmark": "^2.1.4",
     "husky": "^3.1.0",
     "jest": "^24.5.0",
     "lint-staged": "^10.0.1",
+    "lodash": "^4.17.15",
+    "microtime": "^3.0.0",
     "prettier": "^1.19.1",
     "terser": "^4.6.3",
     "ts-jest": "^24.3.0",
+    "ts-node": "^8.6.2",
     "ts-toolbelt": "^6.1.6",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
