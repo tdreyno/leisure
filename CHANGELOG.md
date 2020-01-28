@@ -2,7 +2,9 @@
 
 ## 1.2.0 - 2020-01-28
 
-Removed internal concept of keys. Everything in a sequence is not 0-indexed like an array.
+- Removed internal concept of keys. Everything in a sequence is not 0-indexed like an array.
+
+- Converted from Generators to a trampoline approach due to performance issues.
 
 ### Changed
 

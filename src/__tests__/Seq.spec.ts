@@ -696,7 +696,7 @@ describe("Seq", () => {
           .toArray()
       ).toThrow();
 
-      expect(cb).toHaveBeenCalledTimes(Seq.MAX_YIELDS + 1);
+      expect(cb).toHaveBeenCalledTimes(Seq.MAX_YIELDS);
     });
   });
 });

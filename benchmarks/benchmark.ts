@@ -35,14 +35,14 @@ const lotsOfNumbers = Seq.infinite()
 
 function bench(
   name: string,
-  leisureGen?: () => any,
+  leisure?: () => any,
   native?: () => any,
   lodash?: () => any
 ) {
   const suite = new Benchmark.Suite(name);
 
-  if (leisureGen) {
-    suite.add(name + ":leisureGen", leisureGen);
+  if (leisure) {
+    suite.add(name + ":leisure", leisure);
   }
 
   if (native) {
