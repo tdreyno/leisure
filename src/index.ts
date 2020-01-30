@@ -1,3 +1,2 @@
-import { Seq } from "./Seq";
-
-export default Seq;
+export { Seq } from "./Seq";
+export * from "./static";

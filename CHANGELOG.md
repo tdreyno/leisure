@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 - 2020-01-28
+## 2.0.0 - 2020-01-28
 
 - Removed internal concept of keys. Everything in a sequence is not 0-indexed like an array.
 
@@ -9,6 +9,8 @@
 ### Changed
 
 - All zipper fns (use with `zipWith`) now return only the mapped data, instead of a tuple with the index.
+- Move simplex functions to `@tdreyno/leisure/simplex`
+- Move `Seq.` static methods to top level exports.
 
 ### Removed
 

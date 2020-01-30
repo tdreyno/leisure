@@ -1,109 +1,12 @@
 import { Seq } from "../Seq";
+import { fromArray, infinite, range } from "../static";
 
 describe("Seq", () => {
-  describe("range", () => {
-    test("should lazily pull from the range that increases", () => {
-      const cb = jest.fn();
-
-      const result = Seq.range(-2, 2)
-        .tap(cb)
-        .take(4)
-        .toArray();
-
-      expect(result).toEqual([-2, -1, 0, 1]);
-      expect(cb).toHaveBeenCalledTimes(4);
-    });
-
-    test("should lazily pull from the range that increases by step", () => {
-      const cb = jest.fn();
-
-      const result = Seq.range(-2, 2, 2)
-        .tap(cb)
-        .take(3)
-        .toArray();
-
-      expect(result).toEqual([-2, 0, 2]);
-      expect(cb).toHaveBeenCalledTimes(3);
-    });
-
-    test("should lazily pull from the range that decreases", () => {
-      const cb = jest.fn();
-
-      const result = Seq.range(2, -2)
-        .tap(cb)
-        .take(4)
-        .toArray();
-
-      expect(result).toEqual([2, 1, 0, -1]);
-      expect(cb).toHaveBeenCalledTimes(4);
-    });
-
-    test("should lazily pull from the range that decreases by step", () => {
-      const cb = jest.fn();
-
-      const result = Seq.range(2, -2, 2)
-        .tap(cb)
-        .take(3)
-        .toArray();
-
-      expect(result).toEqual([2, 0, -2]);
-      expect(cb).toHaveBeenCalledTimes(3);
-    });
-  });
-
-  describe("simplex2D", () => {
-    test("should generate 2d simplex noise", () => {
-      const result = Seq.simplex2D(() => [1, 2], 1).first();
-
-      expect(result).toEqual(0.5387352272965704);
-    });
-  });
-
-  describe("simplex3D", () => {
-    test("should generate 3d simplex noise", () => {
-      const result = Seq.simplex3D(() => [1, 2, 3], 1).first();
-
-      expect(result).toEqual(-1.4535286549334576e-65);
-    });
-  });
-
-  describe("simplex4D", () => {
-    test("should generate 4d simplex noise", () => {
-      const result = Seq.simplex4D(() => [1, 2, 3, 4], 1).first();
-
-      expect(result).toEqual(0.041806993617899316);
-    });
-  });
-
-  describe("of", () => {
-    test("should use singleton sequence", () => {
-      const result = Seq.of(5).first();
-
-      expect(result).toEqual(5);
-    });
-
-    test("should use multiple items", () => {
-      const result = Seq.of(5, 6).toArray();
-
-      expect(result).toEqual([5, 6]);
-    });
-  });
-
-  describe("iterate", () => {
-    test("should lazily pull from an iterator", () => {
-      const result = Seq.iterate(a => a + 1, 1)
-        .take(4)
-        .toArray();
-
-      expect(result).toEqual([1, 2, 3, 4]);
-    });
-  });
-
   describe("map", () => {
     test("should work like normal map", () => {
       const cb = jest.fn();
 
-      const result = Seq.range(0, 2)
+      const result = range(0, 2)
         .tap(cb)
         .map((v, i) => v * 4 - i)
         .toArray();
@@ -115,7 +18,7 @@ describe("Seq", () => {
     test("should only map once if only 1 result is asked for", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .map((v, i) => v * 4 - i)
         .first();
@@ -127,7 +30,7 @@ describe("Seq", () => {
     test("should only map for each item taken", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .map((v, i) => v * 4 - i)
         .take(2)
@@ -142,7 +45,7 @@ describe("Seq", () => {
     test("should work like normal flatMap", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .flatMap((v, i) => [v * 4 - i, -1000])
         .take(6)
@@ -157,7 +60,7 @@ describe("Seq", () => {
     test("should work like normal flat", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .map((v, i) => [v * 4 - i, -1000])
         .flat()
@@ -173,7 +76,7 @@ describe("Seq", () => {
     test("should request values until the predicate is false", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .takeWhile(val => val < 4)
         .toArray();
@@ -187,7 +90,7 @@ describe("Seq", () => {
     test("should skip while predicate is true", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .skipWhile(val => val < 4)
         .take(4)
@@ -203,7 +106,7 @@ describe("Seq", () => {
       const cb = jest.fn();
       const cb2 = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .filter(val => val % 2 !== 0)
         .tap(cb2)
@@ -218,7 +121,7 @@ describe("Seq", () => {
 
   describe("distinct", () => {
     test("should only return unique items in a sequence", () => {
-      const result = Seq.fromArray([1, 2, 1, 3, 2, 4, 4, 5])
+      const result = fromArray([1, 2, 1, 3, 2, 4, 4, 5])
         .distinct()
         .take(4)
         .toArray();
@@ -229,12 +132,12 @@ describe("Seq", () => {
 
   describe("concat", () => {
     test("should concat multiple sequences on to the first", () => {
-      const result = Seq.fromArray([1, 2, 3])
+      const result = fromArray([1, 2, 3])
         .concat(
-          Seq.infinite()
+          infinite()
             .skip(4)
             .take(2),
-          Seq.fromArray([6, 7, 8])
+          fromArray([6, 7, 8])
         )
         .take(8)
         .toArray();
@@ -245,15 +148,15 @@ describe("Seq", () => {
 
   describe("isEmpty", () => {
     test("should know if the sequence is empty", () => {
-      expect(Seq.fromArray([]).isEmpty()).toEqual(true);
+      expect(fromArray([]).isEmpty()).toEqual(true);
 
-      expect(Seq.infinite().isEmpty()).toEqual(false);
+      expect(infinite().isEmpty()).toEqual(false);
     });
   });
 
   describe("interpose", () => {
     test("should place the separator between items", () => {
-      const result = Seq.fromArray(["one", "two", "three"])
+      const result = fromArray(["one", "two", "three"])
         .interpose(", ")
         .toArray()
         .join("");
@@ -262,40 +165,9 @@ describe("Seq", () => {
     });
   });
 
-  describe("cycle", () => {
-    test("should infinitely repeat an array of values", () => {
-      const result = Seq.cycle([1, 2, 3])
-        .take(7)
-        .toArray();
-
-      expect(result).toEqual([1, 2, 3, 1, 2, 3, 1]);
-    });
-  });
-
-  describe("repeat", () => {
-    test("should repeat a value X times", () => {
-      const result = Seq.repeat(1, 5).toArray();
-      expect(result).toEqual([1, 1, 1, 1, 1]);
-    });
-  });
-
-  describe("repeatedly", () => {
-    test("should repeatedly call a side-effect function", () => {
-      const cb = jest.fn();
-
-      const result = Seq.repeatedly(() => {
-        cb();
-        return Date.now();
-      }, 5).toArray();
-
-      expect(cb).toBeCalledTimes(5);
-      expect(result).toHaveLength(5);
-    });
-  });
-
   describe("frequencies", () => {
     test("should count the occurances of a value", () => {
-      const result = Seq.fromArray([1, 2, 3, 1, 2, 1]).frequencies();
+      const result = fromArray([1, 2, 3, 1, 2, 1]).frequencies();
 
       expect(result).toEqual(
         new Map([
@@ -309,8 +181,8 @@ describe("Seq", () => {
 
   describe("interleave", () => {
     test("should alternate between sequences", () => {
-      const result = Seq.range(100, 97)
-        .interleave(Seq.infinite(), Seq.fromArray([-1000, -2000, -3000]))
+      const result = range(100, 97)
+        .interleave(infinite(), fromArray([-1000, -2000, -3000]))
         .take(12)
         .toArray();
 
@@ -335,7 +207,7 @@ describe("Seq", () => {
     test("should find the first matching item", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .find(val => val === 3);
 
@@ -346,7 +218,7 @@ describe("Seq", () => {
 
   describe("first", () => {
     test("should get the first value", () => {
-      const result = Seq.infinite().first();
+      const result = infinite().first();
 
       expect(result).toEqual(0);
     });
@@ -354,7 +226,7 @@ describe("Seq", () => {
 
   describe("nth", () => {
     test("should get the nth value", () => {
-      const result = Seq.infinite().nth(1);
+      const result = infinite().nth(1);
 
       expect(result).toEqual(0);
     });
@@ -362,7 +234,7 @@ describe("Seq", () => {
 
   describe("index", () => {
     test("should get the index value", () => {
-      const result = Seq.infinite().index(0);
+      const result = infinite().index(0);
 
       expect(result).toEqual(0);
     });
@@ -372,7 +244,7 @@ describe("Seq", () => {
     test("should detect if a sequence includes a value", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .includes(3);
 
@@ -385,7 +257,7 @@ describe("Seq", () => {
     test("should some as soon as we find some", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .some(val => val === 3);
 
@@ -396,7 +268,7 @@ describe("Seq", () => {
     test("should fail if we never find some", () => {
       const cb = jest.fn();
 
-      const result = Seq.fromArray([1, 2, 3, 4])
+      const result = fromArray([1, 2, 3, 4])
         .tap(cb)
         .some(val => val === 5);
 
@@ -407,14 +279,14 @@ describe("Seq", () => {
 
   describe("every", () => {
     test("should work like normal every on success", () => {
-      const result = Seq.fromArray([1, 3, 5]).every(val => val % 2 !== 0);
+      const result = fromArray([1, 3, 5]).every(val => val % 2 !== 0);
 
       expect(result).toEqual(true);
     });
 
     test("should work like normal every on failure", () => {
       const cb = jest.fn();
-      const result = Seq.fromArray([1, 3, 5])
+      const result = fromArray([1, 3, 5])
         .tap(cb)
         .every(val => val === 1);
 
@@ -425,7 +297,7 @@ describe("Seq", () => {
 
   describe("sum", () => {
     test("should be able to sum a sequence of numbers", () => {
-      const result = Seq.infinite()
+      const result = infinite()
         .take(4)
         .sum();
 
@@ -435,7 +307,7 @@ describe("Seq", () => {
 
   describe("sumBy", () => {
     test("should be able to sum a sequence of anything", () => {
-      const result = Seq.fromArray([
+      const result = fromArray([
         { data: 0 },
         { data: 1 },
         { data: 2 },
@@ -450,7 +322,7 @@ describe("Seq", () => {
 
   describe("average", () => {
     test("should be able to average a sequence of numbers", () => {
-      const result = Seq.infinite()
+      const result = infinite()
         .take(4)
         .average();
 
@@ -460,7 +332,7 @@ describe("Seq", () => {
 
   describe("averageBy", () => {
     test("should be able to average a sequence of anything", () => {
-      const result = Seq.fromArray([
+      const result = fromArray([
         { data: 0 },
         { data: 1 },
         { data: 2 },
@@ -475,7 +347,7 @@ describe("Seq", () => {
 
   describe("groupBy", () => {
     test("should be group arbitrarily", () => {
-      const result = Seq.infinite()
+      const result = infinite()
         .take(8)
         .groupBy(item => (item % 2 === 0 ? "even" : "odd"));
 
@@ -490,7 +362,8 @@ describe("Seq", () => {
 
   describe("zip", () => {
     test("should combine two sequences", () => {
-      const result = Seq.zip(Seq.infinite(), Seq.infinite())
+      const result = infinite()
+        .zip(infinite())
         .take(4)
         .toArray();
 
@@ -505,12 +378,12 @@ describe("Seq", () => {
 
   describe("zipWith", () => {
     test("should combine two sequences with a combinator function (longer first seq)", () => {
-      const result = Seq.zipWith(
-        ([result1, result2]) =>
-          result1 && result2 ? result1 + result2 : -1000,
-        Seq.fromArray([1, 2, 3]),
-        Seq.fromArray([10, 20])
-      )
+      const result = fromArray([1, 2, 3])
+        .zipWith(
+          ([result1, result2]) =>
+            result1 && result2 ? result1 + result2 : -1000,
+          fromArray([10, 20])
+        )
         .take(4)
         .toArray();
 
@@ -518,12 +391,12 @@ describe("Seq", () => {
     });
 
     test("should combine two sequences with a combinator function (longer last seq)", () => {
-      const result = Seq.zipWith(
-        ([result1, result2]) =>
-          result1 && result2 ? result1 + result2 : -1000,
-        Seq.fromArray([1, 2]),
-        Seq.fromArray([10, 20, 30])
-      )
+      const result = fromArray([1, 2])
+        .zipWith(
+          ([result1, result2]) =>
+            result1 && result2 ? result1 + result2 : -1000,
+          fromArray([10, 20, 30])
+        )
         .take(4)
         .toArray();
 
@@ -531,15 +404,15 @@ describe("Seq", () => {
     });
   });
 
-  describe("zip3With", () => {
+  describe("zip2With", () => {
     test("should combine three sequences with a combinator function (longer first seq)", () => {
-      const result = Seq.zip3With(
-        ([result1, result2, result3]) =>
-          result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
-        Seq.fromArray([1, 2, 3]),
-        Seq.fromArray([10, 20]),
-        Seq.fromArray([5, 10])
-      )
+      const result = fromArray([1, 2, 3])
+        .zip2With(
+          ([result1, result2, result3]) =>
+            result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
+          fromArray([10, 20]),
+          fromArray([5, 10])
+        )
         .take(4)
         .toArray();
 
@@ -547,13 +420,13 @@ describe("Seq", () => {
     });
 
     test("should combine three sequences with a combinator function (longer second seq)", () => {
-      const result = Seq.zip3With(
-        ([result1, result2, result3]) =>
-          result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
-        Seq.fromArray([1, 2]),
-        Seq.fromArray([10, 20, 30]),
-        Seq.fromArray([5, 10])
-      )
+      const result = fromArray([1, 2])
+        .zip2With(
+          ([result1, result2, result3]) =>
+            result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
+          fromArray([10, 20, 30]),
+          fromArray([5, 10])
+        )
         .take(4)
         .toArray();
 
@@ -561,13 +434,13 @@ describe("Seq", () => {
     });
 
     test("should combine three sequences with a combinator function (longer last seq)", () => {
-      const result = Seq.zip3With(
-        ([result1, result2, result3]) =>
-          result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
-        Seq.fromArray([1, 2]),
-        Seq.fromArray([10, 20]),
-        Seq.fromArray([5, 10, 15])
-      )
+      const result = fromArray([1, 2])
+        .zip2With(
+          ([result1, result2, result3]) =>
+            result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
+          fromArray([10, 20]),
+          fromArray([5, 10, 15])
+        )
         .take(4)
         .toArray();
 
@@ -579,7 +452,7 @@ describe("Seq", () => {
     test("should flush the sequence and call a callback", () => {
       const cb = jest.fn();
 
-      Seq.fromArray([1, 2, 3, 4]).forEach(cb);
+      fromArray([1, 2, 3, 4]).forEach(cb);
 
       expect(cb).toBeCalledTimes(4);
     });
@@ -587,7 +460,7 @@ describe("Seq", () => {
 
   describe("chain", () => {
     test("should map the current seq", () => {
-      const result = Seq.fromArray([1, 2, 3, 4]).chain(seq => seq.toArray());
+      const result = fromArray([1, 2, 3, 4]).chain(seq => seq.toArray());
 
       expect(result).toEqual([1, 2, 3, 4]);
     });
@@ -597,7 +470,7 @@ describe("Seq", () => {
     test("should create two lazy sequences that filter a parent sequence based on a predicate", () => {
       const cb = jest.fn();
 
-      const [even, odd] = Seq.infinite()
+      const [even, odd] = infinite()
         .tap(cb)
         .partitionBy(val => val % 2 === 0);
 
@@ -613,7 +486,7 @@ describe("Seq", () => {
     test("should handle false backpressure", () => {
       const cb = jest.fn();
 
-      const [greater, lessOrEqual] = Seq.infinite()
+      const [greater, lessOrEqual] = infinite()
         .tap(cb)
         .partitionBy(val => val > 5);
 
@@ -629,7 +502,7 @@ describe("Seq", () => {
     test("should handle true backpressure", () => {
       const cb = jest.fn();
 
-      const [lessOrEqual, greater] = Seq.infinite()
+      const [lessOrEqual, greater] = infinite()
         .tap(cb)
         .partitionBy(val => val <= 5);
 
@@ -652,7 +525,7 @@ describe("Seq", () => {
     test("should group sequence into groups of N", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .window(4)
         .take(2)
@@ -669,7 +542,7 @@ describe("Seq", () => {
     test("should group sequence into groups of 2", () => {
       const cb = jest.fn();
 
-      const result = Seq.infinite()
+      const result = infinite()
         .tap(cb)
         .pairwise()
         .take(3)
@@ -691,7 +564,7 @@ describe("Seq", () => {
       const cb = jest.fn();
 
       expect(() =>
-        Seq.infinite()
+        infinite()
           .tap(cb)
           .toArray()
       ).toThrow();

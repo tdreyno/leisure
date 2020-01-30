@@ -1,286 +1,11 @@
-// tslint:disable: max-classes-per-file
-import { makeNoise2D, makeNoise3D, makeNoise4D } from "open-simplex-noise";
-import { constant, identity } from "./util";
+import { identity } from "./util";
 
-const DONE = Symbol("done");
+export const DONE = Symbol("trampoline_done");
+
 type Tramp<T> = () => typeof DONE | T;
 
 export class Seq<T> {
   public static MAX_YIELDS = 1_000_000;
-
-  public static fromArray<T>(data: T[]): Seq<T> {
-    return new Seq(() => {
-      const len = data.length;
-      let i = 0;
-      return () => (i >= len ? DONE : data[i++]!);
-    });
-  }
-
-  public static iterate<T>(fn: (current: T) => T, start: T): Seq<T> {
-    return new Seq(() => {
-      let counter = 0;
-      let previous: T = start;
-
-      return () => {
-        if (counter++ === 0) {
-          return start;
-        }
-
-        previous = fn(previous);
-        counter++;
-
-        return previous;
-      };
-    });
-  }
-
-  public static simplex2D(
-    fn: () => [number, number],
-    /* istanbul ignore next */
-    seed: number = Date.now()
-  ): Seq<number> {
-    const noise2D = makeNoise2D(seed);
-    const step = () => noise2D(...fn());
-
-    return Seq.iterate(step, step());
-  }
-
-  public static simplex3D(
-    fn: () => [number, number, number],
-    /* istanbul ignore next */
-    seed: number = Date.now()
-  ): Seq<number> {
-    const noise3D = makeNoise3D(seed);
-    const step = () => noise3D(...fn());
-
-    return Seq.iterate(step, step());
-  }
-
-  public static simplex4D(
-    fn: () => [number, number, number, number],
-    /* istanbul ignore next */
-    seed: number = Date.now()
-  ): Seq<number> {
-    const noise4D = makeNoise4D(seed);
-    const step = () => noise4D(...fn());
-
-    return Seq.iterate(step, step());
-  }
-
-  public static random(): Seq<number> {
-    /* istanbul ignore next */
-    return Seq.iterate(() => Math.random(), Math.random());
-  }
-
-  public static of<T>(...values: T[]): Seq<T> {
-    return this.fromArray(values);
-  }
-
-  public static range(start: number, end: number, step = 1): Seq<number> {
-    const isForwards = start < end;
-
-    return new Seq(() => {
-      let i = 0;
-
-      return isForwards
-        ? () => {
-            const num = start + i;
-
-            if (num > end) {
-              return DONE;
-            }
-
-            i += step;
-
-            return num;
-          }
-        : () => {
-            const num = start - i;
-
-            if (num < end) {
-              return DONE;
-            }
-
-            i += step;
-
-            return num;
-          };
-    });
-  }
-
-  public static cycle<T>(items: T[]): Seq<T> {
-    return new Seq<T>(() => {
-      const len = items.length;
-
-      let i = 0;
-      return () => items[i++ % len];
-    });
-  }
-
-  /* istanbul ignore next */
-  public static repeat<T>(value: T, times = Infinity): Seq<T> {
-    return Seq.repeatedly(constant(value), times);
-  }
-
-  public static repeatedly<T>(
-    value: () => T,
-    /* istanbul ignore next */
-    times = Infinity
-  ): Seq<T> {
-    return new Seq(() => {
-      let index = 0;
-      return () => (index++ + 1 > times ? DONE : value());
-    });
-  }
-
-  public static empty(): Seq<never> {
-    /* istanbul ignore next */
-    return Seq.fromArray([]);
-  }
-
-  public static infinite(): Seq<number> {
-    return Seq.range(0, Infinity);
-  }
-
-  public static zipWith<T1, T2, T3>(
-    fn: (
-      [result1, result2]: [T1, T2] | [T1, undefined] | [undefined, T2],
-      index: number
-    ) => T3,
-    seq1: Seq<T1>,
-    seq2: Seq<T2>
-  ): Seq<T3> {
-    return new Seq(() => {
-      const next1 = seq1.createTrampoline();
-      const next2 = seq2.createTrampoline();
-
-      let counter = 0;
-
-      return () => {
-        const result1 = next1();
-        const result2 = next2();
-
-        /* istanbul ignore next */
-        if (result1 === DONE && result2 === DONE) {
-          return DONE;
-        }
-
-        /* istanbul ignore next */
-        if (result1 === DONE && result2 !== DONE) {
-          return fn([undefined, result2], counter++);
-        }
-
-        /* istanbul ignore next */
-        if (result1 !== DONE && result2 === DONE) {
-          return fn([result1, undefined], counter++);
-        }
-
-        /* istanbul ignore next */
-        return fn([result1 as T1, result2 as T2], counter++);
-      };
-    });
-  }
-
-  public static zip<T1, T2>(
-    seq1: Seq<T1>,
-    seq2: Seq<T2>
-  ): Seq<[T1 | undefined, T2 | undefined]> {
-    return this.zipWith(identity, seq1, seq2);
-  }
-
-  public static zip3With<T1, T2, T3, T4>(
-    fn: (
-      [result1, result2, resul3]:
-        | [T1, T2, T3]
-        | [T1, undefined, undefined]
-        | [T1, T2, undefined]
-        | [T1, undefined, T3]
-        | [undefined, T2, undefined]
-        | [undefined, T2, T3]
-        | [undefined, undefined, T3],
-      index: number
-    ) => T4,
-    seq1: Seq<T1>,
-    seq2: Seq<T2>,
-    seq3: Seq<T3>
-  ): Seq<T4> {
-    return new Seq(() => {
-      const next1 = seq1.createTrampoline();
-      const next2 = seq2.createTrampoline();
-      const next3 = seq3.createTrampoline();
-
-      let counter = 0;
-
-      return () => {
-        const result1 = next1();
-        const result2 = next2();
-        const result3 = next3();
-
-        /* istanbul ignore next */
-        if (result1 === DONE && result2 === DONE && result3 === DONE) {
-          return DONE;
-        }
-
-        /* istanbul ignore next */
-        if (result1 !== DONE && result2 === DONE && result3 === DONE) {
-          return fn([result1, undefined, undefined], counter++);
-        }
-
-        /* istanbul ignore next */
-        if (result1 !== DONE && result2 !== DONE && result3 === DONE) {
-          return fn([result1, result2, undefined], counter++);
-        }
-
-        /* istanbul ignore next */
-        if (result1 !== DONE && result2 === DONE && result3 !== DONE) {
-          return fn([result1, undefined, result3], counter++);
-        }
-
-        /* istanbul ignore next */
-        if (result1 === DONE && result2 !== DONE && result3 === DONE) {
-          return fn([undefined, result2, undefined], counter++);
-        }
-
-        /* istanbul ignore next */
-        if (result1 === DONE && result2 !== DONE && result3 !== DONE) {
-          return fn([undefined, result2, result3], counter++);
-        }
-
-        /* istanbul ignore next */
-        if (result1 === DONE && result2 === DONE && result3 !== DONE) {
-          return fn([undefined, undefined, result3], counter++);
-        }
-
-        /* istanbul ignore next */
-        return fn([result1 as T1, result2 as T2, result3 as T3], counter++);
-      };
-    });
-  }
-
-  public static zip3<T1, T2, T3>(
-    seq1: Seq<T1>,
-    seq2: Seq<T2>,
-    seq3: Seq<T3>
-  ): Seq<[T1 | undefined, T2 | undefined, T3 | undefined]> {
-    /* istanbul ignore next */
-    return this.zip3With(identity, seq1, seq2, seq3);
-  }
-
-  public static concat<T>(...items: Array<Seq<T>>): Seq<T> {
-    /* istanbul ignore next */
-    const [head, ...tail] = items;
-
-    /* istanbul ignore next */
-    return head.concat(...tail);
-  }
-
-  public static interleave<T>(...items: Array<Seq<T>>): Seq<T> {
-    /* istanbul ignore next */
-    const [head, ...tail] = items;
-
-    /* istanbul ignore next */
-    return head.interleave(...tail);
-  }
 
   private yields = 0;
 
@@ -599,26 +324,39 @@ export class Seq<T> {
   }
 
   public some(fn: (value: T, index: number) => unknown): boolean {
+    const next = this.createTrampoline();
+
     let counter = 0;
 
-    for (const v of this) {
-      if (fn(v, counter++)) {
+    while (true) {
+      const item = next();
+
+      if (item === DONE) {
+        return false;
+      }
+
+      if (fn(item, counter++)) {
         return true;
       }
     }
-
-    return false;
   }
 
   public every(fn: (value: T, index: number) => unknown): boolean {
+    const next = this.createTrampoline();
+
     let counter = 0;
-    for (const v of this) {
-      if (!fn(v, counter++)) {
+
+    while (true) {
+      const item = next();
+
+      if (item === DONE) {
+        return true;
+      }
+
+      if (!fn(item, counter++)) {
         return false;
       }
     }
-
-    return true;
   }
 
   public takeWhile(fn: (value: T, index: number) => unknown): Seq<T> {
@@ -750,13 +488,40 @@ export class Seq<T> {
     ) => T3,
     seq2: Seq<T2>
   ): Seq<T3> {
-    /* istanbul ignore next */
-    return Seq.zipWith(fn, this, seq2);
+    return new Seq(() => {
+      const next1 = this.createTrampoline();
+      const next2 = seq2.createTrampoline();
+
+      let counter = 0;
+
+      return () => {
+        const result1 = next1();
+        const result2 = next2();
+
+        /* istanbul ignore next */
+        if (result1 === DONE && result2 === DONE) {
+          return DONE;
+        }
+
+        /* istanbul ignore next */
+        if (result1 === DONE && result2 !== DONE) {
+          return fn([undefined, result2], counter++);
+        }
+
+        /* istanbul ignore next */
+        if (result1 !== DONE && result2 === DONE) {
+          return fn([result1, undefined], counter++);
+        }
+
+        /* istanbul ignore next */
+        return fn([result1 as T, result2 as T2], counter++);
+      };
+    });
   }
 
   public zip<T2>(seq2: Seq<T2>): Seq<[T | undefined, T2 | undefined]> {
     /* istanbul ignore next */
-    return Seq.zip(this, seq2);
+    return this.zipWith(identity, seq2);
   }
 
   public zip2With<T2, T3, T4>(
@@ -774,8 +539,57 @@ export class Seq<T> {
     seq2: Seq<T2>,
     seq3: Seq<T3>
   ): Seq<T4> {
-    /* istanbul ignore next */
-    return Seq.zip3With(fn, this, seq2, seq3);
+    return new Seq(() => {
+      const next1 = this.createTrampoline();
+      const next2 = seq2.createTrampoline();
+      const next3 = seq3.createTrampoline();
+
+      let counter = 0;
+
+      return () => {
+        const result1 = next1();
+        const result2 = next2();
+        const result3 = next3();
+
+        /* istanbul ignore next */
+        if (result1 === DONE && result2 === DONE && result3 === DONE) {
+          return DONE;
+        }
+
+        /* istanbul ignore next */
+        if (result1 !== DONE && result2 === DONE && result3 === DONE) {
+          return fn([result1, undefined, undefined], counter++);
+        }
+
+        /* istanbul ignore next */
+        if (result1 !== DONE && result2 !== DONE && result3 === DONE) {
+          return fn([result1, result2, undefined], counter++);
+        }
+
+        /* istanbul ignore next */
+        if (result1 !== DONE && result2 === DONE && result3 !== DONE) {
+          return fn([result1, undefined, result3], counter++);
+        }
+
+        /* istanbul ignore next */
+        if (result1 === DONE && result2 !== DONE && result3 === DONE) {
+          return fn([undefined, result2, undefined], counter++);
+        }
+
+        /* istanbul ignore next */
+        if (result1 === DONE && result2 !== DONE && result3 !== DONE) {
+          return fn([undefined, result2, result3], counter++);
+        }
+
+        /* istanbul ignore next */
+        if (result1 === DONE && result2 === DONE && result3 !== DONE) {
+          return fn([undefined, undefined, result3], counter++);
+        }
+
+        /* istanbul ignore next */
+        return fn([result1 as T, result2 as T2, result3 as T3], counter++);
+      };
+    });
   }
 
   public zip2<T2, T3>(
@@ -783,7 +597,7 @@ export class Seq<T> {
     seq3: Seq<T3>
   ): Seq<[T | undefined, T2 | undefined, T3 | undefined]> {
     /* istanbul ignore next */
-    return Seq.zip3(this, seq2, seq3);
+    return this.zip2With(identity, seq2, seq3);
   }
 
   public *[Symbol.iterator]() {
@@ -801,13 +615,34 @@ export class Seq<T> {
   }
 
   public toArray(): T[] {
-    return [...this];
+    const next = this.createTrampoline();
+
+    const result: T[] = [];
+
+    while (true) {
+      const item = next();
+
+      if (item === DONE) {
+        return result;
+      }
+
+      result.push(item);
+    }
   }
 
   public forEach(fn: (value: T, index: number) => void): void {
+    const next = this.createTrampoline();
+
     let counter = 0;
-    for (const result of this) {
-      fn(result, counter++);
+
+    while (true) {
+      const item = next();
+
+      if (item === DONE) {
+        return;
+      }
+
+      fn(item, counter++);
     }
   }
 
