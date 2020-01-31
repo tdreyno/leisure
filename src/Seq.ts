@@ -1,19 +1,19 @@
 import { identity } from "./util";
 
-export const DONE = Symbol("trampoline_done");
+export const DONE = Symbol();
 
 type Tramp<T> = () => typeof DONE | T;
 
 export class Seq<T> {
   public static MAX_YIELDS = 1_000_000;
 
-  private yields = 0;
+  private yields_ = 0;
 
-  constructor(private source: () => Tramp<T>) {}
+  constructor(private source_: () => Tramp<T>) {}
 
   public map<U>(fn: (value: T, index: number) => U): Seq<U> {
     return new Seq(() => {
-      const parentNext = this.createTrampoline();
+      const parentNext = this.createTrampoline_();
       let counter = 0;
 
       return () => {
@@ -54,7 +54,7 @@ export class Seq<T> {
   }
 
   public isEmpty(): boolean {
-    const next = this.createTrampoline();
+    const next = this.createTrampoline_();
     return next() === DONE;
   }
 
@@ -78,7 +78,7 @@ export class Seq<T> {
 
   public flat<U>(this: Seq<U[]>): Seq<U> {
     return new Seq(() => {
-      const next = this.createTrampoline();
+      const next = this.createTrampoline_();
 
       let items = next();
       let counter = 0;
@@ -104,7 +104,7 @@ export class Seq<T> {
 
   public filter(fn: (value: T, index: number) => unknown): Seq<T> {
     return new Seq(() => {
-      const next = this.createTrampoline();
+      const next = this.createTrampoline_();
 
       let counter = 0;
 
@@ -131,8 +131,8 @@ export class Seq<T> {
   public concat(...tail: Array<Seq<T>>): Seq<T> {
     return new Seq(() => {
       const nexts = [
-        this.createTrampoline(),
-        ...tail.map(s => s.createTrampoline())
+        this.createTrampoline_(),
+        ...tail.map(s => s.createTrampoline_())
       ];
 
       return () => {
@@ -157,7 +157,7 @@ export class Seq<T> {
 
   public interleave(...tail: Array<Seq<T>>): Seq<T> {
     return new Seq(() => {
-      const nexts = [this.source(), ...tail.map(s => s.source())];
+      const nexts = [this.source_(), ...tail.map(s => s.source_())];
 
       let index = 0;
 
@@ -185,7 +185,7 @@ export class Seq<T> {
 
   public interpose(separator: T): Seq<T> {
     return new Seq(() => {
-      const next = this.createTrampoline();
+      const next = this.createTrampoline_();
 
       let backPressure: T | undefined;
       let lastWasSep = true;
@@ -244,11 +244,11 @@ export class Seq<T> {
     const trueBackpressure: T[] = [];
     const falseBackpressure: T[] = [];
 
-    let previousSource: ReturnType<typeof self.source> | undefined;
+    let previousSource: ReturnType<typeof self.source_> | undefined;
 
     const singletonTrampoline = () => {
       if (!previousSource) {
-        previousSource = self.createTrampoline();
+        previousSource = self.createTrampoline_();
       }
 
       return previousSource!;
@@ -320,7 +320,7 @@ export class Seq<T> {
   }
 
   public reduce<A>(fn: (sum: A, value: T, index: number) => A, initial: A): A {
-    const parentNext = this.createTrampoline();
+    const parentNext = this.createTrampoline_();
     let counter = 0;
     let current: A = initial;
 
@@ -344,7 +344,7 @@ export class Seq<T> {
   }
 
   public some(fn: (value: T, index: number) => unknown): boolean {
-    const next = this.createTrampoline();
+    const next = this.createTrampoline_();
 
     let counter = 0;
 
@@ -362,7 +362,7 @@ export class Seq<T> {
   }
 
   public every(fn: (value: T, index: number) => unknown): boolean {
-    const next = this.createTrampoline();
+    const next = this.createTrampoline_();
 
     let counter = 0;
 
@@ -381,7 +381,7 @@ export class Seq<T> {
 
   public takeWhile(fn: (value: T, index: number) => unknown): Seq<T> {
     return new Seq(() => {
-      const next = this.createTrampoline();
+      const next = this.createTrampoline_();
 
       let counter = 0;
 
@@ -404,7 +404,7 @@ export class Seq<T> {
 
   public take(num: number): Seq<T> {
     return new Seq(() => {
-      const next = this.createTrampoline();
+      const next = this.createTrampoline_();
 
       let i = 0;
 
@@ -426,7 +426,7 @@ export class Seq<T> {
 
   public skipWhile(fn: (value: T, index: number) => unknown): Seq<T> {
     return new Seq(() => {
-      const next = this.createTrampoline();
+      const next = this.createTrampoline_();
 
       let counter = 0;
 
@@ -451,7 +451,7 @@ export class Seq<T> {
 
   public skip(num: number): Seq<T> {
     return new Seq(() => {
-      const next = this.createTrampoline();
+      const next = this.createTrampoline_();
 
       let doneSkipping = false;
 
@@ -490,7 +490,7 @@ export class Seq<T> {
   }
 
   public first(): T | undefined {
-    const next = this.createTrampoline();
+    const next = this.createTrampoline_();
 
     const item = next();
 
@@ -509,8 +509,8 @@ export class Seq<T> {
     seq2: Seq<T2>
   ): Seq<T3> {
     return new Seq(() => {
-      const next1 = this.createTrampoline();
-      const next2 = seq2.createTrampoline();
+      const next1 = this.createTrampoline_();
+      const next2 = seq2.createTrampoline_();
 
       let counter = 0;
 
@@ -560,9 +560,9 @@ export class Seq<T> {
     seq3: Seq<T3>
   ): Seq<T4> {
     return new Seq(() => {
-      const next1 = this.createTrampoline();
-      const next2 = seq2.createTrampoline();
-      const next3 = seq3.createTrampoline();
+      const next1 = this.createTrampoline_();
+      const next2 = seq2.createTrampoline_();
+      const next3 = seq3.createTrampoline_();
 
       let counter = 0;
 
@@ -621,7 +621,7 @@ export class Seq<T> {
   }
 
   public *[Symbol.iterator]() {
-    const next = this.createTrampoline();
+    const next = this.createTrampoline_();
 
     while (true) {
       const item = next();
@@ -635,7 +635,7 @@ export class Seq<T> {
   }
 
   public toArray(): T[] {
-    const next = this.createTrampoline();
+    const next = this.createTrampoline_();
 
     const result: T[] = [];
 
@@ -651,7 +651,7 @@ export class Seq<T> {
   }
 
   public forEach(fn: (value: T, index: number) => void): void {
-    const next = this.createTrampoline();
+    const next = this.createTrampoline_();
 
     let counter = 0;
 
@@ -707,15 +707,16 @@ export class Seq<T> {
     }, new Map<U, T[]>());
   }
 
-  public createTrampoline() {
-    const nextCallback = this.source();
+  // Barely public. Do not use.
+  public createTrampoline_() {
+    const nextCallback = this.source_();
 
     return () => {
       const result = nextCallback();
 
-      if (++this.yields > Seq.MAX_YIELDS) {
+      if (++this.yields_ > Seq.MAX_YIELDS) {
         throw new Error(
-          `Seq has yielded ${this.yields} times. If this is okay, set Seq.MAX_YIELDS to a higher number (currently ${Seq.MAX_YIELDS}).`
+          `Seq has yielded ${this.yields_} times. If this is okay, set Seq.MAX_YIELDS to a higher number (currently ${Seq.MAX_YIELDS}).`
         );
       }
 

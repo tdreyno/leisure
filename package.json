@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "tslint --project .",
     "build": "pika build && yarn compress",
-    "compress": "terser pkg/dist-web/index.js -o pkg/dist-web/index.min.js --source-map",
+    "compress": "terser pkg/dist-web/index.js -o pkg/dist-web/index.min.js --source-map --mangle --compress passes=2 --toplevel --mangle-props regex=/_$/",
     "test": "jest --runInBand",
     "version": "yarn run build",
     "coverage": "jest --runInBand --coverage --coverageDirectory '../coverage'",
