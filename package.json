@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "tslint --project .",
     "build": "pika build && yarn compress",
-    "compress": "terser pkg/dist-web/index.js -o pkg/dist-web/index.min.js --source-map --mangle --compress passes=2 --toplevel --mangle-props regex=/_$/",
+    "compress": "terser pkg/dist-web/index.js -o pkg/dist-web/index.min.js --source-map --mangle --compress passes=2 --toplevel --mangle-props regex=/_$/ && gzip-size pkg/dist-web/index.min.js",
     "test": "jest --runInBand",
     "version": "yarn run build",
     "coverage": "jest --runInBand --coverage --coverageDirectory '../coverage'",
@@ -56,6 +56,7 @@
     "@types/lodash": "^4.14.149",
     "beautify-benchmark": "^0.2.4",
     "benchmark": "^2.1.4",
+    "gzip-size-cli": "^3.0.0",
     "husky": "^3.1.0",
     "jest": "^24.5.0",
     "lint-staged": "^10.0.6",
