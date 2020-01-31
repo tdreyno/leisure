@@ -6,11 +6,17 @@
 
 - Converted from Generators to a trampoline approach due to performance issues.
 
+### Added
+
+- `join` to match `Array.prototype`.
+
 ### Changed
 
 - All zipper fns (use with `zipWith`) now return only the mapped data, instead of a tuple with the index.
 - Move simplex functions to `@tdreyno/leisure/simplex`
 - Move `Seq.` static methods to top level exports.
+- Rename `chain` to `pipe`.
+- `reduce` and `averageBy` are now lazy.
 
 ### Removed
 

@@ -124,6 +124,10 @@ export class Seq<T> {
     });
   }
 
+  public compact<C>(): Seq<C> {
+    return (this.filter(identity) as unknown) as Seq<C>;
+  }
+
   public concat(...tail: Array<Seq<T>>): Seq<T> {
     return new Seq(() => {
       const nexts = [
@@ -308,7 +312,7 @@ export class Seq<T> {
   }
 
   public includes(value: T): boolean {
-    return !!this.filter(a => a === value).first();
+    return !!this.find(a => a === value);
   }
 
   public find(fn: (value: T, index: number) => unknown): T | undefined {
@@ -316,10 +320,26 @@ export class Seq<T> {
   }
 
   public reduce<A>(fn: (sum: A, value: T, index: number) => A, initial: A): A {
-    return this.toArray().reduce(fn, initial);
+    const parentNext = this.createTrampoline();
+    let counter = 0;
+    let current: A = initial;
+
+    while (true) {
+      const result = parentNext();
+
+      if (result === DONE) {
+        return current;
+      }
+
+      current = fn(current, result, counter++);
+    }
   }
 
-  public chain<U>(fn: (value: Seq<T>) => U): U {
+  public join(this: Seq<string>, separator: string = ",") {
+    return this.reduce((sum, str) => sum + str + separator, "").slice(0, -1);
+  }
+
+  public pipe<U>(fn: (value: Seq<T>) => U): U {
     return fn(this);
   }
 
@@ -655,8 +675,7 @@ export class Seq<T> {
   }
 
   public averageBy(fn: (value: T) => number): number {
-    const all = this.toArray();
-    return all.map(fn).reduce((sum, num) => sum + num, 0) / all.length;
+    return this.map(fn).reduce((sum, num, i) => sum + (num - sum) / (i + 1), 0);
   }
 
   public average(this: Seq<number>): number {
