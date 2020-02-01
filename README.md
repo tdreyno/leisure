@@ -31,10 +31,10 @@ At the end of the computation we discover that we only need the first matching r
 Here is that same example using `leisure`:
 
 ```typescript
-import Seq from "@tdreyno/leisure";
+import { fromArray } from "@tdreyno/leisure";
 
 // Assume the types and data are the same.
-const neighbor = Seq.fromArray(users)
+const neighbor = fromArray(users)
   .map(user => parseAddress(user.address))
   .filter(address => address.city === "My Hometown")
   .map(address => address.owner)
@@ -72,9 +72,9 @@ Most methods in the library ask for one value from the previous computation at a
 Here's an example which discards the first 10 numbers of an infinite sequence, then grabs the next five and uses them.
 
 ```typescript
-import Seq from "@tdreyno/leisure";
+import { infinite } from "@tdreyno/leisure";
 
-const tenThroughFourteen: number[] = Seq.infinite()
+const tenThroughFourteen: number[] = infinite()
   // Ignore 0-9
   .skip(10)
   // Grab 10-14
@@ -94,9 +94,9 @@ To avoid infinite loops, `leisure` caps the maximum number of infinite values to
 `leisure` implements the Iterator protocol which means you can use it to lazily pull values using a normal `for` loop.
 
 ```typescript
-import Seq from "@tdreyno/leisure";
+import { infinite } from "@tdreyno/leisure";
 
-for (let i of Seq.infinite()) {
+for (let i of infinite()) {
   if (i > 10) {
     console.log("counted to ten");
     break;
