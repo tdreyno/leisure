@@ -9,6 +9,7 @@
 ### Added
 
 - `join` to match `Array.prototype`.
+- `cartesianProduct` to generate large sequence of products.
 
 ### Changed
 
