@@ -63,7 +63,7 @@ const myBirthDayFib: number = Seq
   .map(([fib]) => fib);
 ```
 
-Maybe it will run forever? Maybe it will find one very fast :\)
+Maybe it will run forever? Maybe it will find one very fast :)
 
 ## Realization
 

@@ -8,6 +8,8 @@ $ yarn add @tdreyno/leisure
 
 ## Importing
 
+Usually, you will be importing a Sequence creating method. [See the full list here](docs/api/static.md).
+
 ```typescript
-import Seq from "@tdreyno/leisure";
+import { fromArray } from "@tdreyno/leisure";
 ```
