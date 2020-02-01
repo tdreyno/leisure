@@ -76,3 +76,38 @@ export function cartesianProduct<T>(...inputs: T[][]): Seq<T[]> {
     };
   });
 }
+
+export function powerSet<T>(...items: T[]): Seq<Set<T>> {
+  const numberOfCombinations = 2 ** items.length;
+
+  return new Seq(() => {
+    let counter = 0;
+
+    return () => {
+      if (counter >= numberOfCombinations) {
+        return DONE;
+      }
+
+      const set: Set<any> = new Set();
+
+      for (
+        let setElementIndex = 0;
+        setElementIndex < items.length;
+        setElementIndex += 1
+      ) {
+        // tslint:disable-next-line: no-bitwise
+        if (counter & (1 << setElementIndex)) {
+          set.add(items[setElementIndex]);
+        }
+      }
+
+      counter++;
+
+      return set;
+    };
+  });
+}
+
+// combination
+// permutation
+// permutationCombination

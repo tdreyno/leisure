@@ -1,4 +1,4 @@
-import { cartesianProduct } from "../combinatorics";
+import { cartesianProduct, powerSet } from "../combinatorics";
 
 describe("combinatorics", () => {
   describe("cartesianProduct", () => {
@@ -29,6 +29,23 @@ describe("combinatorics", () => {
         ["b", 1, false],
         ["b", 2, true],
         ["b", 2, false]
+      ]);
+    });
+  });
+
+  describe("powerSet", () => {
+    test("should generate power set", () => {
+      const result = powerSet("a", "b", "c").toArray();
+
+      expect(result).toEqual([
+        new Set([]),
+        new Set(["a"]),
+        new Set(["b"]),
+        new Set(["a", "b"]),
+        new Set(["c"]),
+        new Set(["a", "c"]),
+        new Set(["b", "c"]),
+        new Set(["a", "b", "c"])
       ]);
     });
   });

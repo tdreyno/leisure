@@ -26,3 +26,25 @@ type cartesianProduct = <T>(...inputs: T[][]) => Seq<T[]>;
 
 {% endtab %}
 {% endtabs %}
+
+## powerSet
+
+Generates sequence of Sets of a [Power set](https://en.wikipedia.org/wiki/Power_set).
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const sequence: Seq<Set<string>> = powerSet("a", "b", "c");
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type powerSet = <T>(...items: T[]) => Seq<Set<T>>;
+```
+
+{% endtab %}
+{% endtabs %}
