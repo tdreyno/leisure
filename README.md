@@ -54,7 +54,7 @@ const myBirthDay: number = 2000_01_01;
 
 const myBirthDayFib: number = Seq
   // Generate an infinite sequence that adds one Fib value each step.
-  .iterate([0, 1], ([a, b]) => [b, a + b])
+  .iterate(([a, b]) => [b, a + b], [0, 1])
 
   // Find the one which has my birthday as a substring.
   .find(([fib]) => fib.toString().includes(myBirthDay.toString()))

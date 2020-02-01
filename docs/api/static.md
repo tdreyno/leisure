@@ -45,6 +45,28 @@ type iterate = <T>(fn: (current: T) => T, start: T): Seq<T>
 {% endtab %}
 {% endtabs %}
 
+## fib
+
+The `fib` method generates a sequence of fibonacci numbers.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const sequence: Seq<number> = Seq.fib();
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type fib = () => Seq<number>;
+```
+
+{% endtab %}
+{% endtabs %}
+
 ## random
 
 Generates a random sequence using `Math.random`.

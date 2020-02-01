@@ -2,18 +2,18 @@ import Benchmark from "benchmark";
 // tslint:disable-next-line: no-var-requires
 const benchmarks = require("beautify-benchmark");
 import _ from "lodash";
-import Seq from "../src/index";
+import { fromArray, infinite, iterate, range } from "../src/index";
 
 // const inc = (x: number) => x + 1;
 // const dec = (x: number) => x - 1;
 const square = (x: number) => x * x;
 const isEven = (x: number) => x % 2 === 0;
 // const identity = <T>(x: T) => x;
-const arr = (from: number, to: number) => Seq.range(from, to).toArray();
+const arr = (from: number, to: number) => range(from, to).toArray();
 const rand = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min) + min);
 const dupes = (min: number, max: number, count: number) =>
-  Seq.iterate(() => rand(min, max), rand(min, max))
+  iterate(() => rand(min, max), rand(min, max))
     .take(count)
     .toArray();
 
@@ -29,7 +29,7 @@ const jaggedArray = [
   [34, 35]
 ];
 
-const lotsOfNumbers = Seq.infinite()
+const lotsOfNumbers = infinite()
   .take(10000)
   .toArray();
 
@@ -62,7 +62,7 @@ function bench(
 bench(
   "map (best case)",
   () =>
-    Seq.fromArray(lotsOfNumbers)
+    fromArray(lotsOfNumbers)
       .map(square)
       .first(),
   () => lotsOfNumbers.map(square),
@@ -72,7 +72,7 @@ bench(
 bench(
   "map (middle case)",
   () =>
-    Seq.fromArray(lotsOfNumbers)
+    fromArray(lotsOfNumbers)
       .map(square)
       .nth(5000),
   () => lotsOfNumbers.map(square),
@@ -82,7 +82,7 @@ bench(
 bench(
   "map (worth case)",
   () =>
-    Seq.fromArray(lotsOfNumbers)
+    fromArray(lotsOfNumbers)
       .map(square)
       .nth(10000),
   () => lotsOfNumbers.map(square),
@@ -92,7 +92,7 @@ bench(
 bench(
   "filter",
   () =>
-    Seq.fromArray(lotsOfNumbers)
+    fromArray(lotsOfNumbers)
       .filter(isEven)
       .first(),
   () => lotsOfNumbers.filter(isEven),
@@ -102,7 +102,7 @@ bench(
 bench(
   "flat",
   () =>
-    Seq.fromArray(jaggedArray)
+    fromArray(jaggedArray)
       .flat()
       .first(),
   () => (jaggedArray as any).flat(),
@@ -113,7 +113,7 @@ const halfDupes = dupes(0, 50, 100);
 bench(
   "distinct",
   () =>
-    Seq.fromArray(halfDupes)
+    fromArray(halfDupes)
       .distinct()
       .first(),
   undefined,
@@ -125,8 +125,8 @@ const secondConcatArray = arr(50, 150);
 bench(
   "concat",
   () =>
-    Seq.fromArray(firstConcatArray)
-      .concat(Seq.fromArray(secondConcatArray))
+    fromArray(firstConcatArray)
+      .concat(fromArray(secondConcatArray))
       .first(),
   () => firstConcatArray.concat(secondConcatArray),
   () => _.concat(firstConcatArray, secondConcatArray)
