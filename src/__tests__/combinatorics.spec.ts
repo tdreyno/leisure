@@ -69,18 +69,5 @@ describe("combinatorics", () => {
 
       expect(result).toEqual([["a", "b", "c"]]);
     });
-
-    test("should possible combinations of all items with repeats", () => {
-      const result = combination(["a", "b", "c"], 2, true).toArray();
-
-      expect(result).toEqual([
-        ["a", "a"],
-        ["a", "b"],
-        ["a", "c"],
-        ["b", "b"],
-        ["b", "c"],
-        ["c", "c"]
-      ]);
-    });
   });
 });

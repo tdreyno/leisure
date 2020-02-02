@@ -110,12 +110,10 @@ export function powerSet<T>(items: T[]): Seq<Set<T>> {
 
 export function combination<T>(
   items: T[],
-  size: number,
-  repeats = false
+  size: number = items.length
 ): Seq<T[]> {
   return new Seq(() => {
     const indexes: number[] = [];
-    const hasRepeated: boolean[] = [];
 
     for (let j = 0; j < size; j++) {
       indexes[j] = j;
@@ -125,11 +123,6 @@ export function combination<T>(
     let i = size - 1; // Index to keep track of maximum unsaturated element in array
 
     return () => {
-      if (repeats && !hasRepeated[indexes[0]]) {
-        hasRepeated[indexes[0]] = true;
-        return Array(size).fill(items[indexes[0]]);
-      }
-
       // indexes[0] can only be n-size+1 exactly once - our termination condition!
       if (indexes[0] >= n - size + 1) {
         return DONE;
