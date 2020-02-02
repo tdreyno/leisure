@@ -77,7 +77,7 @@ export function cartesianProduct<T>(...inputs: T[][]): Seq<T[]> {
   });
 }
 
-export function powerSet<T>(...items: T[]): Seq<Set<T>> {
+export function powerSet<T>(items: T[]): Seq<Set<T>> {
   const numberOfCombinations = 2 ** items.length;
 
   return new Seq(() => {
@@ -108,6 +108,46 @@ export function powerSet<T>(...items: T[]): Seq<Set<T>> {
   });
 }
 
-// combination
+export function combination<T>(items: T[], size: number): Seq<Set<T>> {
+  if (size === items.length) {
+    return of(new Set(items));
+  }
+
+  return new Seq(() => {
+    const indexes: number[] = [];
+
+    for (let j = 0; j < size; j++) {
+      indexes[j] = j;
+    }
+
+    const n = items.length;
+    let i = size - 1; // Index to keep track of maximum unsaturated element in array
+
+    return () => {
+      // indexes[0] can only be n-size+1 exactly once - our termination condition!
+      if (indexes[0] >= n - size + 1) {
+        return DONE;
+      }
+
+      // If outer elements are saturated, keep decrementing i till you find unsaturated element
+      while (i > 0 && indexes[i] === n - size + i) {
+        i--;
+      }
+
+      const result = new Set(indexes.map(j => items[j]));
+
+      indexes[i]++;
+
+      // Reset each outer element to prev element + 1
+      while (i < size - 1) {
+        indexes[i + 1] = indexes[i] + 1;
+        i++;
+      }
+
+      return result;
+    };
+  });
+}
+
 // permutation
 // permutationCombination

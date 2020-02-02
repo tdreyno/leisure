@@ -11,6 +11,7 @@
 - `join` to match `Array.prototype`.
 - `cartesianProduct` to generate large sequence of products.
 - `powerSet` to generate large sequence of power sets.
+- `combination` to generate all possible combinations of items.
 
 ### Changed
 

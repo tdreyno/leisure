@@ -35,7 +35,7 @@ Generates sequence of Sets of a [Power set](https://en.wikipedia.org/wiki/Power_
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<Set<string>> = powerSet("a", "b", "c");
+const sequence: Seq<Set<string>> = powerSet(["a", "b", "c"]);
 ```
 
 {% endtab %}
@@ -44,6 +44,28 @@ const sequence: Seq<Set<string>> = powerSet("a", "b", "c");
 
 ```typescript
 type powerSet = <T>(...items: T[]) => Seq<Set<T>>;
+```
+
+{% endtab %}
+{% endtabs %}
+
+## combination
+
+Generates sequence of Sets of a [Combination](https://en.wikipedia.org/wiki/Combination) of a given length.
+
+{% tabs %}
+{% tab title="Usage" %}
+
+```typescript
+const sequence: Seq<Set<string>> = combination(["a", "b", "c"], 2);
+```
+
+{% endtab %}
+
+{% tab title="Type Definition" %}
+
+```typescript
+type combination = <T>(items: T[], size: number) => Seq<Set<T>>;
 ```
 
 {% endtab %}

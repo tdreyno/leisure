@@ -1,4 +1,4 @@
-import { cartesianProduct, powerSet } from "../combinatorics";
+import { cartesianProduct, combination, powerSet } from "../combinatorics";
 
 describe("combinatorics", () => {
   describe("cartesianProduct", () => {
@@ -35,7 +35,7 @@ describe("combinatorics", () => {
 
   describe("powerSet", () => {
     test("should generate power set", () => {
-      const result = powerSet("a", "b", "c").toArray();
+      const result = powerSet(["a", "b", "c"]).toArray();
 
       expect(result).toEqual([
         new Set([]),
@@ -47,6 +47,27 @@ describe("combinatorics", () => {
         new Set(["b", "c"]),
         new Set(["a", "b", "c"])
       ]);
+    });
+  });
+
+  describe("combination", () => {
+    test("should possible combinations of 2 items", () => {
+      const result = combination(["a", "b", "c", "d"], 2).toArray();
+
+      expect(result).toEqual([
+        new Set(["a", "b"]),
+        new Set(["a", "c"]),
+        new Set(["a", "d"]),
+        new Set(["b", "c"]),
+        new Set(["b", "d"]),
+        new Set(["c", "d"])
+      ]);
+    });
+
+    test("should possible combinations of all items", () => {
+      const result = combination(["a", "b", "c"], 3).toArray();
+
+      expect(result).toEqual([new Set(["a", "b", "c"])]);
     });
   });
 });
