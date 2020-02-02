@@ -51,13 +51,19 @@ type powerSet = <T>(...items: T[]) => Seq<Set<T>>;
 
 ## combination
 
-Generates sequence of Sets of a [Combination](https://en.wikipedia.org/wiki/Combination) of a given length.
+Generates sequence of Sets of a [Combination](https://en.wikipedia.org/wiki/Combination) of a given length. May optionally allow repeating values (like a combination lock).
 
 {% tabs %}
 {% tab title="Usage" %}
 
 ```typescript
 const sequence: Seq<Set<string>> = combination(["a", "b", "c"], 2);
+```
+
+Or, if you want to allow repeats like `["a", "a"]`.
+
+```typescript
+const sequence: Seq<Set<string>> = combination(["a", "b", "c"], 2, true);
 ```
 
 {% endtab %}
