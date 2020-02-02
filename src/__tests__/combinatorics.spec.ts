@@ -55,19 +55,32 @@ describe("combinatorics", () => {
       const result = combination(["a", "b", "c", "d"], 2).toArray();
 
       expect(result).toEqual([
-        new Set(["a", "b"]),
-        new Set(["a", "c"]),
-        new Set(["a", "d"]),
-        new Set(["b", "c"]),
-        new Set(["b", "d"]),
-        new Set(["c", "d"])
+        ["a", "b"],
+        ["a", "c"],
+        ["a", "d"],
+        ["b", "c"],
+        ["b", "d"],
+        ["c", "d"]
       ]);
     });
 
     test("should possible combinations of all items", () => {
       const result = combination(["a", "b", "c"], 3).toArray();
 
-      expect(result).toEqual([new Set(["a", "b", "c"])]);
+      expect(result).toEqual([["a", "b", "c"]]);
+    });
+
+    test("should possible combinations of all items with repeats", () => {
+      const result = combination(["a", "b", "c"], 2, true).toArray();
+
+      expect(result).toEqual([
+        ["a", "a"],
+        ["a", "b"],
+        ["a", "c"],
+        ["b", "b"],
+        ["b", "c"],
+        ["c", "c"]
+      ]);
     });
   });
 });

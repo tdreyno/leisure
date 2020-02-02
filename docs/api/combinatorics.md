@@ -65,7 +65,11 @@ const sequence: Seq<Set<string>> = combination(["a", "b", "c"], 2);
 {% tab title="Type Definition" %}
 
 ```typescript
-type combination = <T>(items: T[], size: number) => Seq<Set<T>>;
+type combination = <T>(
+  items: T[],
+  size: number,
+  repeats: boolean = false
+) => Seq<Array<T>>;
 ```
 
 {% endtab %}
