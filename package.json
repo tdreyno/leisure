@@ -52,7 +52,7 @@
     "@pika/plugin-build-web": "^0.8.1",
     "@pika/plugin-ts-standard-pkg": "^0.8.1",
     "@types/benchmark": "^1.0.31",
-    "@types/jest": "^25.1.1",
+    "@types/jest": "^25.1.2",
     "@types/lodash": "^4.14.149",
     "beautify-benchmark": "^0.2.4",
     "benchmark": "^2.1.4",
