@@ -3,7 +3,7 @@
   "version": "0.0.0-development",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
-  "repository": "git://github.com/tdreyno/leisure.git",
+  "repository": "https://github.com/tdreyno/leisure.git",
   "scripts": {
     "lint": "eslint -c .eslintrc.js --ext .ts src",
     "build": "pika build && yarn compress",
