@@ -11,7 +11,8 @@
     "test": "jest --runInBand",
     "version": "yarn run build",
     "coverage": "jest --runInBand --coverage --coverageDirectory '../coverage'",
-    "perf": "ts-node -O '{ \"module\": \"commonjs\" }' ./benchmarks/benchmark.ts"
+    "perf": "ts-node -O '{ \"module\": \"commonjs\" }' ./benchmarks/benchmark.ts",
+    "commit": "git-cz"
   },
   "@pika/pack": {
     "pipeline": [
@@ -42,6 +43,7 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
   },
@@ -50,6 +52,9 @@
     "yarn": "1.21.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/prompt": "^8.3.5",
     "@pika/pack": "^0.5.0",
     "@pika/plugin-build-node": "^0.8.1",
     "@pika/plugin-build-web": "^0.8.1",
@@ -61,6 +66,8 @@
     "@typescript-eslint/parser": "^2.19.0",
     "beautify-benchmark": "^0.2.4",
     "benchmark": "^2.1.4",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
@@ -79,5 +86,10 @@
   },
   "dependencies": {
     "open-simplex-noise": "^2.2.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
