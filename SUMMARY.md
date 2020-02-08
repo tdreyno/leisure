@@ -3,7 +3,6 @@
 - [Introduction](README.md)
 - [Installation](docs/installation.md)
 - [F.A.Q.](docs/faq.md)
-- [Changelog](CHANGELOG.md)
 
 ## API
 
