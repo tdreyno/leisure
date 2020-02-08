@@ -1,7 +1,6 @@
 # Leisure
 
-[![Codecov](https://img.shields.io/codecov/c/github/semantic-release/release-notes-generator.svg)](https://codecov.io/gh/semantic-release/release-notes-generator)
-
+[![Test Coverage](https://api.codeclimate.com/v1/badges/bade509a61c126d7f488/test_coverage)](https://codeclimate.com/github/tdreyno/leisure/test_coverage)
 [![npm latest version](https://img.shields.io/npm/v/@tdreyno/leisure/latest.svg)](https://www.npmjs.com/package/@tdreyno/leisure)
 
 `leisure` is a TypeScript library for creating and manipulating lazy sequences of data. The API surface resembles the ES6 `map`/`filter`/`reduce` API, but also adds many useful helpers often seen in [Lodash](https://lodash.com/) or [Ramda](https://ramdajs.com/).
