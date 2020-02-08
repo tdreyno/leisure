@@ -58,7 +58,7 @@ export function cartesianProduct<T>(...inputs: T[][]): Seq<T[]> {
 
     let n = 0;
 
-    return () => {
+    return (): typeof DONE | T[] => {
       if (n >= length) {
         return DONE;
       }
@@ -66,7 +66,6 @@ export function cartesianProduct<T>(...inputs: T[][]): Seq<T[]> {
       const c: T[] = [];
 
       for (let i = inputs.length; i--; ) {
-        // tslint:disable-next-line: no-bitwise
         c[i] = inputs[i][((n / dm[i][0]) << 0) % dm[i][1]];
       }
 
@@ -83,19 +82,18 @@ export function powerSet<T>(items: T[]): Seq<Set<T>> {
   return new Seq(() => {
     let counter = 0;
 
-    return () => {
+    return (): typeof DONE | Set<T> => {
       if (counter >= numberOfCombinations) {
         return DONE;
       }
 
-      const set: Set<any> = new Set();
+      const set: Set<T> = new Set();
 
       for (
         let setElementIndex = 0;
         setElementIndex < items.length;
         setElementIndex += 1
       ) {
-        // tslint:disable-next-line: no-bitwise
         if (counter & (1 << setElementIndex)) {
           set.add(items[setElementIndex]);
         }
@@ -122,7 +120,7 @@ export function combination<T>(
     const n = items.length;
     let i = size - 1; // Index to keep track of maximum unsaturated element in array
 
-    return () => {
+    return (): typeof DONE | T[] => {
       // indexes[0] can only be n-size+1 exactly once - our termination condition!
       if (indexes[0] >= n - size + 1) {
         return DONE;

@@ -16,7 +16,7 @@ export class Seq<T> {
       const parentNext = this.createTrampoline_();
       let counter = 0;
 
-      return () => {
+      return (): typeof DONE | U => {
         const result = parentNext();
 
         if (result === DONE) {
@@ -29,12 +29,13 @@ export class Seq<T> {
   }
 
   public window(size: number, allowPartialWindow = true): Seq<T[]> {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self: Seq<T> = this;
 
     return new Seq(() => {
       let head: Seq<T> = self;
 
-      return () => {
+      return (): typeof DONE | T[] => {
         const items = head.take(size).toArray();
 
         /* istanbul ignore next */
@@ -68,7 +69,6 @@ export class Seq<T> {
 
   public log(): Seq<T> {
     /* istanbul ignore next */
-    // tslint:disable-next-line: no-console
     return this.tap((v, k) => console.log([k, v]));
   }
 
@@ -83,7 +83,7 @@ export class Seq<T> {
       let items = next();
       let counter = 0;
 
-      return () => {
+      return (): typeof DONE | U => {
         if (items === DONE) {
           return DONE;
         }
@@ -108,7 +108,7 @@ export class Seq<T> {
 
       let counter = 0;
 
-      return () => {
+      return (): typeof DONE | T => {
         while (true) {
           const item = next();
 
@@ -135,7 +135,7 @@ export class Seq<T> {
         ...tail.map(s => s.createTrampoline_())
       ];
 
-      return () => {
+      return (): typeof DONE | T => {
         while (true) {
           if (nexts.length === 0) {
             return DONE;
@@ -161,7 +161,7 @@ export class Seq<T> {
 
       let index = 0;
 
-      return () => {
+      return (): typeof DONE | T => {
         while (true) {
           /* istanbul ignore next */
           if (nexts.length === 0) {
@@ -190,7 +190,7 @@ export class Seq<T> {
       let backPressure: T | undefined;
       let lastWasSep = true;
 
-      return () => {
+      return (): typeof DONE | T => {
         if (backPressure) {
           const previousItem = backPressure;
           backPressure = undefined;
@@ -239,6 +239,7 @@ export class Seq<T> {
   public partitionBy(
     fn: (value: T, index: number) => unknown
   ): [Seq<T>, Seq<T>] {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
 
     const trueBackpressure: T[] = [];
@@ -246,12 +247,12 @@ export class Seq<T> {
 
     let previousSource: ReturnType<typeof self.source_> | undefined;
 
-    const singletonTrampoline = () => {
+    const singletonTrampoline = (): Tramp<T> => {
       if (!previousSource) {
         previousSource = self.createTrampoline_();
       }
 
-      return previousSource!;
+      return previousSource;
     };
 
     return [
@@ -260,9 +261,10 @@ export class Seq<T> {
 
         let counter = 0;
 
-        return () => {
+        return (): typeof DONE | T => {
           while (true) {
             if (trueBackpressure.length > 0) {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               return trueBackpressure.shift()!;
             }
 
@@ -287,9 +289,10 @@ export class Seq<T> {
 
         let counter = 0;
 
-        return () => {
+        return (): typeof DONE | T => {
           while (true) {
             if (falseBackpressure.length > 0) {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               return falseBackpressure.shift()!;
             }
 
@@ -335,7 +338,7 @@ export class Seq<T> {
     }
   }
 
-  public join(this: Seq<string>, separator: string = ",") {
+  public join(this: Seq<string>, separator = ","): string {
     return this.reduce((sum, str) => sum + str + separator, "").slice(0, -1);
   }
 
@@ -385,7 +388,7 @@ export class Seq<T> {
 
       let counter = 0;
 
-      return () => {
+      return (): typeof DONE | T => {
         const item = next();
 
         /* istanbul ignore next */
@@ -408,7 +411,7 @@ export class Seq<T> {
 
       let i = 0;
 
-      return () => {
+      return (): typeof DONE | T => {
         if (i++ >= num) {
           return DONE;
         }
@@ -430,7 +433,7 @@ export class Seq<T> {
 
       let counter = 0;
 
-      return () => {
+      return (): typeof DONE | T => {
         while (true) {
           const item = next();
 
@@ -455,7 +458,7 @@ export class Seq<T> {
 
       let doneSkipping = false;
 
-      return () => {
+      return (): typeof DONE | T => {
         if (!doneSkipping) {
           for (let i = 0; i < num; i++) {
             const skippedItem = next();
@@ -514,7 +517,7 @@ export class Seq<T> {
 
       let counter = 0;
 
-      return () => {
+      return (): typeof DONE | T3 => {
         const result1 = next1();
         const result2 = next2();
 
@@ -566,7 +569,7 @@ export class Seq<T> {
 
       let counter = 0;
 
-      return () => {
+      return (): typeof DONE | T4 => {
         const result1 = next1();
         const result2 = next2();
         const result3 = next3();
@@ -620,6 +623,7 @@ export class Seq<T> {
     return this.zip2With(identity, seq2, seq3);
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   public *[Symbol.iterator]() {
     const next = this.createTrampoline_();
 
@@ -685,6 +689,7 @@ export class Seq<T> {
   public frequencies(): Map<T, number> {
     return this.reduce((sum, value) => {
       if (sum.has(value)) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return sum.set(value, sum.get(value)! + 1);
       }
 
@@ -698,6 +703,7 @@ export class Seq<T> {
 
       /* istanbul ignore next */
       if (sum.has(group)) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const currentArray = sum.get(group)!;
         currentArray?.push(item);
         return sum.set(group, currentArray);
@@ -708,10 +714,10 @@ export class Seq<T> {
   }
 
   // Barely public. Do not use.
-  public createTrampoline_() {
+  public createTrampoline_(): () => typeof DONE | T {
     const nextCallback = this.source_();
 
-    return () => {
+    return (): typeof DONE | T => {
       const result = nextCallback();
 
       if (++this.yields_ > Seq.MAX_YIELDS) {

@@ -8,7 +8,7 @@ export function simplex2D(
   seed: number = Date.now()
 ): Seq<number> {
   const noise2D = makeNoise2D(seed);
-  const step = () => noise2D(...fn());
+  const step = (): number => noise2D(...fn());
 
   return iterate(step, step());
 }
@@ -19,7 +19,7 @@ export function simplex3D(
   seed: number = Date.now()
 ): Seq<number> {
   const noise3D = makeNoise3D(seed);
-  const step = () => noise3D(...fn());
+  const step = (): number => noise3D(...fn());
 
   return iterate(step, step());
 }
@@ -30,7 +30,7 @@ export function simplex4D(
   seed: number = Date.now()
 ): Seq<number> {
   const noise4D = makeNoise4D(seed);
-  const step = () => noise4D(...fn());
+  const step = (): number => noise4D(...fn());
 
   return iterate(step, step());
 }

@@ -1,5 +1,4 @@
 import Benchmark from "benchmark";
-// tslint:disable-next-line: no-var-requires
 const benchmarks = require("beautify-benchmark");
 import _ from "lodash";
 import { fromArray, infinite, iterate, range } from "../src/index";

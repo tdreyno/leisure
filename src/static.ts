@@ -5,7 +5,9 @@ export function fromArray<T>(data: T[]): Seq<T> {
   return new Seq(() => {
     const len = data.length;
     let i = 0;
-    return () => (i >= len ? DONE : data[i++]!);
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return (): typeof DONE | T => (i >= len ? DONE : data[i++]!);
   });
 }
 
@@ -14,7 +16,7 @@ export function iterate<T>(fn: (current: T) => T, start: T): Seq<T> {
     let counter = 0;
     let previous: T = start;
 
-    return () => {
+    return (): T => {
       if (counter++ === 0) {
         return start;
       }
@@ -49,7 +51,7 @@ export function range(start: number, end: number, step = 1): Seq<number> {
     let i = 0;
 
     return isForwards
-      ? () => {
+      ? (): typeof DONE | number => {
           const num = start + i;
 
           if (num > end) {
@@ -60,7 +62,7 @@ export function range(start: number, end: number, step = 1): Seq<number> {
 
           return num;
         }
-      : () => {
+      : (): typeof DONE | number => {
           const num = start - i;
 
           if (num < end) {
@@ -79,13 +81,8 @@ export function cycle<T>(items: T[]): Seq<T> {
     const len = items.length;
 
     let i = 0;
-    return () => items[i++ % len];
+    return (): T => items[i++ % len];
   });
-}
-
-/* istanbul ignore next */
-export function repeat<T>(value: T, times = Infinity): Seq<T> {
-  return repeatedly(constant(value), times);
 }
 
 export function repeatedly<T>(
@@ -95,8 +92,13 @@ export function repeatedly<T>(
 ): Seq<T> {
   return new Seq(() => {
     let index = 0;
-    return () => (index++ + 1 > times ? DONE : value());
+    return (): typeof DONE | T => (index++ + 1 > times ? DONE : value());
   });
+}
+
+/* istanbul ignore next */
+export function repeat<T>(value: T, times = Infinity): Seq<T> {
+  return repeatedly(constant(value), times);
 }
 
 export function empty(): Seq<never> {

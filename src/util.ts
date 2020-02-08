@@ -1,5 +1,5 @@
 export function constant<T>(value: T): () => T {
-  return () => value;
+  return (): T => value;
 }
 
 export function identity<T>(x: T): T {
