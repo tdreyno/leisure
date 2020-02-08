@@ -4,6 +4,9 @@
   "main": "build/index.js",
   "typings": "build/index.d.ts",
   "repository": "https://github.com/tdreyno/leisure.git",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "lint": "eslint -c .eslintrc.js --ext .ts src",
     "build": "pika build && yarn compress",
