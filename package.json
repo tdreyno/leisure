@@ -64,6 +64,8 @@
     "@pika/plugin-build-web": "^0.8.1",
     "@pika/plugin-ts-standard-pkg": "^0.8.1",
     "@semantic-release/github": "^7.0.3",
+    "@semantic-release/changelog": "^5.0.0",
+    "@semantic-release/git": "^9.0.0",
     "@types/benchmark": "^1.0.31",
     "@types/jest": "^25.1.2",
     "@types/lodash": "^4.14.149",
@@ -91,8 +93,6 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@semantic-release/changelog": "^5.0.0",
-    "@semantic-release/git": "^9.0.0",
     "open-simplex-noise": "^2.2.0"
   },
   "config": {
