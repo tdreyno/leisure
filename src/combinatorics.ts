@@ -41,9 +41,7 @@ export function cartesianProduct<T, U, V, W, X, Y, Z>(
 export function cartesianProduct<T>(...inputs: T[][]): Seq<T[]> {
   if (inputs.length === 0) {
     return empty();
-  }
-
-  if (inputs.length === 1) {
+  } else if (inputs.length === 1) {
     return of(inputs[0]);
   }
 
