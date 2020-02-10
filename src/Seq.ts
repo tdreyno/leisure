@@ -38,7 +38,6 @@ export class Seq<T> {
       return (): typeof DONE | T[] => {
         const items = head.take(size).toArray();
 
-        /* istanbul ignore next */
         if (!allowPartialWindow && items.length < size) {
           return DONE;
         }
@@ -68,7 +67,6 @@ export class Seq<T> {
   }
 
   public log(): Seq<T> {
-    /* istanbul ignore next */
     return this.tap((v, k) => console.log([k, v]));
   }
 
@@ -163,7 +161,6 @@ export class Seq<T> {
 
       return (): typeof DONE | T => {
         while (true) {
-          /* istanbul ignore next */
           if (nexts.length === 0) {
             return DONE;
           }
@@ -270,7 +267,6 @@ export class Seq<T> {
 
             const item = next();
 
-            /* istanbul ignore next */
             if (item === DONE) {
               return DONE;
             }
@@ -298,7 +294,6 @@ export class Seq<T> {
 
             const item = next();
 
-            /* istanbul ignore next */
             if (item === DONE) {
               return DONE;
             }
@@ -391,7 +386,6 @@ export class Seq<T> {
       return (): typeof DONE | T => {
         const item = next();
 
-        /* istanbul ignore next */
         if (item === DONE) {
           return DONE;
         }
@@ -437,7 +431,6 @@ export class Seq<T> {
         while (true) {
           const item = next();
 
-          /* istanbul ignore next */
           if (item === DONE) {
             return DONE;
           }
@@ -463,7 +456,6 @@ export class Seq<T> {
           for (let i = 0; i < num; i++) {
             const skippedItem = next();
 
-            /* istanbul ignore next */
             if (skippedItem === DONE) {
               return DONE;
             }
@@ -474,7 +466,6 @@ export class Seq<T> {
 
         const item = next();
 
-        /* istanbul ignore next */
         if (item === DONE) {
           return DONE;
         }
@@ -521,29 +512,24 @@ export class Seq<T> {
         const result1 = next1();
         const result2 = next2();
 
-        /* istanbul ignore next */
         if (result1 === DONE && result2 === DONE) {
           return DONE;
         }
 
-        /* istanbul ignore next */
         if (result1 === DONE && result2 !== DONE) {
           return fn([undefined, result2], counter++);
         }
 
-        /* istanbul ignore next */
         if (result1 !== DONE && result2 === DONE) {
           return fn([result1, undefined], counter++);
         }
 
-        /* istanbul ignore next */
         return fn([result1 as T, result2 as T2], counter++);
       };
     });
   }
 
   public zip<T2>(seq2: Seq<T2>): Seq<[T | undefined, T2 | undefined]> {
-    /* istanbul ignore next */
     return this.zipWith(identity, seq2);
   }
 
@@ -574,42 +560,34 @@ export class Seq<T> {
         const result2 = next2();
         const result3 = next3();
 
-        /* istanbul ignore next */
         if (result1 === DONE && result2 === DONE && result3 === DONE) {
           return DONE;
         }
 
-        /* istanbul ignore next */
         if (result1 !== DONE && result2 === DONE && result3 === DONE) {
           return fn([result1, undefined, undefined], counter++);
         }
 
-        /* istanbul ignore next */
         if (result1 !== DONE && result2 !== DONE && result3 === DONE) {
           return fn([result1, result2, undefined], counter++);
         }
 
-        /* istanbul ignore next */
         if (result1 !== DONE && result2 === DONE && result3 !== DONE) {
           return fn([result1, undefined, result3], counter++);
         }
 
-        /* istanbul ignore next */
         if (result1 === DONE && result2 !== DONE && result3 === DONE) {
           return fn([undefined, result2, undefined], counter++);
         }
 
-        /* istanbul ignore next */
         if (result1 === DONE && result2 !== DONE && result3 !== DONE) {
           return fn([undefined, result2, result3], counter++);
         }
 
-        /* istanbul ignore next */
         if (result1 === DONE && result2 === DONE && result3 !== DONE) {
           return fn([undefined, undefined, result3], counter++);
         }
 
-        /* istanbul ignore next */
         return fn([result1 as T, result2 as T2, result3 as T3], counter++);
       };
     });
@@ -619,7 +597,6 @@ export class Seq<T> {
     seq2: Seq<T2>,
     seq3: Seq<T3>
   ): Seq<[T | undefined, T2 | undefined, T3 | undefined]> {
-    /* istanbul ignore next */
     return this.zip2With(identity, seq2, seq3);
   }
 
@@ -701,7 +678,6 @@ export class Seq<T> {
     return this.reduce((sum, item) => {
       const group = fn(item);
 
-      /* istanbul ignore next */
       if (sum.has(group)) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const currentArray = sum.get(group)!;

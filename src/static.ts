@@ -30,7 +30,6 @@ export function iterate<T>(fn: (current: T) => T, start: T): Seq<T> {
 }
 
 export function random(): Seq<number> {
-  /* istanbul ignore next */
   return iterate(() => Math.random(), Math.random());
 }
 
@@ -87,7 +86,7 @@ export function cycle<T>(items: T[]): Seq<T> {
 
 export function repeatedly<T>(
   value: () => T,
-  /* istanbul ignore next */
+
   times = Infinity
 ): Seq<T> {
   return new Seq(() => {
@@ -96,13 +95,11 @@ export function repeatedly<T>(
   });
 }
 
-/* istanbul ignore next */
 export function repeat<T>(value: T, times = Infinity): Seq<T> {
   return repeatedly(constant(value), times);
 }
 
 export function empty(): Seq<never> {
-  /* istanbul ignore next */
   return fromArray([]);
 }
 
@@ -118,7 +115,6 @@ export function zipWith<T1, T2, T3>(
   seq1: Seq<T1>,
   seq2: Seq<T2>
 ): Seq<T3> {
-  /* istanbul ignore next */
   return seq1.zipWith(fn, seq2);
 }
 
@@ -126,7 +122,6 @@ export function zip<T1, T2>(
   seq1: Seq<T1>,
   seq2: Seq<T2>
 ): Seq<[T1 | undefined, T2 | undefined]> {
-  /* istanbul ignore next */
   return zipWith(identity, seq1, seq2);
 }
 
@@ -146,7 +141,6 @@ export function zip3With<T1, T2, T3, T4>(
   seq2: Seq<T2>,
   seq3: Seq<T3>
 ): Seq<T4> {
-  /* istanbul ignore next */
   return seq1.zip2With(fn, seq2, seq3);
 }
 
@@ -155,22 +149,17 @@ export function zip3<T1, T2, T3>(
   seq2: Seq<T2>,
   seq3: Seq<T3>
 ): Seq<[T1 | undefined, T2 | undefined, T3 | undefined]> {
-  /* istanbul ignore next */
   return zip3With(identity, seq1, seq2, seq3);
 }
 
 export function concat<T>(...items: Array<Seq<T>>): Seq<T> {
-  /* istanbul ignore next */
   const [head, ...tail] = items;
 
-  /* istanbul ignore next */
   return head.concat(...tail);
 }
 
 export function interleave<T>(...items: Array<Seq<T>>): Seq<T> {
-  /* istanbul ignore next */
   const [head, ...tail] = items;
 
-  /* istanbul ignore next */
   return head.interleave(...tail);
 }

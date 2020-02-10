@@ -107,7 +107,6 @@ export function powerSet<T>(items: T[]): Seq<Set<T>> {
 
 export function combination<T>(
   items: T[],
-  /* istanbul ignore next */
   size: number = items.length
 ): Seq<T[]> {
   return new Seq(() => {
