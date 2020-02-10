@@ -1,6 +1,6 @@
 {
   "name": "@tdreyno/leisure",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
   "repository": "https://github.com/tdreyno/leisure.git",
