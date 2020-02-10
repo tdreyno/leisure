@@ -1,6 +1,7 @@
 import { DONE, Seq } from "./Seq";
 import { empty, of } from "./static";
 
+export function cartesianProduct(): Seq<never[]>;
 export function cartesianProduct<T>(a: T[]): Seq<T[]>;
 export function cartesianProduct<T, U>(a: T[], b: U[]): Seq<[T, U]>;
 export function cartesianProduct<T, U, V>(
@@ -106,6 +107,7 @@ export function powerSet<T>(items: T[]): Seq<Set<T>> {
 
 export function combination<T>(
   items: T[],
+  /* istanbul ignore next */
   size: number = items.length
 ): Seq<T[]> {
   return new Seq(() => {

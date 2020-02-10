@@ -1,4 +1,4 @@
-import { cycle, iterate, of, range, repeat, repeatedly } from "../static";
+import { cycle, iterate, of, range, repeat, repeatedly, fib } from "../static";
 
 describe("static", () => {
   describe("range", () => {
@@ -72,6 +72,16 @@ describe("static", () => {
         .toArray();
 
       expect(result).toEqual([1, 2, 3, 4]);
+    });
+  });
+
+  describe("fib", () => {
+    test("should lazily generate fibonacci numbers", () => {
+      const result = fib()
+        .take(6)
+        .toArray();
+
+      expect(result).toEqual([0, 1, 1, 2, 3, 5]);
     });
   });
 

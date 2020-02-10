@@ -2,6 +2,18 @@ import { cartesianProduct, combination, powerSet } from "../combinatorics";
 
 describe("combinatorics", () => {
   describe("cartesianProduct", () => {
+    test("should generate 0d product of same type", () => {
+      const result = cartesianProduct().toArray();
+
+      expect(result).toEqual([]);
+    });
+
+    test("should generate 1d product of same type", () => {
+      const result = cartesianProduct(["a", "b"]).toArray();
+
+      expect(result).toEqual([["a", "b"]]);
+    });
+
     test("should generate 2d product of same type", () => {
       const result = cartesianProduct(["a", "b"], ["!", "?"]).toArray();
 
