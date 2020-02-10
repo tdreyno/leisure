@@ -115,6 +115,46 @@ However, if you dig into `leisure`'s helper methods, you'll be able to write mor
 
 [Take a look at the full `leisure` API.](docs/api/instance.md)
 
+## Benchmarks
+
+Lazy data structures should be used knowing what type of data you have and how to make the most of laziness. In general, you want to be searching large sets and either expect to find your result in the process.
+
+**Please take these benchmarks with a grain of salt. Nobody is actually searching massive spaces on the web. Even the worst performance is still far faster than you'd need or notice unless you're doing graphics or crypto.**
+
+These benchmarks search from a random array of 10,000 items.
+
+Run `yarn perf` from the repository to reproduce these numbers.
+
+### Best case (first item is all we need).
+
+| approach | ops per second    |
+| -------- | ----------------- |
+| leisure  | 6,574,041 ops/sec |
+| native   | 18,671 ops/sec    |
+| lodash   | 11,602 ops/sec    |
+
+When we find what we are looking for early, our performance is outstanding.
+
+### middle case (we need to search half the space).
+
+| approach | ops per second |
+| -------- | -------------- |
+| leisure  | 7,011 ops/sec  |
+| native   | 18,897 ops/sec |
+| lodash   | 9,850 ops/sec  |
+
+When the result is in the middle, we are comperable in speed to lodash.
+
+### Worst Case (we search the entire space)
+
+| approach | ops per second |
+| -------- | -------------- |
+| leisure  | 3,304 ops/sec  |
+| native   | 20,487 ops/sec |
+| lodash   | 10,357 ops/sec |
+
+In the absolute worst case, we are 3x as slow as lodash.
+
 ## Prior Art
 
 This library takes inspiration from Lazy Sequences in [Clojure](https://clojure.org/reference/sequences), [Kotlin](https://kotlinlang.org/docs/reference/sequences.html) and [F\#](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/sequences).
