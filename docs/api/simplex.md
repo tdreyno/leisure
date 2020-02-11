@@ -2,8 +2,6 @@
 
 These methods create sequences of simplex noise.
 
-Import from `@tdreyno/leisure/simplex`.
-
 ## simplex2D
 
 Generates a 2d simplex noise.
