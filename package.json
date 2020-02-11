@@ -93,7 +93,8 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "open-simplex-noise": "^2.2.0"
+    "open-simplex-noise": "^2.2.0",
+    "pure-rand": "^2.0.0"
   },
   "config": {
     "commitizen": {

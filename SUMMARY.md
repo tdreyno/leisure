@@ -10,3 +10,4 @@
 - [Instance Methods](docs/api/instance.md)
 - [Simplex Methods](docs/api/simplex.md)
 - [Combinatorial Methods](docs/api/combinatorics.md)
+- [Random Number Generating Methods](docs/api/random.md)

@@ -29,10 +29,6 @@ export function iterate<T>(fn: (current: T) => T, start: T): Seq<T> {
   });
 }
 
-export function random(): Seq<number> {
-  return iterate(() => Math.random(), Math.random());
-}
-
 export function fib(): Seq<number> {
   return iterate<[number, number]>(([a, b]) => [b, a + b], [0, 1]).map(
     ([current]) => current

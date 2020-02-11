@@ -8,7 +8,7 @@ Takes a normal JavaScript array and turns it into a Sequence of the same type.
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<number> = Seq.fromArray([1, 2, 3]);
+const sequence: Seq<number> = fromArray([1, 2, 3]);
 ```
 
 {% endtab %}
@@ -31,7 +31,7 @@ The `iterate` method simplifies the construction of infinite sequences which are
 
 ```typescript
 // Builds an infinite sequence that counts up from 0.
-const sequence: Seq<number> = Seq.iterate(a => a + 1, 0);
+const sequence: Seq<number> = iterate(a => a + 1, 0);
 ```
 
 {% endtab %}
@@ -53,7 +53,7 @@ The `fib` method generates a sequence of fibonacci numbers.
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<number> = Seq.fib();
+const sequence: Seq<number> = fib();
 ```
 
 {% endtab %}
@@ -76,7 +76,7 @@ Generates a random sequence using `Math.random`.
 
 ```typescript
 // Builds sequence of random numbers between 0 and 1.
-const sequence: Seq<number> = Seq.random();
+const sequence: Seq<number> = random();
 ```
 
 {% endtab %}
@@ -99,27 +99,27 @@ Creates a sequence that counts between a start and end value. Takes an optional 
 
 ```typescript
 // Step by 1 from 0 through 10.
-const sequence: Seq<number> = Seq.range(0, 10);
+const sequence: Seq<number> = range(0, 10);
 ```
 
 ```typescript
 // Step by 1 from 0 through Infinity.
-const sequence: Seq<number> = Seq.range(0, Infinity);
+const sequence: Seq<number> = range(0, Infinity);
 ```
 
 ```typescript
 // Step by 1 from -10 through +10.
-const sequence: Seq<number> = Seq.range(-10, 10);
+const sequence: Seq<number> = range(-10, 10);
 ```
 
 ```typescript
 // Step down from +10 through -10.
-const sequence: Seq<number> = Seq.range(10, -10);
+const sequence: Seq<number> = range(10, -10);
 ```
 
 ```typescript
 // Step by 2 from 0 through 10.
-const sequence: Seq<number> = Seq.range(0, 10, 2);
+const sequence: Seq<number> = range(0, 10, 2);
 ```
 
 {% endtab %}
@@ -145,7 +145,7 @@ A sequence that counts from `0` to `Infinity`.
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<number> = Seq.infinite();
+const sequence: Seq<number> = infinite();
 ```
 
 {% endtab %}
@@ -169,7 +169,7 @@ A sequence with only a single value inside. Also known as "singleton."
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<number> = Seq.of(2);
+const sequence: Seq<number> = of(2);
 ```
 
 {% endtab %}
@@ -191,7 +191,7 @@ Create a sequence that is the infinite repetition of a series of values.
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<string> = Seq.cycle(["a", "b", "c"]);
+const sequence: Seq<string> = cycle(["a", "b", "c"]);
 ```
 
 {% endtab %}
@@ -214,12 +214,12 @@ Create a sequence which repeats the same value X number of times. The length of 
 
 ```typescript
 // Creates a sequence of 5 true values.
-const sequence: Seq<boolean> = Seq.repeat(true, 5);
+const sequence: Seq<boolean> = repeat(true, 5);
 ```
 
 ```typescript
 // Creates a sequence of 0 which repeats infinitely.
-const sequence: Seq<number> = Seq.repeat(0);
+const sequence: Seq<number> = repeat(0);
 ```
 
 {% endtab %}
@@ -241,7 +241,7 @@ Creates a sequence which pulls from an impure callback to generate the sequence.
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<Date> = Seq.repeatedly(() => new Date());
+const sequence: Seq<Date> = repeatedly(() => new Date());
 ```
 
 {% endtab %}
@@ -263,7 +263,7 @@ A sequence with nothing in it. Useful as a "no op" for certain code-paths when j
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<never> = Seq.empty();
+const sequence: Seq<never> = empty();
 ```
 
 {% endtab %}
@@ -285,11 +285,11 @@ Takes two sequences and lazily combines them to produce a tuple with the current
 {% tab title="Usage" %}
 
 ```typescript
-const seq1 = Seq.fromArray(["zero", "one", "two", "three"]);
-const seq2 = Seq.range(0, 3);
+const seq1 = fromArray(["zero", "one", "two", "three"]);
+const seq2 = range(0, 3);
 
 // Gives: ["zero", 0] -> ["one", 1] -> ["two", 2] -> ["three", 3]
-const sequence: Seq<[string, number]> = Seq.zip(seq1, seq2);
+const sequence: Seq<[string, number]> = zip(seq1, seq2);
 ```
 
 {% endtab %}
@@ -314,11 +314,11 @@ Takes two sequences and lazily combines them to produce an arbitrary value by ma
 {% tab title="Usage" %}
 
 ```typescript
-const seq1 = Seq.range(0, 3);
-const seq2 = Seq.repeat(2);
+const seq1 = range(0, 3);
+const seq2 = repeat(2);
 
 // Gives: 0 -> 2 -> 4 -> 6
-const sequence: Seq<number> = Seq.zipWith(
+const sequence: Seq<number> = zipWith(
   ([num, multiplier]) => num * multiplier,
   seq1,
   seq2
@@ -351,12 +351,12 @@ Takes three sequences and lazily combines them to produce a 3-tuple with the cur
 {% tab title="Usage" %}
 
 ```typescript
-const seq1 = Seq.fromArray(["zero", "one", "two", "three"]);
-const seq2 = Seq.range(0, 3);
-const seq3 = Seq.range(3, 0);
+const seq1 = fromArray(["zero", "one", "two", "three"]);
+const seq2 = range(0, 3);
+const seq3 = range(3, 0);
 
 // Gives: ["zero", 0, 3] -> ["one", 1, 2] -> ["two", 2, 1] -> ["three", 3, 0]
-const sequence: Seq<[string, number]> = Seq.zip3(seq1, seq2, seq3);
+const sequence: Seq<[string, number]> = zip3(seq1, seq2, seq3);
 ```
 
 {% endtab %}
@@ -382,12 +382,12 @@ Takes three sequences and lazily combines them to produce an arbitrary value by 
 {% tab title="Usage" %}
 
 ```typescript
-const seq1 = Seq.range(0, 3);
-const seq2 = Seq.repeat(2);
-const seq3 = Seq.repeat(1);
+const seq1 = range(0, 3);
+const seq2 = repeat(2);
+const seq3 = repeat(1);
 
 // Gives: 0 -> 2 -> 4 -> 6
-const sequence: Seq<number> = Seq.zip3With(
+const sequence: Seq<number> = zip3With(
   ([num, multiplier, divisor]) => (num * multiplier) / divisor,
   seq1,
   seq2,
@@ -429,10 +429,10 @@ Combines 2 or more sequences into a single sequence.
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<number> = Seq.concat(
-  Seq.fromArray([0, 1]),
-  Seq.fromArray([2, 3]),
-  Seq.fromArray([4, 5])
+const sequence: Seq<number> = concat(
+  fromArray([0, 1]),
+  fromArray([2, 3]),
+  fromArray([4, 5])
 );
 ```
 
@@ -456,9 +456,9 @@ Takes 2 or more sequences and creates a new sequence built by pulling the next v
 
 ```typescript
 // Builds: a -> 1 -> b -> 2 -> c -> 3
-const sequence: Seq<string | number> = Seq.interleave(
-  Seq.fromArray(["a", "b", "c"]),
-  Seq.range(1, 3)
+const sequence: Seq<string | number> = interleave(
+  fromArray(["a", "b", "c"]),
+  range(1, 3)
 );
 ```
 

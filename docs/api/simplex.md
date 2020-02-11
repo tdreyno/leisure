@@ -13,7 +13,7 @@ Generates a 2d simplex noise.
 
 ```typescript
 const SEED = 5;
-const sequence: Seq<number> = Seq.simplex2D((x, y) => x + y, SEED);
+const sequence: Seq<number> = simplex2D((x, y) => x + y, SEED);
 ```
 
 {% endtab %}
@@ -39,7 +39,7 @@ Generates a 3d simplex noise.
 
 ```typescript
 const SEED = 5;
-const sequence: Seq<number> = Seq.simplex3D((x, y, z) => x + y + z, SEED);
+const sequence: Seq<number> = simplex3D((x, y, z) => x + y + z, SEED);
 ```
 
 {% endtab %}
@@ -65,10 +65,7 @@ Generates a 4d simplex noise.
 
 ```typescript
 const SEED = 5;
-const sequence: Seq<number> = Seq.simplex4D(
-  (x, y, z, w) => x + y + z + w,
-  SEED
-);
+const sequence: Seq<number> = simplex4D((x, y, z, w) => x + y + z + w, SEED);
 ```
 
 {% endtab %}
