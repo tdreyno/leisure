@@ -2,6 +2,7 @@
 
 - [Introduction](README.md)
 - [Installation](docs/installation.md)
+- [Changelog](https://github.com/tdreyno/leisure/releases)
 - [F.A.Q.](docs/faq.md)
 
 ## API
