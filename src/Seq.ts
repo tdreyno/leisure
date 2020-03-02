@@ -681,7 +681,7 @@ export class Seq<T> {
       if (sum.has(group)) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const currentArray = sum.get(group)!;
-        currentArray?.push(item);
+        currentArray.push(item);
         return sum.set(group, currentArray);
       }
 
