@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import Benchmark from "benchmark";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const benchmarks = require("beautify-benchmark");
 import _ from "lodash";
-import { fromArray, infinite, iterate, range } from "../src/index";
+import { fromArray, infinite, iterate, range } from "../index";
 
 // const inc = (x: number) => x + 1;
 // const dec = (x: number) => x - 1;
@@ -32,12 +35,12 @@ const lotsOfNumbers = infinite()
   .take(10000)
   .toArray();
 
-function bench(
+const bench = (
   name: string,
   leisure?: () => any,
   native?: () => any,
   lodash?: () => any
-) {
+) => {
   const suite = new Benchmark.Suite(name);
 
   if (leisure) {
@@ -56,7 +59,7 @@ function bench(
     .on("cycle", (event: Event) => benchmarks.add(event.target))
     .on("complete", () => benchmarks.log())
     .run({ async: false });
-}
+};
 
 bench(
   "map (best case)",

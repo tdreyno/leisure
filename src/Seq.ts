@@ -1,4 +1,4 @@
-import { identity } from "./util";
+import { identity } from "@tdreyno/figment";
 
 export const DONE = Symbol();
 

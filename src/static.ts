@@ -1,5 +1,5 @@
 import { DONE, Seq } from "./Seq";
-import { constant, identity } from "./util";
+import { constant, identity } from "@tdreyno/figment";
 
 export function fromArray<T>(data: T[]): Seq<T> {
   return new Seq(() => {
