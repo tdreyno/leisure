@@ -1440,10 +1440,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@tdreyno/figment@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@tdreyno/figment/-/figment-1.0.0.tgz#10c57ed7123747649a17c1fd2493498eb84b3808"
-  integrity sha512-Usix8nnxagpuo1K4C22TkLA30wFOkcZguIOM/KK1iP+GtCtZNaCHpcBecPnBqMfchP5ClxvisiWbY1fdeL2Qwg==
+"@tdreyno/figment@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@tdreyno/figment/-/figment-1.1.0.tgz#cd04cfd4cf39d7f66529011bb269cac0ff13e077"
+  integrity sha512-MtY7JnHGWXXbNMhu3fevUEqYw6FJ+QH7ev9wB3kem9dcaaUw2b3kYpIxTsc+n7PjmWmhMHdzBn5Li8lzs8+WPg==
 
 "@tootallnate/once@1":
   version "1.0.0"
