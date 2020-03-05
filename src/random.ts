@@ -1,10 +1,10 @@
-import prand, { RandomGenerator } from "pure-rand";
-import { Seq } from "./Seq";
-import { iterate } from "./static";
+import prand, { RandomGenerator } from "pure-rand"
+import { iterate } from "./static"
+import { first } from "@tdreyno/figment"
 
-const DEFAULT_SEED = 5;
+const DEFAULT_SEED = 5
 
-function prandWrapper_(
+const prandWrapper_ = (
   generator:
     | typeof prand.xorshift128plus
     | typeof prand.xoroshiro128plus
@@ -12,35 +12,26 @@ function prandWrapper_(
     | typeof prand.congruential
     | typeof prand.congruential32,
   seed: number
-): Seq<number> {
-  const gen1 = generator(seed);
-
-  return iterate<[number, RandomGenerator]>(
+) =>
+  iterate<[number, RandomGenerator]>(
     ([, gen]) => gen.next(),
-    gen1.next()
-  ).map(([num]) => num);
-}
+    generator(seed).next()
+  ).map(first)
 
-export function random(seed = DEFAULT_SEED): Seq<number> {
-  return prandWrapper_(prand.mersenne, seed);
-}
+export const random = (seed = DEFAULT_SEED) =>
+  prandWrapper_(prand.mersenne, seed)
 
-export function xorshift128plus(seed = DEFAULT_SEED): Seq<number> {
-  return prandWrapper_(prand.xorshift128plus, seed);
-}
+export const xorshift128plus = (seed = DEFAULT_SEED) =>
+  prandWrapper_(prand.xorshift128plus, seed)
 
-export function xoroshiro128plus(seed = DEFAULT_SEED): Seq<number> {
-  return prandWrapper_(prand.xoroshiro128plus, seed);
-}
+export const xoroshiro128plus = (seed = DEFAULT_SEED) =>
+  prandWrapper_(prand.xoroshiro128plus, seed)
 
-export function mersenne(seed = DEFAULT_SEED): Seq<number> {
-  return prandWrapper_(prand.mersenne, seed);
-}
+export const mersenne = (seed = DEFAULT_SEED) =>
+  prandWrapper_(prand.mersenne, seed)
 
-export function congruential(seed = DEFAULT_SEED): Seq<number> {
-  return prandWrapper_(prand.congruential, seed);
-}
+export const congruential = (seed = DEFAULT_SEED) =>
+  prandWrapper_(prand.congruential, seed)
 
-export function congruential32(seed = DEFAULT_SEED): Seq<number> {
-  return prandWrapper_(prand.congruential32, seed);
-}
+export const congruential32 = (seed = DEFAULT_SEED) =>
+  prandWrapper_(prand.congruential32, seed)

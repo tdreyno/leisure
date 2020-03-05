@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import Benchmark from "benchmark";
+import Benchmark from "benchmark"
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const benchmarks = require("beautify-benchmark");
-import _ from "lodash";
-import { fromArray, infinite, iterate, range } from "../index";
+const benchmarks = require("beautify-benchmark")
+import _ from "lodash"
+import { fromArray, infinite, iterate, range } from "../index"
 
 // const inc = (x: number) => x + 1;
 // const dec = (x: number) => x - 1;
-const square = (x: number) => x * x;
-const isEven = (x: number) => x % 2 === 0;
+const square = (x: number) => x * x
+const isEven = (x: number) => x % 2 === 0
 // const identity = <T>(x: T) => x;
-const arr = (from: number, to: number) => range(from, to).toArray();
+const arr = (from: number, to: number) => range(from, to).toArray()
 const rand = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min) + min);
+  Math.floor(Math.random() * (max - min) + min)
 const dupes = (min: number, max: number, count: number) =>
   iterate(() => rand(min, max), rand(min, max))
     .take(count)
-    .toArray();
+    .toArray()
 
 const jaggedArray = [
   [1, 2, 3],
@@ -29,11 +29,11 @@ const jaggedArray = [
   [29, 30],
   [31, 32, 33],
   [34, 35]
-];
+]
 
 const lotsOfNumbers = infinite()
   .take(10000)
-  .toArray();
+  .toArray()
 
 const bench = (
   name: string,
@@ -41,25 +41,25 @@ const bench = (
   native?: () => any,
   lodash?: () => any
 ) => {
-  const suite = new Benchmark.Suite(name);
+  const suite = new Benchmark.Suite(name)
 
   if (leisure) {
-    suite.add(name + ":leisure", leisure);
+    suite.add(name + ":leisure", leisure)
   }
 
   if (native) {
-    suite.add(name + ":native", native);
+    suite.add(name + ":native", native)
   }
 
   if (lodash) {
-    suite.add(name + ":lodash", lodash);
+    suite.add(name + ":lodash", lodash)
   }
 
   return suite
     .on("cycle", (event: Event) => benchmarks.add(event.target))
     .on("complete", () => benchmarks.log())
-    .run({ async: false });
-};
+    .run({ async: false })
+}
 
 bench(
   "map (best case)",
@@ -69,7 +69,7 @@ bench(
       .first(),
   () => lotsOfNumbers.map(square),
   () => _.map(lotsOfNumbers, square)
-);
+)
 
 bench(
   "map (middle case)",
@@ -79,7 +79,7 @@ bench(
       .nth(5000),
   () => lotsOfNumbers.map(square),
   () => _.map(lotsOfNumbers, square)
-);
+)
 
 bench(
   "map (worth case)",
@@ -89,7 +89,7 @@ bench(
       .nth(10000),
   () => lotsOfNumbers.map(square),
   () => _.map(lotsOfNumbers, square)
-);
+)
 
 bench(
   "filter",
@@ -99,7 +99,7 @@ bench(
       .first(),
   () => lotsOfNumbers.filter(isEven),
   () => _.filter(lotsOfNumbers, isEven)
-);
+)
 
 bench(
   "flat",
@@ -109,9 +109,9 @@ bench(
       .first(),
   () => (jaggedArray as any).flat(),
   () => _.flatten(jaggedArray)
-);
+)
 
-const halfDupes = dupes(0, 50, 100);
+const halfDupes = dupes(0, 50, 100)
 bench(
   "distinct",
   () =>
@@ -120,10 +120,10 @@ bench(
       .first(),
   undefined,
   () => _.uniq(halfDupes)
-);
+)
 
-const firstConcatArray = arr(0, 100);
-const secondConcatArray = arr(50, 150);
+const firstConcatArray = arr(0, 100)
+const secondConcatArray = arr(50, 150)
 bench(
   "concat",
   () =>
@@ -132,4 +132,4 @@ bench(
       .first(),
   () => firstConcatArray.concat(secondConcatArray),
   () => _.concat(firstConcatArray, secondConcatArray)
-);
+)

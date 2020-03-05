@@ -1,127 +1,100 @@
-import { DONE, Seq } from "./Seq";
-import { constant, identity } from "@tdreyno/figment";
+import { DONE, Seq } from "./Seq"
+import { constant, identity, first } from "@tdreyno/figment"
 
-export function fromArray<T>(data: T[]): Seq<T> {
-  return new Seq(() => {
-    const len = data.length;
-    let i = 0;
+export const fromArray = <T>(data: T[]) =>
+  new Seq(() => {
+    const len = data.length
+    let i = 0
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return (): typeof DONE | T => (i >= len ? DONE : data[i++]!);
-  });
-}
+    return (): typeof DONE | T => (i >= len ? DONE : data[i++]!)
+  })
 
-export function iterate<T>(fn: (current: T) => T, start: T): Seq<T> {
-  return new Seq(() => {
-    let counter = 0;
-    let previous: T = start;
+export const iterate = <T>(fn: (current: T) => T, start: T) =>
+  new Seq(() => {
+    let counter = 0
+    let previous: T = start
 
     return (): T => {
       if (counter++ === 0) {
-        return start;
+        return start
       }
 
-      previous = fn(previous);
-      counter++;
+      previous = fn(previous)
+      counter++
 
-      return previous;
-    };
-  });
-}
+      return previous
+    }
+  })
 
-export function fib(): Seq<number> {
-  return iterate<[number, number]>(([a, b]) => [b, a + b], [0, 1]).map(
-    ([current]) => current
-  );
-}
+export const fib = () => iterate(([a, b]) => [b, a + b], [0, 1]).map(first)
 
-export function of<T>(...values: T[]): Seq<T> {
-  return fromArray(values);
-}
+export const of = <T>(head: T, ...values: T[]) => fromArray([head, ...values])
 
-export function range(start: number, end: number, step = 1): Seq<number> {
-  const isForwards = start < end;
-
-  return new Seq(() => {
-    let i = 0;
+export const range = (start: number, end: number, step = 1) =>
+  new Seq(() => {
+    const isForwards = start < end
+    let i = 0
 
     return isForwards
       ? (): typeof DONE | number => {
-          const num = start + i;
+          const num = start + i
 
           if (num > end) {
-            return DONE;
+            return DONE
           }
 
-          i += step;
+          i += step
 
-          return num;
+          return num
         }
       : (): typeof DONE | number => {
-          const num = start - i;
+          const num = start - i
 
           if (num < end) {
-            return DONE;
+            return DONE
           }
 
-          i += step;
+          i += step
 
-          return num;
-        };
-  });
-}
+          return num
+        }
+  })
 
-export function cycle<T>(items: T[]): Seq<T> {
-  return new Seq<T>(() => {
-    const len = items.length;
+export const cycle = <T>(items: T[]) =>
+  new Seq(() => {
+    const len = items.length
+    let i = 0
 
-    let i = 0;
-    return (): T => items[i++ % len];
-  });
-}
+    return (): T => items[i++ % len]
+  })
 
-export function repeatedly<T>(
-  value: () => T,
+export const repeatedly = <T>(value: () => T, times = Infinity) =>
+  new Seq(() => {
+    let index = 0
+    return (): typeof DONE | T => (index++ + 1 > times ? DONE : value())
+  })
 
-  times = Infinity
-): Seq<T> {
-  return new Seq(() => {
-    let index = 0;
-    return (): typeof DONE | T => (index++ + 1 > times ? DONE : value());
-  });
-}
+export const repeat = <T>(value: T, times = Infinity) =>
+  repeatedly(constant(value), times)
 
-export function repeat<T>(value: T, times = Infinity): Seq<T> {
-  return repeatedly(constant(value), times);
-}
+export const empty = () => fromArray([])
 
-export function empty(): Seq<never> {
-  return fromArray([]);
-}
+export const infinite = () => range(0, Infinity)
 
-export function infinite(): Seq<number> {
-  return range(0, Infinity);
-}
-
-export function zipWith<T1, T2, T3>(
+export const zipWith = <T1, T2, T3>(
   fn: (
     [result1, result2]: [T1, T2] | [T1, undefined] | [undefined, T2],
     index: number
   ) => T3,
   seq1: Seq<T1>,
   seq2: Seq<T2>
-): Seq<T3> {
-  return seq1.zipWith(fn, seq2);
-}
+) => seq1.zipWith(fn, seq2)
 
-export function zip<T1, T2>(
-  seq1: Seq<T1>,
-  seq2: Seq<T2>
-): Seq<[T1 | undefined, T2 | undefined]> {
-  return zipWith(identity, seq1, seq2);
-}
+export const zip = <T1, T2>(seq1: Seq<T1>, seq2: Seq<T2>) =>
+  zipWith(identity, seq1, seq2)
 
-export function zip3With<T1, T2, T3, T4>(
+export const zip3With = <T1, T2, T3, T4>(
   fn: (
     [result1, result2, resul3]:
       | [T1, T2, T3]
@@ -136,26 +109,13 @@ export function zip3With<T1, T2, T3, T4>(
   seq1: Seq<T1>,
   seq2: Seq<T2>,
   seq3: Seq<T3>
-): Seq<T4> {
-  return seq1.zip2With(fn, seq2, seq3);
-}
+) => seq1.zip2With(fn, seq2, seq3)
 
-export function zip3<T1, T2, T3>(
-  seq1: Seq<T1>,
-  seq2: Seq<T2>,
-  seq3: Seq<T3>
-): Seq<[T1 | undefined, T2 | undefined, T3 | undefined]> {
-  return zip3With(identity, seq1, seq2, seq3);
-}
+export const zip3 = <T1, T2, T3>(seq1: Seq<T1>, seq2: Seq<T2>, seq3: Seq<T3>) =>
+  zip3With(identity, seq1, seq2, seq3)
 
-export function concat<T>(...items: Array<Seq<T>>): Seq<T> {
-  const [head, ...tail] = items;
+export const concat = <T>(head: Seq<T>, ...remaining: Array<Seq<T>>) =>
+  head.concat(...remaining)
 
-  return head.concat(...tail);
-}
-
-export function interleave<T>(...items: Array<Seq<T>>): Seq<T> {
-  const [head, ...tail] = items;
-
-  return head.interleave(...tail);
-}
+export const interleave = <T>(head: Seq<T>, ...remaining: Array<Seq<T>>) =>
+  head.interleave(...remaining)

@@ -1,33 +1,33 @@
-import { makeNoise2D, makeNoise3D, makeNoise4D } from "open-simplex-noise";
-import { Seq } from "./Seq";
-import { iterate } from "./static";
+import { makeNoise2D, makeNoise3D, makeNoise4D } from "open-simplex-noise"
+import { Seq } from "./Seq"
+import { iterate } from "./static"
 
-export function simplex2D(
+export const simplex2D = (
   fn: () => [number, number],
   seed: number = Date.now()
-): Seq<number> {
-  const noise2D = makeNoise2D(seed);
-  const step = (): number => noise2D(...fn());
+) => {
+  const noise2D = makeNoise2D(seed)
+  const step = (): number => noise2D(...fn())
 
-  return iterate(step, step());
+  return iterate(step, step())
 }
 
-export function simplex3D(
+export const simplex3D = (
   fn: () => [number, number, number],
   seed: number = Date.now()
-): Seq<number> {
-  const noise3D = makeNoise3D(seed);
-  const step = (): number => noise3D(...fn());
+) => {
+  const noise3D = makeNoise3D(seed)
+  const step = (): number => noise3D(...fn())
 
-  return iterate(step, step());
+  return iterate(step, step())
 }
 
-export function simplex4D(
+export const simplex4D = (
   fn: () => [number, number, number, number],
   seed: number = Date.now()
-): Seq<number> {
-  const noise4D = makeNoise4D(seed);
-  const step = (): number => noise4D(...fn());
+): Seq<number> => {
+  const noise4D = makeNoise4D(seed)
+  const step = (): number => noise4D(...fn())
 
-  return iterate(step, step());
+  return iterate(step, step())
 }
