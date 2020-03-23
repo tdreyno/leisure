@@ -133,12 +133,7 @@ describe("Seq", () => {
   describe("concat", () => {
     test("should concat multiple sequences on to the first", () => {
       const result = fromArray([1, 2, 3])
-        .concat(
-          infinite()
-            .skip(4)
-            .take(2),
-          fromArray([6, 7, 8])
-        )
+        .concat(infinite().skip(4).take(2), fromArray([6, 7, 8]))
         .take(8)
         .toArray()
 
@@ -173,8 +168,8 @@ describe("Seq", () => {
         new Map([
           [1, 3], // 3 occurances of value 1
           [2, 2], // 2 occurances of value 2
-          [3, 1] /// 1 occurance  of value 3
-        ])
+          [3, 1], /// 1 occurance  of value 3
+        ]),
       )
     })
   })
@@ -198,7 +193,7 @@ describe("Seq", () => {
         -3000,
         97,
         3,
-        4
+        4,
       ])
     })
   })
@@ -244,9 +239,7 @@ describe("Seq", () => {
     test("should detect if a sequence includes a value", () => {
       const cb = jest.fn()
 
-      const result = infinite()
-        .tap(cb)
-        .includes(3)
+      const result = infinite().tap(cb).includes(3)
 
       expect(result).toEqual(true)
       expect(cb).toHaveBeenCalledTimes(4)
@@ -297,9 +290,7 @@ describe("Seq", () => {
 
   describe("sum", () => {
     test("should be able to sum a sequence of numbers", () => {
-      const result = infinite()
-        .take(4)
-        .sum()
+      const result = infinite().take(4).sum()
 
       expect(result).toEqual(6)
     })
@@ -311,7 +302,7 @@ describe("Seq", () => {
         { data: 0 },
         { data: 1 },
         { data: 2 },
-        { data: 3 }
+        { data: 3 },
       ])
         .take(4)
         .sumBy(obj => obj.data)
@@ -322,9 +313,7 @@ describe("Seq", () => {
 
   describe("average", () => {
     test("should be able to average a sequence of numbers", () => {
-      const result = infinite()
-        .take(4)
-        .average()
+      const result = infinite().take(4).average()
 
       expect(result).toEqual(1.5)
     })
@@ -336,7 +325,7 @@ describe("Seq", () => {
         { data: 0 },
         { data: 1 },
         { data: 2 },
-        { data: 3 }
+        { data: 3 },
       ])
         .take(4)
         .averageBy(obj => obj.data)
@@ -354,24 +343,21 @@ describe("Seq", () => {
       expect(result).toEqual(
         new Map([
           ["even", [0, 2, 4, 6]],
-          ["odd", [1, 3, 5, 7]]
-        ])
+          ["odd", [1, 3, 5, 7]],
+        ]),
       )
     })
   })
 
   describe("zip", () => {
     test("should combine two sequences", () => {
-      const result = infinite()
-        .zip(infinite())
-        .take(4)
-        .toArray()
+      const result = infinite().zip(infinite()).take(4).toArray()
 
       expect(result).toEqual([
         [0, 0],
         [1, 1],
         [2, 2],
-        [3, 3]
+        [3, 3],
       ])
     })
   })
@@ -382,7 +368,7 @@ describe("Seq", () => {
         .zipWith(
           ([result1, result2]) =>
             result1 && result2 ? result1 + result2 : -1000,
-          fromArray([10, 20])
+          fromArray([10, 20]),
         )
         .take(4)
         .toArray()
@@ -395,7 +381,7 @@ describe("Seq", () => {
         .zipWith(
           ([result1, result2]) =>
             result1 && result2 ? result1 + result2 : -1000,
-          fromArray([10, 20, 30])
+          fromArray([10, 20, 30]),
         )
         .take(4)
         .toArray()
@@ -411,7 +397,7 @@ describe("Seq", () => {
           ([result1, result2, result3]) =>
             result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
           fromArray([10, 20]),
-          fromArray([5, 10])
+          fromArray([5, 10]),
         )
         .take(4)
         .toArray()
@@ -425,7 +411,7 @@ describe("Seq", () => {
           ([result1, result2, result3]) =>
             result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
           fromArray([10, 20, 30]),
-          fromArray([5, 10])
+          fromArray([5, 10]),
         )
         .take(4)
         .toArray()
@@ -439,7 +425,7 @@ describe("Seq", () => {
           ([result1, result2, result3]) =>
             result1 && result2 && result3 ? result1 + result2 + result3 : -1000,
           fromArray([10, 20]),
-          fromArray([5, 10, 15])
+          fromArray([5, 10, 15]),
         )
         .take(4)
         .toArray()
@@ -525,15 +511,11 @@ describe("Seq", () => {
     test("should group sequence into groups of N", () => {
       const cb = jest.fn()
 
-      const result = infinite()
-        .tap(cb)
-        .window(4)
-        .take(2)
-        .toArray()
+      const result = infinite().tap(cb).window(4).take(2).toArray()
 
       expect(result).toEqual([
         [0, 1, 2, 3],
-        [4, 5, 6, 7]
+        [4, 5, 6, 7],
       ])
     })
   })
@@ -542,16 +524,12 @@ describe("Seq", () => {
     test("should group sequence into groups of 2", () => {
       const cb = jest.fn()
 
-      const result = infinite()
-        .tap(cb)
-        .pairwise()
-        .take(3)
-        .toArray()
+      const result = infinite().tap(cb).pairwise().take(3).toArray()
 
       expect(result).toEqual([
         [0, 1],
         [2, 3],
-        [4, 5]
+        [4, 5],
       ])
     })
   })
@@ -563,11 +541,7 @@ describe("Seq", () => {
     test("should throw when running infinitely", () => {
       const cb = jest.fn()
 
-      expect(() =>
-        infinite()
-          .tap(cb)
-          .toArray()
-      ).toThrow()
+      expect(() => infinite().tap(cb).toArray()).toThrow()
 
       expect(cb).toHaveBeenCalledTimes(Seq.MAX_YIELDS)
     })

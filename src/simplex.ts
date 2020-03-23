@@ -4,7 +4,7 @@ import { iterate } from "./static"
 
 export const simplex2D = (
   fn: () => [number, number],
-  seed: number = Date.now()
+  seed: number = Date.now(),
 ) => {
   const noise2D = makeNoise2D(seed)
   const step = (): number => noise2D(...fn())
@@ -14,7 +14,7 @@ export const simplex2D = (
 
 export const simplex3D = (
   fn: () => [number, number, number],
-  seed: number = Date.now()
+  seed: number = Date.now(),
 ) => {
   const noise3D = makeNoise3D(seed)
   const step = (): number => noise3D(...fn())
@@ -24,7 +24,7 @@ export const simplex3D = (
 
 export const simplex4D = (
   fn: () => [number, number, number, number],
-  seed: number = Date.now()
+  seed: number = Date.now(),
 ): Seq<number> => {
   const noise4D = makeNoise4D(seed)
   const step = (): number => noise4D(...fn())

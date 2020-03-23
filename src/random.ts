@@ -11,11 +11,11 @@ const prandWrapper_ = (
     | typeof prand.mersenne
     | typeof prand.congruential
     | typeof prand.congruential32,
-  seed: number
+  seed: number,
 ) =>
   iterate<[number, RandomGenerator]>(
     ([, gen]) => gen.next(),
-    generator(seed).next()
+    generator(seed).next(),
   ).map(first)
 
 export const random = (seed = DEFAULT_SEED) =>

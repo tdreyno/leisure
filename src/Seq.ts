@@ -130,7 +130,7 @@ export class Seq<T> {
     return new Seq(() => {
       const nexts = [
         this.createTrampoline_(),
-        ...tail.map(s => s.createTrampoline_())
+        ...tail.map(s => s.createTrampoline_()),
       ]
 
       return (): typeof DONE | T => {
@@ -234,7 +234,7 @@ export class Seq<T> {
   }
 
   public partitionBy(
-    fn: (value: T, index: number) => unknown
+    fn: (value: T, index: number) => unknown,
   ): [Seq<T>, Seq<T>] {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this
@@ -305,7 +305,7 @@ export class Seq<T> {
             }
           }
         }
-      })
+      }),
     ]
   }
 
@@ -498,9 +498,9 @@ export class Seq<T> {
   public zipWith<T2, T3>(
     fn: (
       [result1, result2]: [T, T2] | [T, undefined] | [undefined, T2],
-      index: number
+      index: number,
     ) => T3,
-    seq2: Seq<T2>
+    seq2: Seq<T2>,
   ): Seq<T3> {
     return new Seq(() => {
       const next1 = this.createTrampoline_()
@@ -543,10 +543,10 @@ export class Seq<T> {
         | [undefined, T2, undefined]
         | [undefined, T2, T3]
         | [undefined, undefined, T3],
-      index: number
+      index: number,
     ) => T4,
     seq2: Seq<T2>,
-    seq3: Seq<T3>
+    seq3: Seq<T3>,
   ): Seq<T4> {
     return new Seq(() => {
       const next1 = this.createTrampoline_()
@@ -595,7 +595,7 @@ export class Seq<T> {
 
   public zip2<T2, T3>(
     seq2: Seq<T2>,
-    seq3: Seq<T3>
+    seq3: Seq<T3>,
   ): Seq<[T | undefined, T2 | undefined, T3 | undefined]> {
     return this.zip2With(identity, seq2, seq3)
   }
@@ -697,7 +697,7 @@ export class Seq<T> {
 
       if (++this.yields_ > Seq.MAX_YIELDS) {
         throw new Error(
-          `Seq has yielded ${this.yields_} times. If this is okay, set Seq.MAX_YIELDS to a higher number (currently ${Seq.MAX_YIELDS}).`
+          `Seq has yielded ${this.yields_} times. If this is okay, set Seq.MAX_YIELDS to a higher number (currently ${Seq.MAX_YIELDS}).`,
         )
       }
 

@@ -21,7 +21,7 @@ describe("combinatorics", () => {
         ["a", "!"],
         ["a", "?"],
         ["b", "!"],
-        ["b", "?"]
+        ["b", "?"],
       ])
     })
 
@@ -29,7 +29,7 @@ describe("combinatorics", () => {
       const result = cartesianProduct(
         ["a", "b"],
         [1, 2],
-        [true, false]
+        [true, false],
       ).toArray()
 
       expect(result).toEqual([
@@ -40,7 +40,7 @@ describe("combinatorics", () => {
         ["b", 1, true],
         ["b", 1, false],
         ["b", 2, true],
-        ["b", 2, false]
+        ["b", 2, false],
       ])
     })
   })
@@ -57,7 +57,7 @@ describe("combinatorics", () => {
         new Set(["c"]),
         new Set(["a", "c"]),
         new Set(["b", "c"]),
-        new Set(["a", "b", "c"])
+        new Set(["a", "b", "c"]),
       ])
     })
   })
@@ -72,7 +72,7 @@ describe("combinatorics", () => {
         ["a", "d"],
         ["b", "c"],
         ["b", "d"],
-        ["c", "d"]
+        ["c", "d"],
       ])
     })
 

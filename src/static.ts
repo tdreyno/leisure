@@ -85,10 +85,10 @@ export const infinite = () => range(0, Infinity)
 export const zipWith = <T1, T2, T3>(
   fn: (
     [result1, result2]: [T1, T2] | [T1, undefined] | [undefined, T2],
-    index: number
+    index: number,
   ) => T3,
   seq1: Seq<T1>,
-  seq2: Seq<T2>
+  seq2: Seq<T2>,
 ) => seq1.zipWith(fn, seq2)
 
 export const zip = <T1, T2>(seq1: Seq<T1>, seq2: Seq<T2>) =>
@@ -104,11 +104,11 @@ export const zip3With = <T1, T2, T3, T4>(
       | [undefined, T2, undefined]
       | [undefined, T2, T3]
       | [undefined, undefined, T3],
-    index: number
+    index: number,
   ) => T4,
   seq1: Seq<T1>,
   seq2: Seq<T2>,
-  seq3: Seq<T3>
+  seq3: Seq<T3>,
 ) => seq1.zip2With(fn, seq2, seq3)
 
 export const zip3 = <T1, T2, T3>(seq1: Seq<T1>, seq2: Seq<T2>, seq3: Seq<T3>) =>

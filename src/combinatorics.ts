@@ -7,20 +7,20 @@ export function cartesianProduct<T, U>(a: T[], b: U[]): Seq<[T, U]>
 export function cartesianProduct<T, U, V>(
   a: T[],
   b: U[],
-  c: V[]
+  c: V[],
 ): Seq<[T, U, V]>
 export function cartesianProduct<T, U, V, W>(
   a: T[],
   b: U[],
   c: V[],
-  d: W[]
+  d: W[],
 ): Seq<[T, U, V, W]>
 export function cartesianProduct<T, U, V, W, X>(
   a: T[],
   b: U[],
   c: V[],
   d: W[],
-  e: X[]
+  e: X[],
 ): Seq<[T, U, V, W, X]>
 export function cartesianProduct<T, U, V, W, X, Y>(
   a: T[],
@@ -28,7 +28,7 @@ export function cartesianProduct<T, U, V, W, X, Y>(
   c: V[],
   d: W[],
   e: X[],
-  f: Y[]
+  f: Y[],
 ): Seq<[T, U, V, W, X, Y]>
 export function cartesianProduct<T, U, V, W, X, Y, Z>(
   a: T[],
@@ -37,7 +37,7 @@ export function cartesianProduct<T, U, V, W, X, Y, Z>(
   d: W[],
   e: X[],
   f: Y[],
-  g: Z[]
+  g: Z[],
 ): Seq<[T, U, V, W, X, Y, Z]>
 export function cartesianProduct<T>(...inputs: T[][]): Seq<T[]> {
   if (inputs.length === 0) {
@@ -105,7 +105,7 @@ export const powerSet = <T>(items: T[]): Seq<Set<T>> =>
 
 export const combination = <T>(
   items: T[],
-  size: number = items.length
+  size: number = items.length,
 ): Seq<T[]> =>
   new Seq(() => {
     const indexes: number[] = []

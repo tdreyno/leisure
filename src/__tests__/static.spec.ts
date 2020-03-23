@@ -5,10 +5,7 @@ describe("static", () => {
     test("should lazily pull from the range that increases", () => {
       const cb = jest.fn()
 
-      const result = range(-2, 2)
-        .tap(cb)
-        .take(4)
-        .toArray()
+      const result = range(-2, 2).tap(cb).take(4).toArray()
 
       expect(result).toEqual([-2, -1, 0, 1])
       expect(cb).toHaveBeenCalledTimes(4)
@@ -17,10 +14,7 @@ describe("static", () => {
     test("should lazily pull from the range that increases by step", () => {
       const cb = jest.fn()
 
-      const result = range(-2, 2, 2)
-        .tap(cb)
-        .take(3)
-        .toArray()
+      const result = range(-2, 2, 2).tap(cb).take(3).toArray()
 
       expect(result).toEqual([-2, 0, 2])
       expect(cb).toHaveBeenCalledTimes(3)
@@ -29,10 +23,7 @@ describe("static", () => {
     test("should lazily pull from the range that decreases", () => {
       const cb = jest.fn()
 
-      const result = range(2, -2)
-        .tap(cb)
-        .take(4)
-        .toArray()
+      const result = range(2, -2).tap(cb).take(4).toArray()
 
       expect(result).toEqual([2, 1, 0, -1])
       expect(cb).toHaveBeenCalledTimes(4)
@@ -41,10 +32,7 @@ describe("static", () => {
     test("should lazily pull from the range that decreases by step", () => {
       const cb = jest.fn()
 
-      const result = range(2, -2, 2)
-        .tap(cb)
-        .take(3)
-        .toArray()
+      const result = range(2, -2, 2).tap(cb).take(3).toArray()
 
       expect(result).toEqual([2, 0, -2])
       expect(cb).toHaveBeenCalledTimes(3)
@@ -77,9 +65,7 @@ describe("static", () => {
 
   describe("fib", () => {
     test("should lazily generate fibonacci numbers", () => {
-      const result = fib()
-        .take(6)
-        .toArray()
+      const result = fib().take(6).toArray()
 
       expect(result).toEqual([0, 1, 1, 2, 3, 5])
     })
@@ -87,9 +73,7 @@ describe("static", () => {
 
   describe("cycle", () => {
     test("should infinitely repeat an array of values", () => {
-      const result = cycle([1, 2, 3])
-        .take(7)
-        .toArray()
+      const result = cycle([1, 2, 3]).take(7).toArray()
 
       expect(result).toEqual([1, 2, 3, 1, 2, 3, 1])
     })

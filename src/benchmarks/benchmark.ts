@@ -28,18 +28,16 @@ const jaggedArray = [
   [28],
   [29, 30],
   [31, 32, 33],
-  [34, 35]
+  [34, 35],
 ]
 
-const lotsOfNumbers = infinite()
-  .take(10000)
-  .toArray()
+const lotsOfNumbers = infinite().take(10000).toArray()
 
 const bench = (
   name: string,
   leisure?: () => any,
   native?: () => any,
-  lodash?: () => any
+  lodash?: () => any,
 ) => {
   const suite = new Benchmark.Suite(name)
 
@@ -63,63 +61,45 @@ const bench = (
 
 bench(
   "map (best case)",
-  () =>
-    fromArray(lotsOfNumbers)
-      .map(square)
-      .first(),
+  () => fromArray(lotsOfNumbers).map(square).first(),
   () => lotsOfNumbers.map(square),
-  () => _.map(lotsOfNumbers, square)
+  () => _.map(lotsOfNumbers, square),
 )
 
 bench(
   "map (middle case)",
-  () =>
-    fromArray(lotsOfNumbers)
-      .map(square)
-      .nth(5000),
+  () => fromArray(lotsOfNumbers).map(square).nth(5000),
   () => lotsOfNumbers.map(square),
-  () => _.map(lotsOfNumbers, square)
+  () => _.map(lotsOfNumbers, square),
 )
 
 bench(
   "map (worth case)",
-  () =>
-    fromArray(lotsOfNumbers)
-      .map(square)
-      .nth(10000),
+  () => fromArray(lotsOfNumbers).map(square).nth(10000),
   () => lotsOfNumbers.map(square),
-  () => _.map(lotsOfNumbers, square)
+  () => _.map(lotsOfNumbers, square),
 )
 
 bench(
   "filter",
-  () =>
-    fromArray(lotsOfNumbers)
-      .filter(isEven)
-      .first(),
+  () => fromArray(lotsOfNumbers).filter(isEven).first(),
   () => lotsOfNumbers.filter(isEven),
-  () => _.filter(lotsOfNumbers, isEven)
+  () => _.filter(lotsOfNumbers, isEven),
 )
 
 bench(
   "flat",
-  () =>
-    fromArray(jaggedArray)
-      .flat()
-      .first(),
+  () => fromArray(jaggedArray).flat().first(),
   () => (jaggedArray as any).flat(),
-  () => _.flatten(jaggedArray)
+  () => _.flatten(jaggedArray),
 )
 
 const halfDupes = dupes(0, 50, 100)
 bench(
   "distinct",
-  () =>
-    fromArray(halfDupes)
-      .distinct()
-      .first(),
+  () => fromArray(halfDupes).distinct().first(),
   undefined,
-  () => _.uniq(halfDupes)
+  () => _.uniq(halfDupes),
 )
 
 const firstConcatArray = arr(0, 100)
@@ -127,9 +107,7 @@ const secondConcatArray = arr(50, 150)
 bench(
   "concat",
   () =>
-    fromArray(firstConcatArray)
-      .concat(fromArray(secondConcatArray))
-      .first(),
+    fromArray(firstConcatArray).concat(fromArray(secondConcatArray)).first(),
   () => firstConcatArray.concat(secondConcatArray),
-  () => _.concat(firstConcatArray, secondConcatArray)
+  () => _.concat(firstConcatArray, secondConcatArray),
 )
