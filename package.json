@@ -84,7 +84,7 @@
     "lint-staged": "^10.0.8",
     "lodash": "^4.17.15",
     "microtime": "^3.0.0",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.1",
     "semantic-release": "^17.0.4",
     "terser": "^4.6.7",
     "ts-jest": "^25.2.1",
