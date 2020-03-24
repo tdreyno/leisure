@@ -81,7 +81,7 @@
     "gzip-size-cli": "^3.0.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
-    "lint-staged": "^10.0.8",
+    "lint-staged": "^10.0.9",
     "lodash": "^4.17.15",
     "microtime": "^3.0.0",
     "prettier": "^2.0.1",
