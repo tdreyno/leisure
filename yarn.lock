@@ -7222,10 +7222,10 @@ onetime@^5.1.0:
   dependencies:
     mimic-fn "^2.1.0"
 
-open-simplex-noise@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/open-simplex-noise/-/open-simplex-noise-2.2.0.tgz#c85b9c882e3b7140c1211ece5f5d8d5d36a6a0a1"
-  integrity sha512-5/OVHsZIY0cPQXTYZNLVmgYbIQokiwuN7nDj7WVZ5MBOcElLD1gKYRGjuVwCDEeL1wXDgozazewFIx/NyXQ1/Q==
+open-simplex-noise@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/open-simplex-noise/-/open-simplex-noise-2.3.0.tgz#63dfc23507df1e8b86649f6995b3af547591a711"
+  integrity sha512-dEWMHgvVrqnRTh+3wm76/IOjAkrqYR9trE86s0fHIRfqfU1xpTdCAXOGWcUHnR9u1C3PTFcvlpiA2z7aJXX7FA==
 
 open@^7.0.0:
   version "7.0.2"

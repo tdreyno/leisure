@@ -94,7 +94,7 @@
   },
   "dependencies": {
     "@tdreyno/figment": "^1.3.0",
-    "open-simplex-noise": "^2.2.0",
+    "open-simplex-noise": "^2.3.0",
     "pure-rand": "^2.0.0"
   },
   "config": {
