@@ -93,7 +93,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@tdreyno/figment": "^1.3.0",
+    "@tdreyno/figment": "^1.9.0",
     "open-simplex-noise": "^2.3.1",
     "pure-rand": "^2.0.0"
   },
