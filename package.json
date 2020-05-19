@@ -70,7 +70,7 @@
     "@types/jest": "^25.2.3",
     "@types/lodash": "^4.14.151",
     "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/parser": "^2.33.0",
+    "@typescript-eslint/parser": "^2.34.0",
     "beautify-benchmark": "^0.2.4",
     "benchmark": "^2.1.4",
     "commitizen": "^4.1.2",
