@@ -19,5 +19,10 @@ module.exports = {
     "@typescript-eslint/require-await": 0,
     semi: ["error", "never"],
     "@typescript-eslint/member-delimiter-style": 0,
+    "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/no-unsafe-assignment": 0,
+    "@typescript-eslint/no-unsafe-return": 0,
+    "@typescript-eslint/no-unsafe-call": 0,
+    "@typescript-eslint/no-unsafe-member-access": 0,
   },
 }
