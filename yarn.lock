@@ -911,7 +911,7 @@
     "@commitlint/rules" "^9.1.1"
     "@commitlint/types" "^9.1.1"
 
-"@commitlint/load@>6.1.1", "@commitlint/load@^9.0.1", "@commitlint/load@^9.1.1":
+"@commitlint/load@>6.1.1", "@commitlint/load@^9.1.1":
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/@commitlint/load/-/load-9.1.1.tgz#8b1580ab821729bbe197e95f960e7cee966402ae"
   integrity sha512-RCIX44M8nq3bW98vuxA6C2rM0wAnZlneFls2OVi5l2BvD/rsQ2R9CZYwPt/MYU6RbwMmlGhkuHdScwK6pJeUqA==
@@ -937,14 +937,14 @@
     conventional-changelog-angular "^5.0.0"
     conventional-commits-parser "^3.0.0"
 
-"@commitlint/prompt@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@commitlint/prompt/-/prompt-9.0.1.tgz#4ae1455e7f9c62b6db8bb252380c8194b6ef5f17"
-  integrity sha512-ZWkP/v/fCdxUe53rxt8PptX///x/s8XUG0zt/jXrfCs/5efqrzoJ1nIgtpFlAvZcJCxw9EmZXLsw4oFWRogEnQ==
+"@commitlint/prompt@^9.1.1":
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/prompt/-/prompt-9.1.1.tgz#b7749047ef9c1b698b54f3f8436cdd62278a3936"
+  integrity sha512-NhEH9izuT92Bai/aSEH3YUrR3GOyrGFkqgUUFwJ4S4mCkLczrB5K+FwtXDDO8DKm+R+wWYFkhq4ZUFnIMidixw==
   dependencies:
     "@babel/runtime" "^7.9.6"
-    "@commitlint/load" "^9.0.1"
-    chalk "^3.0.0"
+    "@commitlint/load" "^9.1.1"
+    chalk "^4.0.0"
     lodash "^4.17.15"
     throat "^5.0.0"
     vorpal "^1.12.0"
