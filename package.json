@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
-    "@commitlint/config-conventional": "^9.0.1",
+    "@commitlint/config-conventional": "^9.1.1",
     "@commitlint/prompt": "^9.0.1",
     "@pika/pack": "^0.5.0",
     "@pika/plugin-build-node": "^0.9.2",
