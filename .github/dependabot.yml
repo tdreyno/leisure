@@ -10,7 +10,7 @@ updates:
       - dependency-name: jest
         versions:
           - ">= 26.a, < 27"
-        # Drops node 8 support
-        - dependency-name: terser
-          versions:
-            - ">= 5.0"
+      # Drops node 8 support
+      - dependency-name: terser
+        versions:
+          - ">= 5.0"
