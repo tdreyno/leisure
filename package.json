@@ -89,7 +89,7 @@
     "terser": "^5.2.1",
     "ts-jest": "^26.2.0",
     "ts-node": "^8.10.2",
-    "ts-toolbelt": "^6.15.5",
+    "ts-toolbelt": "^8.0.3",
     "typescript": "^3.9.7"
   },
   "dependencies": {
