@@ -955,13 +955,13 @@
     conventional-changelog-angular "^5.0.0"
     conventional-commits-parser "^3.0.0"
 
-"@commitlint/prompt@^9.1.2":
-  version "9.1.2"
-  resolved "https://registry.yarnpkg.com/@commitlint/prompt/-/prompt-9.1.2.tgz#b0fa35525fa940943eb388292780acbcb9aa4f6c"
-  integrity sha512-VxpF+e+rYZZ+8DjIEY3arSnWiKVbDISVxWGbrxUUbheIBnqr1fAFcpJHJWBOzJTW79J79Y6Y6KGcu2fXvPx0ug==
+"@commitlint/prompt@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/prompt/-/prompt-11.0.0.tgz#f8aef73d17a63901496dfd17aa192063151f679e"
+  integrity sha512-tI7Zi3KZ9P38iR/eC1inqjYDbFE/wd6ptA10191XwljXKvgov2nz1abC+5oqJPzGTxex1VC7q/NnWlPwLM5DCg==
   dependencies:
-    "@babel/runtime" "^7.9.6"
-    "@commitlint/load" "^9.1.2"
+    "@babel/runtime" "^7.11.2"
+    "@commitlint/load" "^11.0.0"
     chalk "^4.0.0"
     lodash "^4.17.19"
     throat "^5.0.0"
@@ -1017,6 +1017,11 @@
   integrity sha512-O0nFU8o+Ws+py5pfMQIuyxOtfR/kwtr5ybqTvR+C2lUPer2x6lnQU+OnfD7hPM+A+COIUZWx10mYQvkR3MmtAA==
   dependencies:
     find-up "^5.0.0"
+
+"@commitlint/types@^11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/types/-/types-11.0.0.tgz#719cf05fcc1abb6533610a2e0f5dd1e61eac14fe"
+  integrity sha512-VoNqai1vR5anRF5Tuh/+SWDFk7xi7oMwHrHrbm1BprYXjB2RJsWLhUrStMssDxEl5lW/z3EUdg8RvH/IUBccSQ==
 
 "@commitlint/types@^11.0.0":
   version "11.0.0"
