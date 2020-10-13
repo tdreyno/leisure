@@ -86,7 +86,7 @@
     "microtime": "^3.0.0",
     "prettier": "^2.1.2",
     "semantic-release": "^17.2.0",
-    "terser": "^5.3.4",
+    "terser": "^5.3.5",
     "ts-jest": "^26.4.1",
     "ts-node": "^9.0.0",
     "ts-toolbelt": "^8.0.7",
