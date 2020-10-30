@@ -68,7 +68,7 @@
     "@semantic-release/github": "^7.1.1",
     "@types/benchmark": "^1.0.33",
     "@types/jest": "^26.0.15",
-    "@types/lodash": "^4.14.163",
+    "@types/lodash": "^4.14.164",
     "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^3.10.1",
     "beautify-benchmark": "^0.2.4",
