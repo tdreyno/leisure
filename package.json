@@ -95,7 +95,7 @@
   "dependencies": {
     "@tdreyno/figment": "^1.9.0",
     "open-simplex-noise": "^2.3.1",
-    "pure-rand": "^3.1.0"
+    "pure-rand": "^4.0.0"
   },
   "config": {
     "commitizen": {
