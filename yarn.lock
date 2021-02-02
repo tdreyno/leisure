@@ -9848,10 +9848,10 @@ ts-node@^9.1.1:
     source-map-support "^0.5.17"
     yn "3.1.1"
 
-ts-toolbelt@^9.1.7:
-  version "9.1.7"
-  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-9.1.7.tgz#1fbb1e8a8c9cd94dfab12f69ebe9e093f661387b"
-  integrity sha512-BwrbP039VcsgSaMsKxTok3YYjRurjjmYPcmkYtugkC/For0tgWW6LMis68vlu764nmZGJ+Oahj6/btW3omsQUA==
+ts-toolbelt@^9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/ts-toolbelt/-/ts-toolbelt-9.2.0.tgz#9ea7dcab288ca119b36c1363dbc52e39b15d7caa"
+  integrity sha512-/D4fMWMSQjp7hN9tIqizdjtMa65X79HU3uDcXVyD5qHTyOni2u6EGRiW5BNYIf6CW/i/ZAPo9lltrAu7MUaS8w==
 
 tslib@^1.8.1, tslib@^1.9.0:
   version "1.13.0"
