@@ -11,9 +11,9 @@
     "lint": "eslint -c .eslintrc.js --ext .ts src",
     "build": "pika build && yarn compress",
     "compress": "terser pkg/dist-web/index.js -o pkg/dist-web/index.min.js --source-map --mangle --compress passes=2 --toplevel --mangle-props regex=/_$/ && gzip-size pkg/dist-web/index.min.js",
-    "test": "jest",
+    "test": "jest --runInBand",
     "version": "yarn run build",
-    "coverage": "jest --coverage --coverageDirectory '../coverage'",
+    "coverage": "jest --runInBand --coverage --coverageDirectory '../coverage'",
     "perf": "ts-node -O '{ \"module\": \"commonjs\" }' ./benchmarks/benchmark.ts",
     "commit": "git-cz",
     "semantic-release": "semantic-release"
