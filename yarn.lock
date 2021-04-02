@@ -879,10 +879,10 @@
     resolve-global "1.0.0"
     yargs "^16.2.0"
 
-"@commitlint/config-conventional@^12.0.1":
-  version "12.0.1"
-  resolved "https://registry.yarnpkg.com/@commitlint/config-conventional/-/config-conventional-12.0.1.tgz#7bf3bbf68bda967c5165135ebe8f2055decf1a83"
-  integrity sha512-1ZhB135lh47zVmf1orwcjxuKuam11fJIH/bdVxW9XiQv8XPwC6iIp19knfl8FcOT78AVBnes1z6EVxgUeP2/4Q==
+"@commitlint/config-conventional@^12.1.1":
+  version "12.1.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-conventional/-/config-conventional-12.1.1.tgz#73dd3b1a7912138420d248f334f15c94c250bc9e"
+  integrity sha512-15CqbXMsQiEb0qbzjEHe2OkzaXPYSp7RxaS6KoSVk/4W0QiigquavQ+M0huBZze92h0lMS6Pxoq4AJ5CQ3D+iQ==
   dependencies:
     conventional-changelog-conventionalcommits "^4.3.1"
 
@@ -925,7 +925,7 @@
     "@commitlint/rules" "^12.1.1"
     "@commitlint/types" "^12.1.1"
 
-"@commitlint/load@>6.1.1", "@commitlint/load@^12.0.1", "@commitlint/load@^12.1.1":
+"@commitlint/load@>6.1.1", "@commitlint/load@^12.1.1":
   version "12.1.1"
   resolved "https://registry.yarnpkg.com/@commitlint/load/-/load-12.1.1.tgz#5a7fb8be11e520931d1237c5e8dc401b7cc9c6c1"
   integrity sha512-qOQtgNdJRULUQWP9jkpTwhj7aEtnqUtqeUpbQ9rjS+GIUST65HZbteNUX4S0mAEGPWqy2aK5xGd73cUfFSvuuw==
@@ -1006,7 +1006,7 @@
   dependencies:
     find-up "^5.0.0"
 
-"@commitlint/types@^12.0.1", "@commitlint/types@^12.1.1":
+"@commitlint/types@^12.1.1":
   version "12.1.1"
   resolved "https://registry.yarnpkg.com/@commitlint/types/-/types-12.1.1.tgz#8e651f6af0171cd4f8d464c6c37a7cf63ee071bd"
   integrity sha512-+qGH+s2Lo6qwacV2X3/ZypZwaAI84ift+1HBjXdXtI/q0F5NtmXucV3lcQOTviMTNiJhq4qWON2fjci2NItASw==
