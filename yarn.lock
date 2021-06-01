@@ -4300,10 +4300,10 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.2.0,
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.6.tgz#ff040b2b0853b23c3d31027523706f1885d76bee"
   integrity sha512-nTnJ528pbqxYanhpDYsi4Rd8MAeaBA67+RZ10CM1m3bTAVFEDcd5AuA4a6W5YkGZ1iNXHzZz8T6TBKLeBuNriQ==
 
-gzip-size-cli@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/gzip-size-cli/-/gzip-size-cli-4.1.0.tgz#0b72da57f7a8668e91b1a9e67a6cd51d7922fd48"
-  integrity sha512-R5drISdQYjlZibig6wH3IGLtAMsYnvjMwI39mmDTNLUZnr1FlOkPRVvxpyekkUXlPEjLiHILiuPEMRpm1m7ONg==
+gzip-size-cli@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/gzip-size-cli/-/gzip-size-cli-5.0.0.tgz#bcce06ed18b91a45791fbfb9b28b3610f870c268"
+  integrity sha512-MS3H6owUIXUr5rZZh4cScfLV7kPFQQcE/a2T8xr44MYJIhP8lccrJraVANGWut53KlH9c8a53NxnxL5UllLU+Q==
   dependencies:
     chalk "^4.1.1"
     gzip-size "^6.0.0"
