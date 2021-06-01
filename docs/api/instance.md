@@ -8,7 +8,7 @@ It's `map`, the most important method in programming! Exactly the same as ES6 `m
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<string> = Seq.infinite().map(num => num.toString());
+const sequence: Seq<string> = Seq.infinite().map(num => num.toString())
 ```
 
 {% endtab %}
@@ -16,7 +16,7 @@ const sequence: Seq<string> = Seq.infinite().map(num => num.toString());
 {% tab title="Type Definition" %}
 
 ```typescript
-type map = <U>(fn: (value: T, index: number) => U) => Seq<U>;
+type map = <U>(fn: (value: T, index: number) => U) => Seq<U>
 ```
 
 {% endtab %}
@@ -31,14 +31,14 @@ type map = <U>(fn: (value: T, index: number) => U) => Seq<U>;
 
 ```typescript
 // Grab numbers in groups of 10.
-const sequence: Seq<number[]> = Seq.infinite().window(10);
+const sequence: Seq<number[]> = Seq.infinite().window(10)
 ```
 
 By default, only triggers chained responses when the window fills, guaranteeing the window is the exact size expect. Set `allowPartialWindow` to `false` to allow the trailing edge of a sequence to not be divisible by the window size.
 
 ```typescript
 // Gives: [0, 1, 2] -> [3, 4, 5] -> [6, 7, 8] -> [9, 10]
-const sequence: Seq<number> = Seq.range(0, 10).window(3);
+const sequence: Seq<number> = Seq.range(0, 10).window(3)
 ```
 
 {% endtab %}
@@ -46,7 +46,7 @@ const sequence: Seq<number> = Seq.range(0, 10).window(3);
 {% tab title="Type Definition" %}
 
 ```typescript
-type window = (size: number, allowPartialWindow = true) => Seq<T[]>;
+type window = (size: number, allowPartialWindow = true) => Seq<T[]>
 ```
 
 {% endtab %}
@@ -60,7 +60,7 @@ Works like `window`, makes the window size 2. Groups a sequence as alternating p
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<[string, number]> = Seq.fromArray(["a", 1, "b", 2]);
+const sequence: Seq<[string, number]> = Seq.fromArray(["a", 1, "b", 2])
 ```
 
 {% endtab %}
@@ -68,7 +68,7 @@ const sequence: Seq<[string, number]> = Seq.fromArray(["a", 1, "b", 2]);
 {% tab title="Type Definition" %}
 
 ```typescript
-type pairwise = () => Seq<[T, T]>;
+type pairwise = () => Seq<[T, T]>
 ```
 
 {% endtab %}
@@ -82,7 +82,7 @@ Ask whether a sequence is empty.
 {% tab title="Usage" %}
 
 ```typescript
-const anythingInThere: boolean = Seq.empty().isEmpty();
+const anythingInThere: boolean = Seq.empty().isEmpty()
 ```
 
 {% endtab %}
@@ -90,7 +90,7 @@ const anythingInThere: boolean = Seq.empty().isEmpty();
 {% tab title="Type Definition" %}
 
 ```typescript
-type isEmpty = () => boolean;
+type isEmpty = () => boolean
 ```
 
 {% endtab %}
@@ -104,7 +104,7 @@ type isEmpty = () => boolean;
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<number> = Seq.infinite().tap(num => console.log(num));
+const sequence: Seq<number> = Seq.infinite().tap(num => console.log(num))
 ```
 
 {% endtab %}
@@ -112,7 +112,7 @@ const sequence: Seq<number> = Seq.infinite().tap(num => console.log(num));
 {% tab title="Type Definition" %}
 
 ```typescript
-type tap = (fn: (value: T, index: number) => void) => Seq<T>;
+type tap = (fn: (value: T, index: number) => void) => Seq<T>
 ```
 
 {% endtab %}
@@ -126,7 +126,7 @@ type tap = (fn: (value: T, index: number) => void) => Seq<T>;
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<number> = Seq.infinite().log();
+const sequence: Seq<number> = Seq.infinite().log()
 ```
 
 {% endtab %}
@@ -134,7 +134,7 @@ const sequence: Seq<number> = Seq.infinite().log();
 {% tab title="Type Definition" %}
 
 ```typescript
-type log = () => Seq<T>;
+type log = () => Seq<T>
 ```
 
 {% endtab %}
@@ -150,11 +150,11 @@ Works just like `Array.prototype.flat`. [See more here.](https://developer.mozil
 {% tab title="Usage" %}
 
 ```typescript
-type Person = { name: string; friends: Person[] };
+type Person = { name: string; friends: Person[] }
 
 const sequence: Seq<Friend> = Seq.fromArray([person1, person2])
   .map(person => person.friends)
-  .flat();
+  .flat()
 ```
 
 {% endtab %}
@@ -162,7 +162,7 @@ const sequence: Seq<Friend> = Seq.fromArray([person1, person2])
 {% tab title="Type Definition" %}
 
 ```typescript
-type flat = <U>(this: Seq<U[]>) => Seq<U>;
+type flat = <U>(this: Seq<U[]>) => Seq<U>
 ```
 
 {% endtab %}
@@ -180,11 +180,11 @@ Similar to `[].map().flat()`, but in `leisure` the item mappings won't execute u
 {% tab title="Usage" %}
 
 ```typescript
-type Person = { name: string; friends: Person[] };
+type Person = { name: string; friends: Person[] }
 
 const sequence: Seq<Friend> = Seq.fromArray([person1, person2]).flatMap(
-  person => person.friends
-);
+  person => person.friends,
+)
 ```
 
 {% endtab %}
@@ -192,7 +192,7 @@ const sequence: Seq<Friend> = Seq.fromArray([person1, person2]).flatMap(
 {% tab title="Type Definition" %}
 
 ```typescript
-type flatMap = <U>(fn: (value: T, index: number) => U[]) => Seq<U>;
+type flatMap = <U>(fn: (value: T, index: number) => U[]) => Seq<U>
 ```
 
 {% endtab %}
@@ -209,7 +209,7 @@ Exactly the same as `Array.prototype.filter`, but lazy. [See more here](https://
 
 ```typescript
 // Create a sequence of only even numbers.
-const sequence: Seq<number> = Seq.infinite().filter(num => num % 2 === 0);
+const sequence: Seq<number> = Seq.infinite().filter(num => num % 2 === 0)
 ```
 
 {% endtab %}
@@ -217,7 +217,7 @@ const sequence: Seq<number> = Seq.infinite().filter(num => num % 2 === 0);
 {% tab title="Type Definition" %}
 
 ```typescript
-type filter = (fn: (value: T, index: number) => unknown) => Seq<T>;
+type filter = (fn: (value: T, index: number) => unknown) => Seq<T>
 ```
 
 {% endtab %}
@@ -235,8 +235,8 @@ Exactly the same as `Array.prototype.concat`, but lazy. [See more here](https://
 ```typescript
 const sequence: Seq<number> = Seq.fromArray([0, 1]).concat(
   Seq.fromArray([2, 3]),
-  Seq.fromArray([4, 5])
-);
+  Seq.fromArray([4, 5]),
+)
 ```
 
 {% endtab %}
@@ -244,7 +244,7 @@ const sequence: Seq<number> = Seq.fromArray([0, 1]).concat(
 {% tab title="Type Definition" %}
 
 ```typescript
-type concat = (...tail: Array<Seq<T>>) => Seq<T>;
+type concat = (...tail: Array<Seq<T>>) => Seq<T>
 ```
 
 {% endtab %}
@@ -262,8 +262,8 @@ Takes 1 or more sequences and creates a new sequence built by pulling the next v
 const sequence: Seq<string | number> = Seq.fromArray([
   "a",
   "b",
-  "c"
-]).interleave(Seq.range(1, 3));
+  "c",
+]).interleave(Seq.range(1, 3))
 ```
 
 {% endtab %}
@@ -271,7 +271,7 @@ const sequence: Seq<string | number> = Seq.fromArray([
 {% tab title="Type Definition" %}
 
 ```typescript
-type interleave = (...tail: Array<Seq<T>>) => Seq<T>;
+type interleave = (...tail: Array<Seq<T>>) => Seq<T>
 ```
 
 {% endtab %}
@@ -289,10 +289,10 @@ Given a sequence, place a value between each value of the original sequence. Use
 const sequence: Seq<string> = Seq.fromArray([
   "Apples",
   "Oranges",
-  "Bananas"
-]).interpose(", ");
+  "Bananas",
+]).interpose(", ")
 
-console.log(sequence.toArray().join(""));
+console.log(sequence.toArray().join(""))
 ```
 
 {% endtab %}
@@ -300,7 +300,7 @@ console.log(sequence.toArray().join(""));
 {% tab title="Type Definition" %}
 
 ```typescript
-type interpose = (separator: T) => Seq<T>;
+type interpose = (separator: T) => Seq<T>
 ```
 
 {% endtab %}
@@ -315,7 +315,7 @@ Given a sequence, only forwards the values which have no already been seen. Very
 
 ```typescript
 // Builds: 1 -> 2 -> 3 -> 4
-const sequence: Seq<number> = Seq.fromArray([1, 2, 3, 2, 1, 4]).distinct();
+const sequence: Seq<number> = Seq.fromArray([1, 2, 3, 2, 1, 4]).distinct()
 ```
 
 {% endtab %}
@@ -323,7 +323,7 @@ const sequence: Seq<number> = Seq.fromArray([1, 2, 3, 2, 1, 4]).distinct();
 {% tab title="Type Definition" %}
 
 ```typescript
-type distinct = () => Seq<T>;
+type distinct = () => Seq<T>
 ```
 
 {% endtab %}
@@ -340,13 +340,13 @@ Same as `distinct`, but allows a function to describe on what value the sequence
 // Builds: { firstName: "A", lastName: "Z" } ->
 //         { firstName: "B", lastName: "Y" } ->
 //         { firstName: "C", lastName: "W" }
-type Person = { firstName: string; lastName: string };
+type Person = { firstName: string; lastName: string }
 const sequence: Seq<Person> = Seq.fromArray([
   { firstName: "A", lastName: "Z" },
   { firstName: "B", lastName: "Y" },
   { firstName: "A", lastName: "X" },
-  { firstName: "C", lastName: "W" }
-]).distinctBy(person => person.firstName);
+  { firstName: "C", lastName: "W" },
+]).distinctBy(person => person.firstName)
 ```
 
 {% endtab %}
@@ -354,7 +354,7 @@ const sequence: Seq<Person> = Seq.fromArray([
 {% tab title="Type Definition" %}
 
 ```typescript
-type distinctBy = <U>(fn: (value: T) => U) => Seq<T>;
+type distinctBy = <U>(fn: (value: T) => U) => Seq<T>
 ```
 
 {% endtab %}
@@ -368,7 +368,7 @@ Given a sequence, splits the values into two separate sequences. One represents 
 {% tab title="Usage" %}
 
 ```typescript
-const [isEven, isOdd] = Seq.infinite().partitionBy(num => num % 2 === 0);
+const [isEven, isOdd] = Seq.infinite().partitionBy(num => num % 2 === 0)
 ```
 
 {% endtab %}
@@ -376,7 +376,7 @@ const [isEven, isOdd] = Seq.infinite().partitionBy(num => num % 2 === 0);
 {% tab title="Type Definition" %}
 
 ```typescript
-type partition = (fn: (value: T, index: number) => unknown) => [Seq<T>, Seq<T>];
+type partition = (fn: (value: T, index: number) => unknown) => [Seq<T>, Seq<T>]
 ```
 
 {% endtab %}
@@ -392,7 +392,7 @@ Exactly the same as `Array.prototype.includes`, but lazy. [See more here](https:
 {% tab title="Usage" %}
 
 ```typescript
-const doesItInclude = Seq.infinite().includes(10);
+const doesItInclude = Seq.infinite().includes(10)
 ```
 
 {% endtab %}
@@ -400,7 +400,7 @@ const doesItInclude = Seq.infinite().includes(10);
 {% tab title="Type Definition" %}
 
 ```typescript
-type includes = (value: T) => boolean;
+type includes = (value: T) => boolean
 ```
 
 {% endtab %}
@@ -417,7 +417,7 @@ Exactly the same as `Array.prototype.find`, but lazy. [See more here](https://de
 
 ```typescript
 // Returns 11
-const gtTen = Seq.infinite().find(num => num > 10);
+const gtTen = Seq.infinite().find(num => num > 10)
 ```
 
 {% endtab %}
@@ -425,7 +425,7 @@ const gtTen = Seq.infinite().find(num => num > 10);
 {% tab title="Type Definition" %}
 
 ```typescript
-type find = (fn: (value: T, index: number) => unknown) => T | undefined;
+type find = (fn: (value: T, index: number) => unknown) => T | undefined
 ```
 
 {% endtab %}
@@ -442,7 +442,7 @@ Exactly the same as `Array.prototype.reduce`. [See more here](https://developer.
 // Returns 0 + 1 + 2 + 3 + 4 = 10
 const sum = Seq.infinite()
   .take(5)
-  .reduce((sum, num) => sum + num);
+  .reduce((sum, num) => sum + num)
 ```
 
 {% endtab %}
@@ -450,7 +450,7 @@ const sum = Seq.infinite()
 {% tab title="Type Definition" %}
 
 ```typescript
-type reduce = <A>(fn: (sum: A, value: T, index: number) => A, initial: A) => A;
+type reduce = <A>(fn: (sum: A, value: T, index: number) => A, initial: A) => A
 ```
 
 {% endtab %}
@@ -465,7 +465,7 @@ This method is helpful for chaining. Shocking, I know. Let's you "map" the entir
 
 ```typescript
 // Same as `Seq.interpose(Seq.infinite(), Seq.infinite())`
-const sequence = Seq.infinite().chain(seq => seq.interpose(Seq.infinite()));
+const sequence = Seq.infinite().chain(seq => seq.interpose(Seq.infinite()))
 ```
 
 {% endtab %}
@@ -473,7 +473,7 @@ const sequence = Seq.infinite().chain(seq => seq.interpose(Seq.infinite()));
 {% tab title="Type Definition" %}
 
 ```typescript
-type chain = <U>(fn: (value: Seq<T>) => U) => U;
+type chain = <U>(fn: (value: Seq<T>) => U) => U
 ```
 
 {% endtab %}
@@ -490,7 +490,7 @@ Exactly the same as `Array.prototype.some`, but lazy. [See more here](https://de
 // Find the first even random number.
 const areAnyEven = Seq.random()
   .map(num => Math.round(num * 1000))
-  .some(num => num % 2 === 0);
+  .some(num => num % 2 === 0)
 ```
 
 {% endtab %}
@@ -498,7 +498,7 @@ const areAnyEven = Seq.random()
 {% tab title="Type Definition" %}
 
 ```typescript
-type some = (fn: (value: T, index: number) => unknown) => boolean;
+type some = (fn: (value: T, index: number) => unknown) => boolean
 ```
 
 {% endtab %}
@@ -515,7 +515,7 @@ Exactly the same as `Array.prototype.every`, but lazy. [See more here](https://d
 // Fails fast if there are negative numbers
 const areAllPositive = Seq.random()
   .map(num => Math.round(num * 1000) - 500)
-  .every(num => num > 0);
+  .every(num => num > 0)
 ```
 
 {% endtab %}
@@ -523,7 +523,7 @@ const areAllPositive = Seq.random()
 {% tab title="Type Definition" %}
 
 ```typescript
-type every = (fn: (value: T, index: number) => unknown) => boolean;
+type every = (fn: (value: T, index: number) => unknown) => boolean
 ```
 
 {% endtab %}
@@ -538,7 +538,7 @@ Given a sequence of unknown length, create a sub sequence of just the first X nu
 
 ```typescript
 // Grabs 0 -> 1 -> 2 -> 3 -> 4
-const firstFive = Seq.infinite().take(5);
+const firstFive = Seq.infinite().take(5)
 ```
 
 {% endtab %}
@@ -546,7 +546,7 @@ const firstFive = Seq.infinite().take(5);
 {% tab title="Type Definition" %}
 
 ```typescript
-type take = (num: number) => Seq<T>;
+type take = (num: number) => Seq<T>
 ```
 
 {% endtab %}
@@ -561,7 +561,7 @@ Given a sequence of unknown length, create a sub sequence of as many items in a 
 
 ```typescript
 // Gives 0 -> 1 -> 2 -> 3 -> 4
-const lessThanFive = Seq.infinite().takeWhile(num => num < 5);
+const lessThanFive = Seq.infinite().takeWhile(num => num < 5)
 ```
 
 {% endtab %}
@@ -569,7 +569,7 @@ const lessThanFive = Seq.infinite().takeWhile(num => num < 5);
 {% tab title="Type Definition" %}
 
 ```typescript
-type takeWhile = (fn: (value: T, index: number) => unknown) => Seq<T>;
+type takeWhile = (fn: (value: T, index: number) => unknown) => Seq<T>
 ```
 
 {% endtab %}
@@ -584,9 +584,7 @@ Given a sequence of unknown length, skips the first X number of items.
 
 ```typescript
 // Gives 5 -> 6 -> 7 -> 8 -> 9
-const secondFive = Seq.infinite()
-  .skip(5)
-  .take(5);
+const secondFive = Seq.infinite().skip(5).take(5)
 ```
 
 {% endtab %}
@@ -594,7 +592,7 @@ const secondFive = Seq.infinite()
 {% tab title="Type Definition" %}
 
 ```typescript
-type skip = (num: number) => Seq<T>;
+type skip = (num: number) => Seq<T>
 ```
 
 {% endtab %}
@@ -611,7 +609,7 @@ Given a sequence of unknown length, skip as many items in a row that satisfy the
 // Gives 5 -> 6 -> 7 -> 8 -> 9
 const greaterThanFive = Seq.infinite()
   .skipWhile(num => num < 5)
-  .take(5);
+  .take(5)
 ```
 
 {% endtab %}
@@ -619,7 +617,7 @@ const greaterThanFive = Seq.infinite()
 {% tab title="Type Definition" %}
 
 ```typescript
-type skipWhile = (fn: (value: T, index: number) => unknown) => Seq<T>;
+type skipWhile = (fn: (value: T, index: number) => unknown) => Seq<T>
 ```
 
 {% endtab %}
@@ -633,7 +631,7 @@ Returns the `nth` item. Items are 1-indexed.
 {% tab title="Usage" %}
 
 ```typescript
-const thirdItem = Seq.infinite().nth(3);
+const thirdItem = Seq.infinite().nth(3)
 ```
 
 {% endtab %}
@@ -641,7 +639,7 @@ const thirdItem = Seq.infinite().nth(3);
 {% tab title="Type Definition" %}
 
 ```typescript
-type nth = (i: number) => T | undefined;
+type nth = (i: number) => T | undefined
 ```
 
 {% endtab %}
@@ -655,7 +653,7 @@ Returns the `index` item. Items are 0-indexed.
 {% tab title="Usage" %}
 
 ```typescript
-const fourthItem = Seq.infinite().index(3);
+const fourthItem = Seq.infinite().index(3)
 ```
 
 {% endtab %}
@@ -663,7 +661,7 @@ const fourthItem = Seq.infinite().index(3);
 {% tab title="Type Definition" %}
 
 ```typescript
-type nth = (i: number) => T | undefined;
+type nth = (i: number) => T | undefined
 ```
 
 {% endtab %}
@@ -677,9 +675,7 @@ Gets the first value in the sequence.
 {% tab title="Usage" %}
 
 ```typescript
-const fifth = Seq.infinite()
-  .skip(4)
-  .first();
+const fifth = Seq.infinite().skip(4).first()
 ```
 
 {% endtab %}
@@ -687,7 +683,7 @@ const fifth = Seq.infinite()
 {% tab title="Type Definition" %}
 
 ```typescript
-type first = () => T | undefined;
+type first = () => T | undefined
 ```
 
 {% endtab %}
@@ -701,15 +697,15 @@ Lazily combines a second sequence with this current one to produce a tuple with 
 {% tab title="Usage" %}
 
 ```typescript
-const seq2 = Seq.range(0, 3);
+const seq2 = Seq.range(0, 3)
 
 // Gives: ["zero", 0] -> ["one", 1] -> ["two", 2] -> ["three", 3]
 const sequence: Seq<[string, number]> = Seq.fromArray([
   "zero",
   "one",
   "two",
-  "three"
-]).zip(seq2);
+  "three",
+]).zip(seq2)
 ```
 
 {% endtab %}
@@ -717,7 +713,7 @@ const sequence: Seq<[string, number]> = Seq.fromArray([
 {% tab title="Type Definition" %}
 
 ```typescript
-type zip<T2> = (seq2: Seq<T2>) => Seq<[T | undefined, T2 | undefined]>;
+type zip<T2> = (seq2: Seq<T2>) => Seq<[T | undefined, T2 | undefined]>
 ```
 
 {% endtab %}
@@ -731,13 +727,13 @@ Takes a second sequence and lazily combines it to produce an arbitrary value by 
 {% tab title="Usage" %}
 
 ```typescript
-const seq2 = Seq.repeat(2);
+const seq2 = Seq.repeat(2)
 
 // Gives: 0 -> 2 -> 4 -> 6
 const sequence: Seq<number> = Seq.range(0, 3).zipWith(
   ([num, multiplier]) => num * multiplier,
-  seq2
-);
+  seq2,
+)
 ```
 
 {% endtab %}
@@ -755,11 +751,11 @@ type zip2With = <T2, T3, T4>(
       | [undefined, T2, undefined]
       | [undefined, T2, T3]
       | [undefined, undefined, T3],
-    index: number
+    index: number,
   ) => T4,
   seq2: Seq<T2>,
-  seq3: Seq<T3>
-) => Seq<T4>;
+  seq3: Seq<T3>,
+) => Seq<T4>
 ```
 
 {% endtab %}
@@ -773,16 +769,16 @@ Takes two sequences and lazily combines them with this one to produce a 3-tuple 
 {% tab title="Usage" %}
 
 ```typescript
-const seq2 = Seq.range(0, 3);
-const seq3 = Seq.range(3, 0);
+const seq2 = Seq.range(0, 3)
+const seq3 = Seq.range(3, 0)
 
 // Gives: ["zero", 0, 3] -> ["one", 1, 2] -> ["two", 2, 1] -> ["three", 3, 0]
 const sequence: Seq<[string, number]> = Seq.fromArray([
   "zero",
   "one",
   "two",
-  "three"
-]).zip2(seq2, seq3);
+  "three",
+]).zip2(seq2, seq3)
 ```
 
 {% endtab %}
@@ -792,8 +788,8 @@ const sequence: Seq<[string, number]> = Seq.fromArray([
 ```typescript
 type zip2 = <T2, T3>(
   seq2: Seq<T2>,
-  seq3: Seq<T3>
-) => Seq<[T | undefined, T2 | undefined, T3 | undefined]>;
+  seq3: Seq<T3>,
+) => Seq<[T | undefined, T2 | undefined, T3 | undefined]>
 ```
 
 {% endtab %}
@@ -807,15 +803,15 @@ Takes two sequences and lazily combine them with this sequence to produce an arb
 {% tab title="Usage" %}
 
 ```typescript
-const seq2 = Seq.repeat(2);
-const seq3 = Seq.repeat(1);
+const seq2 = Seq.repeat(2)
+const seq3 = Seq.repeat(1)
 
 // Gives: 0 -> 2 -> 4 -> 6
 const sequence: Seq<number> = Seq.range(0, 3).zip2With(
   ([num, multiplier, divisor]) => (num * multiplier) / divisor,
   seq2,
-  seq3
-);
+  seq3,
+)
 ```
 
 {% endtab %}
@@ -833,11 +829,11 @@ type zip2With = <T2, T3, T4>(
       | [undefined, T2, undefined]
       | [undefined, T2, T3]
       | [undefined, undefined, T3],
-    index: number
+    index: number,
   ) => T4,
   seq2: Seq<T2>,
-  seq3: Seq<T3>
-) => Seq<T4>;
+  seq3: Seq<T3>,
+) => Seq<T4>
 ```
 
 {% endtab %}
@@ -851,9 +847,7 @@ Converts the sequence to a real JavaScript array. Realizes the entire sequence.
 {% tab title="Usage" %}
 
 ```typescript
-const lessThanTen = Seq.infinite()
-  .take(10)
-  .toArray();
+const lessThanTen = Seq.infinite().take(10).toArray()
 ```
 
 {% endtab %}
@@ -861,7 +855,7 @@ const lessThanTen = Seq.infinite()
 {% tab title="Type Definition" %}
 
 ```typescript
-type toArray = () => T[];
+type toArray = () => T[]
 ```
 
 {% endtab %}
@@ -875,6 +869,7 @@ Works just like `Array.prototype.forEach`. [See more here](https://developer.moz
 {% tab title="Usage" %}
 
 ```typescript
+
 ```
 
 {% endtab %}
@@ -882,7 +877,7 @@ Works just like `Array.prototype.forEach`. [See more here](https://developer.moz
 {% tab title="Type Definition" %}
 
 ```typescript
-type forEach = (fn: (value: T, index: number) => void) => void;
+type forEach = (fn: (value: T, index: number) => void) => void
 ```
 
 {% endtab %}
@@ -897,9 +892,7 @@ Given a sequence of numbers, adds them all together. This realizes the entire se
 
 ```typescript
 // Returns 0 + 1 + 2 + 3 + 4 = 10
-const sum = Seq.infinite()
-  .take(5)
-  .sum();
+const sum = Seq.infinite().take(5).sum()
 ```
 
 {% endtab %}
@@ -907,7 +900,7 @@ const sum = Seq.infinite()
 {% tab title="Type Definition" %}
 
 ```typescript
-type sum = (this: Seq<number>) => number;
+type sum = (this: Seq<number>) => number
 ```
 
 {% endtab %}
@@ -927,8 +920,8 @@ const sum = Seq.fromArray([
   { balance: 1 },
   { balance: 2 },
   { balance: 3 },
-  { balance: 4 }
-]).sumBy(user => user.balance);
+  { balance: 4 },
+]).sumBy(user => user.balance)
 ```
 
 ````
@@ -953,9 +946,7 @@ Given a sequence of numbers, averages them all together. Tise realizes the entir
 
 ```typescript
 // Returns (0 + 1 + 2 + 3 + 4) / 5 = 2
-const sum = Seq.infinite()
-  .take(5)
-  .average();
+const sum = Seq.infinite().take(5).average()
 ```
 
 {% endtab %}
@@ -963,7 +954,7 @@ const sum = Seq.infinite()
 {% tab title="Type Definition" %}
 
 ```typescript
-type average = (this: Seq<number>) => number;
+type average = (this: Seq<number>) => number
 ```
 
 {% endtab %}
@@ -983,8 +974,8 @@ const sum = Seq.fromArray([
   { balance: 1 },
   { balance: 2 },
   { balance: 3 },
-  { balance: 4 }
-]).averageBy(user => user.balance);
+  { balance: 4 },
+]).averageBy(user => user.balance)
 ```
 
 {% endtab %}
@@ -992,7 +983,7 @@ const sum = Seq.fromArray([
 {% tab title="Type Definition" %}
 
 ```typescript
-type averageBy = (fn: (value: T) => number) => number;
+type averageBy = (fn: (value: T) => number) => number
 ```
 
 {% endtab %}
@@ -1010,7 +1001,7 @@ Given a non-infinite sequence, return a `Map` which counts the occurances of eac
 const freq = Seq.random()
   .map(num => Math.round(num * 100))
   .take(500)
-  .frequencies();
+  .frequencies()
 ```
 
 {% endtab %}
@@ -1018,7 +1009,7 @@ const freq = Seq.random()
 {% tab title="Type Definition" %}
 
 ```typescript
-type frequencies = () => Map<T, number>;
+type frequencies = () => Map<T, number>
 ```
 
 {% endtab %}
@@ -1037,7 +1028,7 @@ Group a sequence by the return of a mapping function. This realizes the entire s
 const groupedByDecade = Seq.random()
   .map(num => Math.round(num * 2000))
   .take(100)
-  .groupBy(year => Math.round(year / 10));
+  .groupBy(year => Math.round(year / 10))
 ```
 
 {% endtab %}
@@ -1045,7 +1036,7 @@ const groupedByDecade = Seq.random()
 {% tab title="Type Definition" %}
 
 ```typescript
-type groupBy = <U>(fn: (item: T) => U) => Map<U, T[]>;
+type groupBy = <U>(fn: (item: T) => U) => Map<U, T[]>
 ```
 
 {% endtab %}

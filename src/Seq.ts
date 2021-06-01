@@ -50,7 +50,7 @@ export class Seq<T> {
   }
 
   public pairwise(): Seq<[T, T]> {
-    return (this.window(2, false) as unknown) as Seq<[T, T]>
+    return this.window(2, false) as unknown as Seq<[T, T]>
   }
 
   public isEmpty(): boolean {
@@ -123,7 +123,7 @@ export class Seq<T> {
   }
 
   public compact<C>(): Seq<C> {
-    return (this.filter(identity) as unknown) as Seq<C>
+    return this.filter(identity) as unknown as Seq<C>
   }
 
   public concat(...tail: Array<Seq<T>>): Seq<T> {

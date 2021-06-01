@@ -12,8 +12,8 @@ Generates random numbers using the Mersenne Twister generator whose values are w
 {% tab title="Usage" %}
 
 ```typescript
-const SEED = 5;
-const sequence: Seq<number> = random(SEED);
+const SEED = 5
+const sequence: Seq<number> = random(SEED)
 ```
 
 {% endtab %}
@@ -21,7 +21,7 @@ const sequence: Seq<number> = random(SEED);
 {% tab title="Type Definition" %}
 
 ```typescript
-type random = (seed = DEFAULT_SEED) => Seq<number>;
+type random = (seed = DEFAULT_SEED) => Seq<number>
 ```
 
 {% endtab %}
@@ -35,8 +35,8 @@ Generates random numbers using the Mersenne Twister generator whose values are w
 {% tab title="Usage" %}
 
 ```typescript
-const SEED = 5;
-const sequence: Seq<number> = mersenne(SEED);
+const SEED = 5
+const sequence: Seq<number> = mersenne(SEED)
 ```
 
 {% endtab %}
@@ -44,7 +44,7 @@ const sequence: Seq<number> = mersenne(SEED);
 {% tab title="Type Definition" %}
 
 ```typescript
-type mersenne = (seed = DEFAULT_SEED) => Seq<number>;
+type mersenne = (seed = DEFAULT_SEED) => Seq<number>
 ```
 
 {% endtab %}
@@ -58,8 +58,8 @@ Generates random numbers using the xorshift128+ generator whose values are withi
 {% tab title="Usage" %}
 
 ```typescript
-const SEED = 5;
-const sequence: Seq<number> = xorshift128plus(SEED);
+const SEED = 5
+const sequence: Seq<number> = xorshift128plus(SEED)
 ```
 
 {% endtab %}
@@ -67,7 +67,7 @@ const sequence: Seq<number> = xorshift128plus(SEED);
 {% tab title="Type Definition" %}
 
 ```typescript
-type xorshift128plus = (seed = DEFAULT_SEED) => Seq<number>;
+type xorshift128plus = (seed = DEFAULT_SEED) => Seq<number>
 ```
 
 {% endtab %}
@@ -81,8 +81,8 @@ Generates random numbers using the xoroshiro128+ generator whose values are with
 {% tab title="Usage" %}
 
 ```typescript
-const SEED = 5;
-const sequence: Seq<number> = xoroshiro128plus(SEED);
+const SEED = 5
+const sequence: Seq<number> = xoroshiro128plus(SEED)
 ```
 
 {% endtab %}
@@ -90,7 +90,7 @@ const sequence: Seq<number> = xoroshiro128plus(SEED);
 {% tab title="Type Definition" %}
 
 ```typescript
-type xoroshiro128plus = (seed = DEFAULT_SEED) => Seq<number>;
+type xoroshiro128plus = (seed = DEFAULT_SEED) => Seq<number>
 ```
 
 {% endtab %}
@@ -104,8 +104,8 @@ Generates random numbers using a Linear Congruential generator whose values are 
 {% tab title="Usage" %}
 
 ```typescript
-const SEED = 5;
-const sequence: Seq<number> = congruential(SEED);
+const SEED = 5
+const sequence: Seq<number> = congruential(SEED)
 ```
 
 {% endtab %}
@@ -113,7 +113,7 @@ const sequence: Seq<number> = congruential(SEED);
 {% tab title="Type Definition" %}
 
 ```typescript
-type congruential = (seed = DEFAULT_SEED) => Seq<number>;
+type congruential = (seed = DEFAULT_SEED) => Seq<number>
 ```
 
 {% endtab %}
@@ -127,8 +127,8 @@ Generates random numbers using a Linear Congruential generator whose values are 
 {% tab title="Usage" %}
 
 ```typescript
-const SEED = 5;
-const sequence: Seq<number> = congruential32(SEED);
+const SEED = 5
+const sequence: Seq<number> = congruential32(SEED)
 ```
 
 {% endtab %}
@@ -136,7 +136,7 @@ const sequence: Seq<number> = congruential32(SEED);
 {% tab title="Type Definition" %}
 
 ```typescript
-type congruential32 = (seed = DEFAULT_SEED) => Seq<number>;
+type congruential32 = (seed = DEFAULT_SEED) => Seq<number>
 ```
 
 {% endtab %}

@@ -10,8 +10,8 @@ Generates a 2d simplex noise.
 {% tab title="Usage" %}
 
 ```typescript
-const SEED = 5;
-const sequence: Seq<number> = simplex2D((x, y) => x + y, SEED);
+const SEED = 5
+const sequence: Seq<number> = simplex2D((x, y) => x + y, SEED)
 ```
 
 {% endtab %}
@@ -21,8 +21,8 @@ const sequence: Seq<number> = simplex2D((x, y) => x + y, SEED);
 ```typescript
 type simplex2D = (
   fn: () => [number, number],
-  seed: number = Date.now()
-) => Seq<number>;
+  seed: number = Date.now(),
+) => Seq<number>
 ```
 
 {% endtab %}
@@ -36,8 +36,8 @@ Generates a 3d simplex noise.
 {% tab title="Usage" %}
 
 ```typescript
-const SEED = 5;
-const sequence: Seq<number> = simplex3D((x, y, z) => x + y + z, SEED);
+const SEED = 5
+const sequence: Seq<number> = simplex3D((x, y, z) => x + y + z, SEED)
 ```
 
 {% endtab %}
@@ -47,8 +47,8 @@ const sequence: Seq<number> = simplex3D((x, y, z) => x + y + z, SEED);
 ```typescript
 type simplex3D = (
   fn: () => [number, number, number],
-  seed: number = Date.now()
-) => Seq<number>;
+  seed: number = Date.now(),
+) => Seq<number>
 ```
 
 {% endtab %}
@@ -62,8 +62,8 @@ Generates a 4d simplex noise.
 {% tab title="Usage" %}
 
 ```typescript
-const SEED = 5;
-const sequence: Seq<number> = simplex4D((x, y, z, w) => x + y + z + w, SEED);
+const SEED = 5
+const sequence: Seq<number> = simplex4D((x, y, z, w) => x + y + z + w, SEED)
 ```
 
 {% endtab %}
@@ -73,8 +73,8 @@ const sequence: Seq<number> = simplex4D((x, y, z, w) => x + y + z + w, SEED);
 ```typescript
 type simplex4D = (
   fn: () => [number, number, number, number],
-  seed: number = Date.now()
-) => Seq<number>;
+  seed: number = Date.now(),
+) => Seq<number>
 ```
 
 {% endtab %}

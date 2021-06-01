@@ -34,14 +34,14 @@ At the end of the computation we discover that we only need the first matching r
 Here is that same example using `leisure`:
 
 ```typescript
-import { fromArray } from "@tdreyno/leisure";
+import { fromArray } from "@tdreyno/leisure"
 
 // Assume the types and data are the same.
 const neighbor = fromArray(users)
   .map(user => parseAddress(user.address))
   .filter(address => address.city === "My Hometown")
   .map(address => address.owner)
-  .first();
+  .first()
 ```
 
 As you can see, the API is nearly identical, with the exception of the `first` helper method.
@@ -51,9 +51,9 @@ As you can see, the API is nearly identical, with the exception of the `first` h
 One of the very interesting side-effects of being lazy is the ability to interact with infinite sequences and perform the smallest number of possible computations to search over all the possibilities. For a very contrived example, find me the first number in the Fibonacci sequence that contains my birthday \(let's say I was born at the beginning of the millennium: `2000_01_01`\).
 
 ```typescript
-import Seq from "@tdreyno/leisure";
+import Seq from "@tdreyno/leisure"
 
-const myBirthDay: number = 2000_01_01;
+const myBirthDay: number = 2000_01_01
 
 const myBirthDayFib: number = Seq
   // Generate an infinite sequence that adds one Fib value each step.
@@ -63,7 +63,7 @@ const myBirthDayFib: number = Seq
   .find(([fib]) => fib.toString().includes(myBirthDay.toString()))
 
   // Get just the number, not the pair.
-  .map(([fib]) => fib);
+  .map(([fib]) => fib)
 ```
 
 Maybe it will run forever? Maybe it will find one very fast :)
@@ -75,7 +75,7 @@ Most methods in the library ask for one value from the previous computation at a
 Here's an example which discards the first 10 numbers of an infinite sequence, then grabs the next five and uses them.
 
 ```typescript
-import { infinite } from "@tdreyno/leisure";
+import { infinite } from "@tdreyno/leisure"
 
 const tenThroughFourteen: number[] = infinite()
   // Ignore 0-9
@@ -83,7 +83,7 @@ const tenThroughFourteen: number[] = infinite()
   // Grab 10-14
   .take(5)
   // Realize the sequence into a real array
-  .toArray();
+  .toArray()
 ```
 
 There are a handful of methods which require the entire sequence, which means they will run infinitely if given an infinite sequence. They are: `toArray`, `forEach`, `sum`, `sumBy`, `average`, `averageBy`, `frequencies` and `groupBy`.
@@ -97,12 +97,12 @@ To avoid infinite loops, `leisure` caps the maximum number of infinite values to
 `leisure` implements the Iterator protocol which means you can use it to lazily pull values using a normal `for` loop.
 
 ```typescript
-import { infinite } from "@tdreyno/leisure";
+import { infinite } from "@tdreyno/leisure"
 
 for (let i of infinite()) {
   if (i > 10) {
-    console.log("counted to ten");
-    break;
+    console.log("counted to ten")
+    break
   }
 }
 ```

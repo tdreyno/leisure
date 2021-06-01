@@ -12,8 +12,8 @@ Generates sequence of the [Cartesian product](https://en.wikipedia.org/wiki/Cart
 ```typescript
 const sequence: Seq<[string, number]> = cartesianProduct(
   ["a", "b", "c"],
-  [1, 2, 3]
-);
+  [1, 2, 3],
+)
 ```
 
 {% endtab %}
@@ -21,7 +21,7 @@ const sequence: Seq<[string, number]> = cartesianProduct(
 {% tab title="Type Definition" %}
 
 ```typescript
-type cartesianProduct = <T>(...inputs: T[][]) => Seq<T[]>;
+type cartesianProduct = <T>(...inputs: T[][]) => Seq<T[]>
 ```
 
 {% endtab %}
@@ -35,7 +35,7 @@ Generates sequence of Sets of a [Power set](https://en.wikipedia.org/wiki/Power_
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<Set<string>> = powerSet(["a", "b", "c"]);
+const sequence: Seq<Set<string>> = powerSet(["a", "b", "c"])
 ```
 
 {% endtab %}
@@ -43,7 +43,7 @@ const sequence: Seq<Set<string>> = powerSet(["a", "b", "c"]);
 {% tab title="Type Definition" %}
 
 ```typescript
-type powerSet = <T>(...items: T[]) => Seq<Set<T>>;
+type powerSet = <T>(...items: T[]) => Seq<Set<T>>
 ```
 
 {% endtab %}
@@ -57,7 +57,7 @@ Generates sequence of Sets of a [Combination](https://en.wikipedia.org/wiki/Comb
 {% tab title="Usage" %}
 
 ```typescript
-const sequence: Seq<Set<string>> = combination(["a", "b", "c"], 2);
+const sequence: Seq<Set<string>> = combination(["a", "b", "c"], 2)
 ```
 
 {% endtab %}
@@ -65,7 +65,7 @@ const sequence: Seq<Set<string>> = combination(["a", "b", "c"], 2);
 {% tab title="Type Definition" %}
 
 ```typescript
-type combination = <T>(items: T[], size: number = items.length) => Seq<Set<T>>;
+type combination = <T>(items: T[], size: number = items.length) => Seq<Set<T>>
 ```
 
 {% endtab %}

@@ -11,5 +11,5 @@ $ yarn add @tdreyno/leisure
 Usually, you will be importing a Sequence creating method. [See the full list here](api/static.md).
 
 ```typescript
-import { fromArray } from "@tdreyno/leisure";
+import { fromArray } from "@tdreyno/leisure"
 ```
