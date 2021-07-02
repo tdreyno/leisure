@@ -75,7 +75,7 @@
     "benchmark": "^2.1.4",
     "commitizen": "^4.2.3",
     "cz-conventional-changelog": "3.3.0",
-    "eslint": "^7.27.0",
+    "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "gzip-size-cli": "^5.0.0",
