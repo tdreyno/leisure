@@ -85,7 +85,7 @@
     "lodash": "^4.17.21",
     "microtime": "^3.0.0",
     "prettier": "^2.2.1",
-    "semantic-release": "^17.4.2",
+    "semantic-release": "^17.4.4",
     "terser": "^5.7.0",
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",
