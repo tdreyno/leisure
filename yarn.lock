@@ -1102,14 +1102,14 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@commitlint/cli@^16.0.1":
-  version "16.0.1"
-  resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-16.0.1.tgz#21905c898ebece7da42277209022b1bc80c4fb39"
-  integrity sha512-61gGRy65WiVDRsqP0dAR2fAgE3qrTBW3fgz9MySv32y5Ib3ZXXDDq6bGyQqi2dSaPuDYzNCRwwlC7mmQM73T/g==
+"@commitlint/cli@^16.1.0":
+  version "16.1.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-16.1.0.tgz#022ad86008374b02974c9f3faf86affb785f4574"
+  integrity sha512-x5L1knvA3isRWBRVQx+Q6D45pA9139a2aZQYpxkljMG0dj4UHZkCnsYWpnGalxPxASI7nrI0KedKfS2YeQ55cQ==
   dependencies:
     "@commitlint/format" "^16.0.0"
     "@commitlint/lint" "^16.0.0"
-    "@commitlint/load" "^16.0.0"
+    "@commitlint/load" "^16.1.0"
     "@commitlint/read" "^16.0.0"
     "@commitlint/types" "^16.0.0"
     lodash "^4.17.19"
@@ -1171,7 +1171,7 @@
     "@commitlint/rules" "^16.0.0"
     "@commitlint/types" "^16.0.0"
 
-"@commitlint/load@>6.1.1", "@commitlint/load@^16.0.0", "@commitlint/load@^16.1.0":
+"@commitlint/load@>6.1.1", "@commitlint/load@^16.1.0":
   version "16.1.0"
   resolved "https://registry.yarnpkg.com/@commitlint/load/-/load-16.1.0.tgz#7a884072ab915611080c5e99a1f1d999c05f4360"
   integrity sha512-MtlEhKjP8jAF85jjX4mw8DUUwCxKsCgAc865hhpnwxjrfBcmGP7Up2AFE/M3ZMGDmSl1X1TMybQk/zohj8Cqdg==

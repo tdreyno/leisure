@@ -56,7 +56,7 @@
     "yarn": "1.22.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "^16.0.1",
+    "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
     "@commitlint/prompt": "^16.1.0",
     "@pika/pack": "^0.5.0",
