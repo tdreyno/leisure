@@ -76,12 +76,12 @@
     "commitizen": "^4.2.3",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
     "gzip-size-cli": "^5.1.0",
     "husky": "^7.0.4",
     "jest": "^27.4.7",
-    "lint-staged": "^12.3.3",
+    "lint-staged": "^12.3.4",
     "lodash": "^4.17.21",
     "microtime": "^3.0.0",
     "prettier": "^2.5.1",
@@ -90,7 +90,7 @@
     "ts-jest": "^27.1.3",
     "ts-node": "^10.4.0",
     "ts-toolbelt": "^9.6.0",
-    "typescript": "^4.5.5"
+    "typescript": "^4.6.2"
   },
   "dependencies": {
     "@tdreyno/figment": "^1.10.0",
