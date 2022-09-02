@@ -90,7 +90,7 @@
     "ts-jest": "^27.1.4",
     "ts-node": "^10.9.1",
     "ts-toolbelt": "^9.6.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.2"
   },
   "dependencies": {
     "@tdreyno/figment": "^1.10.0",
