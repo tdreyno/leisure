@@ -1177,10 +1177,10 @@
     "@commitlint/rules" "^17.0.0"
     "@commitlint/types" "^17.0.0"
 
-"@commitlint/load@>6.1.1", "@commitlint/load@^17.1.2":
-  version "17.1.2"
-  resolved "https://registry.yarnpkg.com/@commitlint/load/-/load-17.1.2.tgz#19c88be570d8666bbd32f9b3d81925a08328bc13"
-  integrity sha512-sk2p/jFYAWLChIfOIp/MGSIn/WzZ0vkc3afw+l4X8hGEYkvDe4gQUUAVxjl/6xMRn0HgnSLMZ04xXh5pkTsmgg==
+"@commitlint/load@>6.1.1", "@commitlint/load@^17.1.2", "@commitlint/load@^17.2.0":
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/load/-/load-17.2.0.tgz#11c9fb23a967ff1507a28931c91aae7f978ea4ae"
+  integrity sha512-HDD57qSqNrk399R4TIjw31AWBG8dBjNj1MrDKZKmC/wvimtnIFlqzcu1+sxfXIOHj/+M6tcMWDtvknGUd7SU+g==
   dependencies:
     "@commitlint/config-validator" "^17.1.0"
     "@commitlint/execute-rule" "^17.0.0"
@@ -1209,13 +1209,13 @@
     conventional-changelog-angular "^5.0.11"
     conventional-commits-parser "^3.2.2"
 
-"@commitlint/prompt@^17.1.2":
-  version "17.1.2"
-  resolved "https://registry.yarnpkg.com/@commitlint/prompt/-/prompt-17.1.2.tgz#ad3338eb54f869216692cc42e80b2eb7746b0b1d"
-  integrity sha512-KubucHY9EnHnao7zgdXsOpckLZA5PgXvaR/eI6IQY2xzuG6RPlVqIffSPpiDjX09SopoYRWbztvkg+Z2m0ib9g==
+"@commitlint/prompt@^17.2.0":
+  version "17.2.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/prompt/-/prompt-17.2.0.tgz#e687521bce9bf4fc1ee1eb7a0b89e80f5e1be8fd"
+  integrity sha512-xMWMJteq0VZ25i8IaXGBmUMEg8l5SQewvk21jp//BPkKSOxEwXFUSiwMA6iUkILCWHHffQBAgs/1O+4HqZrtaQ==
   dependencies:
     "@commitlint/ensure" "^17.0.0"
-    "@commitlint/load" "^17.1.2"
+    "@commitlint/load" "^17.2.0"
     "@commitlint/types" "^17.0.0"
     chalk "^4.1.0"
     inquirer "^6.5.2"
