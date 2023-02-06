@@ -76,7 +76,7 @@
     "commitizen": "^4.2.5",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
     "gzip-size-cli": "^5.1.0",
     "husky": "^8.0.3",
